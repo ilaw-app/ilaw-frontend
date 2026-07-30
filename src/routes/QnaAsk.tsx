@@ -179,8 +179,10 @@ export default function QnaAsk() {
           <div className="qa-check-circle">
             <IoCheckmark size={40} color="#fff" />
           </div>
-          <div className="qa-success-title">제출 완료!</div>
-          <div className="qa-success-desc">빠른 시일 내로{'\n'}답변 드리겠습니다!</div>
+          <div className="qa-success-textblock">
+            <div className="qa-success-title">제출 완료!</div>
+            <div className="qa-success-desc">빠른 시일 내로{'\n'}답변 드리겠습니다!</div>
+          </div>
           <div className="qa-success-btns">
             <button
               className="qa-home-btn"
