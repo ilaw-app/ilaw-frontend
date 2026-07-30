@@ -181,24 +181,26 @@ export default function QnaAsk() {
           </div>
           <div className="qa-success-title">제출 완료!</div>
           <div className="qa-success-desc">빠른 시일 내로{'\n'}답변 드리겠습니다!</div>
-          <button
-            className="qa-home-btn"
-            onClick={() => {
-              setShowSuccess(false);
-              navigate('/home');
-            }}
-          >
-            홈으로
-          </button>
-          <button
-            className="qa-myqna-btn"
-            onClick={() => {
-              setShowSuccess(false);
-              navigate('/my-questions');
-            }}
-          >
-            내 질문 보기
-          </button>
+          <div className="qa-success-btns">
+            <button
+              className="qa-home-btn"
+              onClick={() => {
+                setShowSuccess(false);
+                navigate('/home');
+              }}
+            >
+              홈으로
+            </button>
+            <button
+              className="qa-myqna-btn"
+              onClick={() => {
+                setShowSuccess(false);
+                navigate('/my-questions');
+              }}
+            >
+              내 질문 보기
+            </button>
+          </div>
         </div>
       </Overlay>
     </div>
