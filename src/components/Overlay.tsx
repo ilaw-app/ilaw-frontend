@@ -20,7 +20,7 @@ export function Overlay({
   const host = document.getElementById('app-frame') ?? document.body;
   return createPortal(
     <div
-      className="overlay"
+      className={`overlay${align === 'bottom' ? ' overlay-bottom' : ''}`}
       style={{
         background: `rgba(0,0,0,${dim})`,
         alignItems: align === 'bottom' ? 'flex-end' : 'center',

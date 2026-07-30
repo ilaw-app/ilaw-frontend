@@ -431,8 +431,7 @@
 /* 바텀시트 (본인 질문 답변 대기 안내) */
 .qd-sheet {
   position: relative;
-  width: 392.798px;
-  max-width: 100%;
+  width: 100%;
   background: #fff;
   border-radius: 24px 24px 0 0;
   padding: 24px 24px 40px;
@@ -472,11 +471,16 @@
 .qd-sheet-desc {
   font-family: 'Inter', 'Noto Sans KR', sans-serif;
   font-size: 14px;
-  font-weight: 600;
-  color: #364153;
+  font-weight: 400;
+  color: #6a7282;
+  text-align: center;
   line-height: 22.75px;
   letter-spacing: -0.15px;
   margin-bottom: 10px;
+}
+.qd-sheet-desc .hl {
+  font-weight: 600;
+  color: #364153;
 }
 .qd-sheet-note {
   font-size: 13px;
@@ -485,8 +489,7 @@
   margin-bottom: 22px;
 }
 .qd-sheet-confirm {
-  width: 344.804px;
-  max-width: 100%;
+  width: 100%;
   height: 47.971px;
   padding: 14.434px 0 13.538px;
   border-radius: 16px;
@@ -501,7 +504,7 @@
 
 /* 삭제 확인 바텀시트 */
 .qd-sheet-delete {
-  width: 401.089px;
+  width: 100%;
 }
 .qd-del-icon {
   width: 56px;
@@ -527,8 +530,7 @@
   width: 100%;
 }
 .qd-del-btn {
-  width: 353.109px;
-  max-width: 100%;
+  width: 100%;
   height: 47.991px;
   padding: 14.432px 0 13.559px;
   border-radius: 16px;

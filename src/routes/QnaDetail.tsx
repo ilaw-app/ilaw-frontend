@@ -355,9 +355,10 @@ export default function QnaDetail() {
             )
           )
         ) : post.status === 'pending' ? (
-          // 내 질문이면 팝업으로 안내하므로 인라인 대기박스는 숨김. 남의 질문이면 표시.
-          owned ? null : (
-            <div className="qd-pending-bg">
+          // 대기 화면은 질문 밑을 #F9FAFB 패널로 채움.
+          // 내 질문이면 팝업으로 안내하므로 인라인 대기박스는 숨김, 남의 질문이면 표시.
+          <div className="qd-pending-bg">
+            {!owned && (
               <div className="qd-waiting">
                 <ClockIcon size={22} color="#8c937d" />
                 <div className="qd-waiting-text">
@@ -365,8 +366,8 @@ export default function QnaDetail() {
                   <div className="qd-waiting-desc">1~3일 내로 답변이 등록될 예정이에요.</div>
                 </div>
               </div>
-            </div>
-          )
+            )}
+          </div>
         ) : (
           post.answer && <AnswerCard answer={post.answer} />
         )}
@@ -397,7 +398,7 @@ export default function QnaDetail() {
           <p className="qd-sheet-desc">
             변호사님이 검토 중입니다.
             <br />
-            답변까지 1~3일 정도 소요돼요.
+            답변까지 <span className="hl">1~3일</span> 정도 소요돼요.
           </p>
           <p className="qd-sheet-note">긴급한 상황이라면 112에 먼저 연락하세요.</p>
           <button className="qd-sheet-confirm" onClick={() => setPendingPopupOpen(false)}>

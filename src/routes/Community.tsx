@@ -246,35 +246,6 @@ export default function Community() {
         <p className="cm-header-sub">정보 공유를 통해 함께 도움을 주고받아요</p>
       </div>
 
-      <div className="cm-search-area">
-        <form
-          className="cm-search-box"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSearchSubmit();
-          }}
-        >
-          <input
-            className="cm-search-input"
-            placeholder="키워드로 검색해보세요!"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              if (!e.target.value.trim()) exitSearch();
-            }}
-          />
-          {isSearching ? (
-            <button type="button" className="cm-search-btn" onClick={exitSearch}>
-              <IoClose size={16} color="#fff" />
-            </button>
-          ) : (
-            <button type="submit" className="cm-search-btn">
-              <IoSearch size={16} color="#fff" />
-            </button>
-          )}
-        </form>
-      </div>
-
       {loading ? (
         <div className="spinner-center">
           <div className="spinner" />

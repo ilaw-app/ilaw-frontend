@@ -6,6 +6,13 @@
   justify-content: center;
   padding: 20px;
 }
+/* 바텀시트: 좌우/하단 여백 제거해 꽉 차게 */
+.overlay-bottom {
+  padding: 0;
+}
+.overlay-bottom .overlay-content {
+  width: 100%;
+}
 .overlay-content {
   max-width: 100%;
   max-height: 100%;
