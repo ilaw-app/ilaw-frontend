@@ -5,7 +5,6 @@ import {
   IoClose,
   IoChatbubbleOutline,
   IoTimeOutline,
-  IoBookmarkOutline,
   IoAdd,
 } from 'react-icons/io5';
 import { qaApi } from '../api/qa';
@@ -15,31 +14,65 @@ import { HighlightText } from '../components/HighlightText';
 import TabBar from '../components/TabBar';
 import './qna.css';
 
-function QnaCard({ item, keyword, onClick }: { item: QnAListItem; keyword: string; onClick: () => void }) {
+type TabKey = 'all' | 'answered' | 'pending';
+
+function mmdd(iso: string) {
+  const s = String(iso).slice(0, 10); // YYYY-MM-DD
+  return s.length >= 10 ? `${s.slice(5, 7)}.${s.slice(8, 10)}` : s;
+}
+
+function QnaCard({
+  item,
+  keyword,
+  mine,
+  onClick,
+}: {
+  item: QnAListItem;
+  keyword: string;
+  mine?: boolean;
+  onClick: () => void;
+}) {
+  const answered = item.status === 'answered';
+  const thumb = (item as unknown as { imageUrls?: string[] }).imageUrls?.[0];
   return (
     <button className="qna-card" onClick={onClick}>
-      <span className={`qna-status ${item.status}`}>
-        {item.status === 'answered' ? '답변완료' : '답변대기'}
-      </span>
-      <span className="qna-cat">{item.category}</span>
-      <div className="qna-card-title">
-        <HighlightText text={item.title} keyword={keyword} />
+      <div className="qna-card-top">
+        <span className={`qna-status ${item.status}`}>
+          <span className="qna-status-dot" />
+          {answered ? '답변완료' : '답변대기'}
+        </span>
+        {item.category?.trim() && (
+          <span className="qna-cat">
+            <span className="qna-dot" />
+            <span className="qna-cat-label">{item.category}</span>
+          </span>
+        )}
+        <span className="qna-card-top-right">
+          {mine && (
+            <span className="qna-mine">
+              <span className="qna-dot" />
+              내 질문
+            </span>
+          )}
+          <span className="qna-date">{mmdd(item.createdAt)}</span>
+        </span>
       </div>
-      <div className="qna-card-content">
-        <HighlightText text={item.content} keyword={keyword} />
+
+      <div className="qna-card-main">
+        <div className="qna-card-texts">
+          <div className="qna-card-title">
+            <HighlightText text={item.title} keyword={keyword} />
+          </div>
+          <div className="qna-card-content">
+            <HighlightText text={item.content} keyword={keyword} />
+          </div>
+        </div>
+        {thumb && <img className="qna-card-thumb" src={thumb} alt="" />}
       </div>
+
       <div className="qna-meta">
-        <span className="left">
-          <IoChatbubbleOutline size={12} />
-          <span>{item.author?.nickname ?? '익명'}</span>
-          <span className="dot">•</span>
-          <IoTimeOutline size={12} />
-          <span>{String(item.createdAt).slice(0, 10)}</span>
-        </span>
-        <span className="right">
-          <IoBookmarkOutline size={12} />
-          <span>{item.scrapCount ?? 0}</span>
-        </span>
+        <IoChatbubbleOutline size={13} />
+        <span>{item.author?.nickname ?? '익명'}</span>
       </div>
     </button>
   );
@@ -54,6 +87,12 @@ const isLawyerQuestion = (title: string) => {
   return LAWYER_Q_KEYWORDS.some((k) => t.includes(k));
 };
 
+const TABS: { key: TabKey; label: string }[] = [
+  { key: 'all', label: '전체' },
+  { key: 'answered', label: '답변완료' },
+  { key: 'pending', label: '답변대기' },
+];
+
 export default function QnaList() {
   const navigate = useNavigate();
   const { role } = useAuth();
@@ -61,6 +100,8 @@ export default function QnaList() {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [tab, setTab] = useState<TabKey>('all');
 
   useEffect(() => {
     let cancelled = false;
@@ -87,22 +128,38 @@ export default function QnaList() {
   }, []);
 
   const filtered = useMemo(() => {
+    let list = posts;
+    if (tab !== 'all') list = list.filter((p) => p.status === tab);
     const q = submitted.trim();
-    if (!q) return posts;
-    return posts.filter(
-      (p) => p.title.includes(q) || p.content?.includes(q) || p.category.includes(q)
-    );
-  }, [submitted, posts]);
+    if (q) {
+      list = list.filter(
+        (p) => p.title.includes(q) || p.content?.includes(q) || p.category.includes(q)
+      );
+    }
+    return list;
+  }, [submitted, posts, tab]);
+
+  function toggleSearch() {
+    setSearchOpen((open) => {
+      if (open) {
+        setQuery('');
+        setSubmitted('');
+      }
+      return !open;
+    });
+  }
 
   // ── 변호사 화면: 답변 대기 / 답변 완료 섹션 ──
   if (role === 'lawyer') {
     const pending = posts.filter((p) => p.status === 'pending');
     const answered = posts.filter((p) => p.status !== 'pending');
     return (
-      <div className="screen">
+      <div className="screen qna-screen">
         <div className="qna-header">
-          <h1>Q&amp;A 답변 관리</h1>
-          <p>아이들의 질문에 답변해주세요</p>
+          <div className="qna-header-text">
+            <h1>Q&amp;A 답변 관리</h1>
+            <p>아이들의 질문에 답변해주세요</p>
+          </div>
         </div>
         {loading ? (
           <div className="spinner-center">
@@ -149,45 +206,64 @@ export default function QnaList() {
 
   // ── 사용자 화면 ──
   return (
-    <div className="screen">
+    <div className="screen qna-screen">
       <div className="qna-header">
-        <h1>Q&amp;A</h1>
-        <p>변호사님이 직접 답변해 드립니다</p>
+        <div className="qna-header-text">
+          <h1>Q&amp;A</h1>
+          <p>변호사님이 직접 답변해 드립니다</p>
+        </div>
+        <button className="qna-header-search" onClick={toggleSearch} aria-label="검색">
+          {searchOpen ? <IoClose size={24} color="#6a7282" /> : <IoSearch size={22} color="#6a7282" />}
+        </button>
       </div>
 
-      <div className="qna-search-area">
-        <form
-          className="qna-search-box"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(query);
-          }}
-        >
-          <input
-            placeholder="키워드로 검색해보세요!"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (!e.target.value.trim()) setSubmitted('');
+      {searchOpen && (
+        <div className="qna-search-area">
+          <form
+            className="qna-search-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSubmitted(query);
             }}
-          />
-          {submitted ? (
-            <button
-              type="button"
-              className="qna-search-btn"
-              onClick={() => {
-                setQuery('');
-                setSubmitted('');
+          >
+            <IoSearch size={18} color="#99a1af" />
+            <input
+              autoFocus
+              placeholder="질문 검색..."
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                if (!e.target.value.trim()) setSubmitted('');
               }}
-            >
-              <IoClose size={16} color="#fff" />
-            </button>
-          ) : (
-            <button type="submit" className="qna-search-btn">
-              <IoSearch size={16} color="#fff" />
-            </button>
-          )}
-        </form>
+            />
+            {query && (
+              <button
+                type="button"
+                className="qna-search-clear"
+                onClick={() => {
+                  setQuery('');
+                  setSubmitted('');
+                }}
+              >
+                <IoClose size={16} color="#99a1af" />
+              </button>
+            )}
+          </form>
+        </div>
+      )}
+
+      <div className="qna-divider" />
+
+      <div className="qna-tabs">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            className={`qna-tab${tab === t.key ? ' active' : ''}`}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
       {loading ? (

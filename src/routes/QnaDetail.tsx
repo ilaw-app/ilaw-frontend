@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  IoChevronBack,
-  IoEllipsisVertical,
+  IoArrowBack,
   IoPersonOutline,
   IoTimeOutline,
   IoBusinessOutline,
@@ -17,6 +16,8 @@ import { QNA_ITEMS } from '../data/qnaData';
 import type { QnADetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
+import { Markdown } from '../components/Markdown';
+import TabBar from '../components/TabBar';
 import './qnaDetail.css';
 
 function calcAge(birth?: string | null): number | null {
@@ -44,16 +45,16 @@ function staticLawyerAnswer(title: string) {
   return item?.answer ?? null;
 }
 
-function ClockIcon() {
+function ClockIcon({ size = 32, color = '#8c937d' }: { size?: number; color?: string }) {
   return (
-    <svg width={64} height={64} viewBox="0 0 64 64" fill="none">
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
       <path
         d="M31.9985 58.664C46.7255 58.664 58.664 46.7255 58.664 31.9985C58.664 17.2716 46.7255 5.33301 31.9985 5.33301C17.2716 5.33301 5.33301 17.2716 5.33301 31.9985C5.33301 46.7255 17.2716 58.664 31.9985 58.664Z"
-        stroke="#C10007" strokeWidth="5.3331" strokeLinecap="round" strokeLinejoin="round"
+        stroke={color} strokeWidth="5.3331" strokeLinecap="round" strokeLinejoin="round"
       />
       <path
         d="M31.9985 15.999V31.9983L42.6647 37.3314"
-        stroke="#C10007" strokeWidth="5.3331" strokeLinecap="round" strokeLinejoin="round"
+        stroke={color} strokeWidth="5.3331" strokeLinecap="round" strokeLinejoin="round"
       />
     </svg>
   );
@@ -70,14 +71,16 @@ export default function QnaDetail() {
   const [scrapped, setScrapped] = useState(false);
   const [scrapCount, setScrapCount] = useState(0);
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [pendingPopupOpen, setPendingPopupOpen] = useState(false);
 
   const [answerText, setAnswerText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState('');
+
+  const isLawyer = role === 'lawyer';
 
   useEffect(() => {
     let cancelled = false;
@@ -105,6 +108,10 @@ export default function QnaDetail() {
             }
           : data;
         setPost(merged);
+        // 본인 질문이 답변 대기 중이면 안내 팝업을 띄운다 (사용자 화면)
+        if (!isLawyer && merged.isAuthor && merged.status === 'pending') {
+          setPendingPopupOpen(true);
+        }
       })
       .catch(() => !cancelled && setNotFound(true))
       .finally(() => !cancelled && setLoading(false));
@@ -120,7 +127,7 @@ export default function QnaDetail() {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, isLawyer]);
 
   async function toggleScrap() {
     if (!post) return;
@@ -178,9 +185,8 @@ export default function QnaDetail() {
       <div className="qd">
         <div className="qd-nav">
           <button onClick={() => navigate('/qna')}>
-            <IoChevronBack size={22} />
+            <IoArrowBack size={24} />
           </button>
-          <span>{role === 'lawyer' ? '질문 상세' : 'Q&A'}</span>
         </div>
         <div className="spinner-center">
           <div className="spinner" />
@@ -194,45 +200,51 @@ export default function QnaDetail() {
       <div className="qd">
         <div className="qd-nav">
           <button onClick={() => navigate('/qna')}>
-            <IoChevronBack size={22} />
+            <IoArrowBack size={24} />
           </button>
-          <span>질문을 찾을 수 없어요</span>
+          <span className="qd-nav-title">질문을 찾을 수 없어요</span>
         </div>
       </div>
     );
   }
 
-  const isLawyer = role === 'lawyer';
+  const answered = post.status === 'answered';
 
   return (
     <div className="qd">
       <div className="qd-nav">
-        <button onClick={() => navigate('/qna')}>
-          <IoChevronBack size={22} />
+        <button onClick={() => navigate('/qna')} aria-label="뒤로">
+          <IoArrowBack size={24} />
         </button>
-        <span className={isLawyer ? 'big' : ''}>{isLawyer ? '질문 상세' : 'Q&A'}</span>
-        {post.isAuthor && (
-          <button className="qd-menu-btn" onClick={() => setMenuOpen(true)}>
-            <IoEllipsisVertical size={20} />
+        {isLawyer && <span className="qd-nav-title">질문 상세</span>}
+        {post.isAuthor && !isLawyer && (
+          <button className="qd-trash" onClick={() => setDeleteOpen(true)} aria-label="삭제">
+            <IoTrashOutline size={22} />
           </button>
         )}
       </div>
 
       <div className="qd-scroll">
-        {/* 질문 카드 */}
-        <div className="qd-card">
-          <div className="qd-user">
-            <div className="qd-avatar user">
-              <IoPersonOutline size={22} color="#fff" />
-            </div>
-            <div>
-              <div className="qd-user-name">{post.author?.nickname ?? '익명'}</div>
-              <div className="qd-user-date">
-                <IoTimeOutline size={12} /> {new Date(post.createdAt).toLocaleDateString('ko-KR')}
-              </div>
-            </div>
+        {/* 질문 */}
+        <div className="qd-question">
+          <div className="qd-tags">
+            <span className={`qd-status ${post.status}`}>
+              <span className="qd-status-dot" />
+              {answered ? '답변완료' : '답변대기'}
+            </span>
+            {post.category?.trim() && (
+              <span className="qd-cat">
+                <span className="qd-dot" />
+                {post.category}
+              </span>
+            )}
+            {post.isAuthor && (
+              <span className="qd-mine">
+                <span className="qd-dot" />
+                내 질문
+              </span>
+            )}
           </div>
-          <div className="qd-divider" />
           <h2 className="qd-title">{post.title}</h2>
           <p className="qd-body">{post.content}</p>
           {post.imageUrls?.length > 0 && (
@@ -242,7 +254,15 @@ export default function QnaDetail() {
               ))}
             </div>
           )}
+          <div className="qd-qmeta">
+            <span>{post.author?.nickname ?? '익명'}</span>
+            <span className="qd-qmeta-dot">·</span>
+            <IoTimeOutline size={13} />
+            <span>{new Date(post.createdAt).toISOString().slice(0, 10)}</span>
+          </div>
         </div>
+
+        <div className="qd-sep" />
 
         {/* 변호사: 질문자 정보 */}
         {isLawyer && post.author && (
@@ -291,22 +311,19 @@ export default function QnaDetail() {
             )
           )
         ) : post.status === 'pending' ? (
-          <div className="qd-pending">
-            <div className="qd-clock"><ClockIcon /></div>
-            <div className="qd-pending-title">답변 대기 중</div>
-            <p className="qd-pending-desc">
-              변호사님이 질문을 검토하고 계세요.
-              <br />
-              보통 1~3일 내에 답변이 등록됩니다.
-            </p>
-            <p className="qd-pending-note">긴급한 상황이라면 112(경찰)에 바로 연락하세요.</p>
+          <div className="qd-waiting">
+            <ClockIcon size={22} color="#8c937d" />
+            <div className="qd-waiting-text">
+              <div className="qd-waiting-title">변호사 답변 대기 중</div>
+              <div className="qd-waiting-desc">1~3일 내로 답변이 등록될 예정이에요.</div>
+            </div>
           </div>
         ) : (
           post.answer && <AnswerCard answer={post.answer} />
         )}
 
-        {/* 스크랩 (사용자만) */}
-        {!isLawyer && (
+        {/* 스크랩 (사용자만, 답변 완료 시) */}
+        {!isLawyer && answered && (
           <div className="qd-scrap-area">
             <button className={`qd-scrap ${scrapped ? 'on' : ''}`} onClick={toggleScrap}>
               {scrapped ? <IoBookmark size={18} color="#fff" /> : <IoBookmarkOutline size={18} color="#fff" />}
@@ -316,17 +333,26 @@ export default function QnaDetail() {
         )}
       </div>
 
-      {/* 작성자 메뉴 */}
-      <Overlay visible={menuOpen} onClose={() => setMenuOpen(false)}>
+      <TabBar />
+
+      {/* 본인 질문 답변 대기 안내 (바텀시트) */}
+      <Overlay visible={pendingPopupOpen} onClose={() => setPendingPopupOpen(false)} align="bottom">
         <div className="qd-sheet">
-          <button
-            className="qd-sheet-item danger"
-            onClick={() => {
-              setMenuOpen(false);
-              setDeleteOpen(true);
-            }}
-          >
-            <IoTrashOutline size={16} /> 삭제하기
+          <button className="qd-sheet-close" onClick={() => setPendingPopupOpen(false)} aria-label="닫기">
+            ✕
+          </button>
+          <div className="qd-sheet-icon">
+            <ClockIcon size={30} color="#586144" />
+          </div>
+          <div className="qd-sheet-title">답변 대기 중이에요</div>
+          <p className="qd-sheet-desc">
+            변호사님이 검토 중입니다.
+            <br />
+            답변까지 1~3일 정도 소요돼요.
+          </p>
+          <p className="qd-sheet-note">긴급한 상황이라면 112에 먼저 연락하세요.</p>
+          <button className="qd-sheet-confirm" onClick={() => setPendingPopupOpen(false)}>
+            확인
           </button>
         </div>
       </Overlay>
@@ -335,16 +361,16 @@ export default function QnaDetail() {
       <Overlay visible={deleteOpen} onClose={() => setDeleteOpen(false)}>
         <div className="qd-modal">
           <div className="qd-modal-icon">
-            <IoTrashOutline size={32} color="#c10007" />
+            <IoTrashOutline size={30} color="#8c937d" />
           </div>
           <div className="qd-modal-title">질문을 삭제할까요?</div>
-          <p className="qd-modal-desc">삭제 후에는 복구할 수 없습니다.</p>
+          <p className="qd-modal-desc">삭제한 질문은 복구할 수 없어요.</p>
           <div className="qd-modal-btns">
-            <button className="ghost" onClick={() => setDeleteOpen(false)}>
-              취소
-            </button>
             <button className="danger" onClick={doDelete}>
               삭제하기
+            </button>
+            <button className="ghost" onClick={() => setDeleteOpen(false)}>
+              취소
             </button>
           </div>
         </div>
@@ -358,10 +384,10 @@ export default function QnaDetail() {
           </div>
           <div className="qd-modal-title">답변 완료!</div>
           <div className="qd-modal-btns">
-            <button className="ghost" onClick={() => navigate('/qna')}>
+            <button className="primary" onClick={() => navigate('/qna')}>
               목록으로
             </button>
-            <button className="primary" onClick={() => navigate('/home')}>
+            <button className="ghost" onClick={() => navigate('/home')}>
               홈으로
             </button>
           </div>
@@ -396,7 +422,7 @@ function AnswerCard({
     <div className="qd-answer">
       <div className="qd-answer-head">
         <div className="qd-avatar lawyer">
-          <IoPersonOutline size={22} color="#fff" />
+          <IoPersonOutline size={22} color="#c2e086" />
         </div>
         <div className="qd-answer-who">
           <div className="qd-answer-name">{answer.lawyer?.nickname ?? '변호사'}</div>
@@ -408,7 +434,7 @@ function AnswerCard({
         </div>
         {editable && !editing && (
           <button className="qd-edit-btn" onClick={onStartEdit}>
-            <IoCreateOutline size={18} color="#2b56b5" />
+            <IoCreateOutline size={18} color="#678720" />
           </button>
         )}
       </div>
@@ -426,7 +452,7 @@ function AnswerCard({
           </div>
         </>
       ) : (
-        <p className="qd-answer-body">{answer.content}</p>
+        <Markdown text={answer.content} className="qd-md" />
       )}
     </div>
   );

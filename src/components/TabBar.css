@@ -6,7 +6,7 @@
   padding: 0 19px;
   height: 80px;
   background: #fff;
-  border-top: 1px solid #e4eed4;
+  border-top: 2px solid var(--fig-line);
 }
 
 .tab {
@@ -25,12 +25,12 @@
   align-items: center;
   padding: 8px 0;
   gap: 4px;
-  color: var(--tab-inactive);
+  color: var(--fig-muted);
 }
 
 .tab.active .tab-item {
-  background: #eff4e1;
-  color: var(--primary-dark);
+  background: #f7fee7;
+  color: #c2e086;
 }
 
 .tab-label {
