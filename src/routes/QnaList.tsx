@@ -97,6 +97,7 @@ export default function QnaList() {
   const navigate = useNavigate();
   const { role } = useAuth();
   const [posts, setPosts] = useState<QnAListItem[]>([]);
+  const [mineIds, setMineIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
@@ -111,9 +112,17 @@ export default function QnaList() {
         if (cancelled) return;
         let list = Array.isArray(data) ? data : [];
         if (SHOW_ONLY_LAWYER_QNA) {
-          // 변호사 답변이 있는 5개만 노출 + 전부 답변완료로 표시 (백엔드 status가 pending이어도)
-          list = list.filter((p) => isLawyerQuestion(p.title)).map((p) => ({ ...p, status: 'answered' as const }));
+          // 변호사 답변이 있는 5개는 답변완료로 표시하고,
+          // 그 외 질문은 '대기중(pending)'인 것만 노출 (새로 등록한 질문이 답변대기로 보이도록).
+          // 답변완료된 다른 잡질문은 계속 숨김.
+          list = list
+            .map((p) => (isLawyerQuestion(p.title) ? { ...p, status: 'answered' as const } : p))
+            .filter((p) => isLawyerQuestion(p.title) || p.status === 'pending');
         }
+        // 최신순 정렬 (createdAt 내림차순)
+        list = [...list].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
         setPosts(list);
       })
       .catch(() => {
@@ -122,6 +131,14 @@ export default function QnaList() {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
+    // 내가 쓴 질문 id 집합 (로그인 시에만 성공 → '내 질문' 배지 표시)
+    qaApi
+      .mine()
+      .then((mineList) => {
+        if (cancelled) return;
+        setMineIds(new Set((Array.isArray(mineList) ? mineList : []).map((m: any) => m.id)));
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
@@ -283,6 +300,7 @@ export default function QnaList() {
                 key={item.id}
                 item={item}
                 keyword={submitted}
+                mine={mineIds.has(item.id)}
                 onClick={() => navigate(`/qna/${item.id}`)}
               />
             ))

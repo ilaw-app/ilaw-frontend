@@ -45,6 +45,21 @@ function staticLawyerAnswer(title: string) {
   return item?.answer ?? null;
 }
 
+function LawyerIcon({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+      <path
+        d="M15.8273 17.4942V15.8282C15.8273 14.9445 15.4763 14.0969 14.8514 13.472C14.2265 12.8472 13.379 12.4961 12.4952 12.4961H7.49712C6.6134 12.4961 5.76587 12.8472 5.14098 13.472C4.5161 14.0969 4.16504 14.9445 4.16504 15.8282V17.4942"
+        stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path
+        d="M9.99615 9.16417C11.8364 9.16417 13.3282 7.67234 13.3282 5.83208C13.3282 3.99182 11.8364 2.5 9.99615 2.5C8.15589 2.5 6.66406 3.99182 6.66406 5.83208C6.66406 7.67234 8.15589 9.16417 9.99615 9.16417Z"
+        stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function ClockIcon({ size = 32, color = '#8c937d' }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
@@ -73,6 +88,7 @@ export default function QnaDetail() {
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [pendingPopupOpen, setPendingPopupOpen] = useState(false);
+  const [ownedByList, setOwnedByList] = useState(false); // /qa/mine 로 보강한 소유권
 
   const [answerText, setAnswerText] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -108,13 +124,18 @@ export default function QnaDetail() {
             }
           : data;
         setPost(merged);
-        // 본인 질문이 답변 대기 중이면 안내 팝업을 띄운다 (사용자 화면)
-        if (!isLawyer && merged.isAuthor && merged.status === 'pending') {
-          setPendingPopupOpen(true);
-        }
       })
       .catch(() => !cancelled && setNotFound(true))
       .finally(() => !cancelled && setLoading(false));
+    // 소유권 보강: 로그인 시 /qa/mine 목록에 이 질문이 있으면 내 질문으로 간주
+    qaApi
+      .mine()
+      .then((mineList) => {
+        if (cancelled) return;
+        const ids = new Set((Array.isArray(mineList) ? mineList : []).map((m: any) => m.id));
+        setOwnedByList(ids.has(Number(id)));
+      })
+      .catch(() => {});
     // 스크랩 상태 (로그인 시)
     qaApi
       .getScrap(id!)
@@ -128,6 +149,16 @@ export default function QnaDetail() {
       cancelled = true;
     };
   }, [id, isLawyer]);
+
+  // 내 질문(백엔드 isAuthor 또는 /qa/mine)
+  const owned = !!post && (post.isAuthor || ownedByList);
+
+  // 본인 질문이 답변 대기 중이면 안내 팝업 (사용자 화면)
+  useEffect(() => {
+    if (!isLawyer && post && post.status === 'pending' && owned) {
+      setPendingPopupOpen(true);
+    }
+  }, [isLawyer, post, owned]);
 
   async function toggleScrap() {
     if (!post) return;
@@ -217,7 +248,7 @@ export default function QnaDetail() {
           <IoArrowBack size={24} />
         </button>
         {isLawyer && <span className="qd-nav-title">질문 상세</span>}
-        {post.isAuthor && !isLawyer && (
+        {owned && !isLawyer && (
           <button className="qd-trash" onClick={() => setDeleteOpen(true)} aria-label="삭제">
             <IoTrashOutline size={22} />
           </button>
@@ -238,7 +269,7 @@ export default function QnaDetail() {
                 {post.category}
               </span>
             )}
-            {post.isAuthor && (
+            {owned && (
               <span className="qd-mine">
                 <span className="qd-dot" />
                 내 질문
@@ -422,7 +453,7 @@ function AnswerCard({
     <div className="qd-answer">
       <div className="qd-answer-head">
         <div className="qd-avatar lawyer">
-          <IoPersonOutline size={22} color="#c2e086" />
+          <LawyerIcon size={22} />
         </div>
         <div className="qd-answer-who">
           <div className="qd-answer-name">{answer.lawyer?.nickname ?? '변호사'}</div>

@@ -25,12 +25,12 @@
   align-items: center;
   padding: 8px 0;
   gap: 4px;
-  color: var(--fig-muted);
+  color: #99a1af;
 }
 
 .tab.active .tab-item {
   background: #f7fee7;
-  color: #c2e086;
+  color: #b2d36e;
 }
 
 .tab-label {

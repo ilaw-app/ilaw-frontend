@@ -20,7 +20,20 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [user, setUserState] = useState<User | null>(null);
-  const [roleOverride, setRoleOverride] = useState<Role | null>(null);
+  // 개발용 역할 전환(마이페이지 앱버전 5탭)이 새로고침 후에도 유지되도록 localStorage에 저장
+  const [roleOverride, setRoleOverrideState] = useState<Role | null>(() => {
+    const s = typeof localStorage !== 'undefined' ? localStorage.getItem('roleOverride') : null;
+    return s === 'lawyer' || s === 'user' ? (s as Role) : null;
+  });
+  const setRoleOverride = (r: Role | null) => {
+    try {
+      if (r) localStorage.setItem('roleOverride', r);
+      else localStorage.removeItem('roleOverride');
+    } catch {
+      /* ignore */
+    }
+    setRoleOverrideState(r);
+  };
   const [authed, setAuthed] = useState<boolean>(!!tokenStore.getAccess());
 
   async function refreshMe(): Promise<User | null> {

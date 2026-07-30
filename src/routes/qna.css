@@ -19,6 +19,7 @@
   min-width: 0;
 }
 .qna-header h1 {
+  font-family: 'Instrument Sans', 'Noto Sans KR', sans-serif;
   font-size: 24px;
   font-weight: 800;
   color: var(--fig-brand);
@@ -26,10 +27,11 @@
   letter-spacing: 0.07px;
 }
 .qna-header p {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--fig-muted);
-  line-height: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fig-body);
+  line-height: 20px;
+  letter-spacing: -0.15px;
   margin-top: 3px;
 }
 .qna-header-search {
@@ -282,11 +284,11 @@
   width: 56px;
   height: 56px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, var(--fig-fab-a), var(--fig-fab-b));
+  background: linear-gradient(90deg, #d1f08c 0%, #c2e086 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 14px rgba(16, 24, 40, 0.18);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   z-index: 5;
 }
 

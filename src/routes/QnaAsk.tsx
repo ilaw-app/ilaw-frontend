@@ -118,16 +118,18 @@ export default function QnaAsk() {
           onChange={(e) => setContent(e.target.value)}
         />
 
-        {/* 안내 박스 */}
-        <div className="qa-notice">
-          <div className="qa-notice-title">질문 전 꼭 확인해 주세요</div>
-          {NOTICE_ITEMS.map((item, i) => (
-            <div key={i} className="qa-note-row">
-              <span className="qa-note-bullet">•</span>
-              <span className="qa-note-text">{item}</span>
-            </div>
-          ))}
-        </div>
+        {/* 안내 박스 — 내용을 입력하면 숨김 */}
+        {!content && (
+          <div className="qa-notice">
+            <div className="qa-notice-title">질문 전 꼭 확인해 주세요</div>
+            {NOTICE_ITEMS.map((item, i) => (
+              <div key={i} className="qa-note-row">
+                <span className="qa-note-bullet">•</span>
+                <span className="qa-note-text">{item}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 사진 추가 */}
         <div className="qa-photo-row">
