@@ -221,6 +221,14 @@
   opacity: 0.5;
 }
 
+/* 답변 대기 배경 패널 (본인 외) — 질문 밑 영역을 #F9FAFB로 채워 하단까지 */
+.qd-pending-bg {
+  flex: 1;
+  background: #f9fafb;
+  border-top: 1px solid #eef0f3;
+  margin: 16px -20px -40px;
+  padding: 20px;
+}
 /* 답변 대기 인라인 박스 (본인 외) */
 .qd-waiting {
   display: flex;
@@ -423,10 +431,11 @@
 /* 바텀시트 (본인 질문 답변 대기 안내) */
 .qd-sheet {
   position: relative;
-  width: 100%;
+  width: 392.798px;
+  max-width: 100%;
   background: #fff;
-  border-radius: 28px 28px 0 0;
-  padding: 40px 24px 28px;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 24px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -461,25 +470,81 @@
   margin-bottom: 8px;
 }
 .qd-sheet-desc {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
   font-size: 14px;
-  color: var(--fig-muted);
-  line-height: 22px;
+  font-weight: 600;
+  color: #364153;
+  line-height: 22.75px;
+  letter-spacing: -0.15px;
   margin-bottom: 10px;
 }
 .qd-sheet-note {
   font-size: 13px;
-  color: var(--fig-danger);
+  color: #99a1af;
   line-height: 20px;
   margin-bottom: 22px;
 }
 .qd-sheet-confirm {
-  width: 100%;
-  padding: 16px 0;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, var(--fig-fab-a), var(--fig-fab-b));
+  width: 344.804px;
+  max-width: 100%;
+  height: 47.971px;
+  padding: 14.434px 0 13.538px;
+  border-radius: 16px;
+  background: #b2d36e;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 삭제 확인 바텀시트 */
+.qd-sheet-delete {
+  width: 401.089px;
+}
+.qd-del-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: var(--fig-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.qd-del-desc {
+  font-size: 14px;
+  color: #99a1af;
+  line-height: 22px;
+  margin-bottom: 22px;
+}
+.qd-del-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.qd-del-btn {
+  width: 353.109px;
+  max-width: 100%;
+  height: 47.991px;
+  padding: 14.432px 0 13.559px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qd-del-btn.danger {
+  background: #fb2c36;
+  color: #fff;
+}
+.qd-del-btn.cancel {
+  background: #f3f4f6;
+  color: #4a5565;
 }
 
 /* 확인 모달 (삭제 / 성공) */

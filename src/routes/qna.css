@@ -191,13 +191,6 @@
   text-overflow: ellipsis;
 }
 
-.qna-card-top-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
 .qna-mine {
   display: inline-flex;
   align-items: center;
@@ -205,14 +198,17 @@
   font-size: 11px;
   font-weight: 700;
   color: var(--fig-danger);
+  flex-shrink: 0;
 }
 .qna-mine .qna-dot {
   background: var(--fig-danger);
 }
 .qna-date {
+  margin-left: auto;
   font-size: 12px;
   font-weight: 400;
   color: var(--fig-line-strong);
+  flex-shrink: 0;
 }
 
 .qna-card-main {

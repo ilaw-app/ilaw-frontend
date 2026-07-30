@@ -33,7 +33,7 @@ function QnaCard({
   onClick: () => void;
 }) {
   const answered = item.status === 'answered';
-  const thumb = (item as unknown as { imageUrls?: string[] }).imageUrls?.[0];
+  const thumb = item.imageUrls?.[0];
   return (
     <button className="qna-card" onClick={onClick}>
       <div className="qna-card-top">
@@ -47,15 +47,13 @@ function QnaCard({
             <span className="qna-cat-label">{item.category}</span>
           </span>
         )}
-        <span className="qna-card-top-right">
-          {mine && (
-            <span className="qna-mine">
-              <span className="qna-dot" />
-              내 질문
-            </span>
-          )}
-          <span className="qna-date">{mmdd(item.createdAt)}</span>
-        </span>
+        {mine && (
+          <span className="qna-mine">
+            <span className="qna-dot" />
+            내 질문
+          </span>
+        )}
+        <span className="qna-date">{mmdd(item.createdAt)}</span>
       </div>
 
       <div className="qna-card-main">
@@ -124,6 +122,23 @@ export default function QnaList() {
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         setPosts(list);
+        // 썸네일 보강(임시): 리스트 API가 imageUrls를 안 주므로 상세를 병렬 조회해 대표 이미지를 채운다.
+        // TODO(BE): GET /qa 응답에 imageUrls(또는 대표 이미지)를 추가하면 이 보강은 제거 가능.
+        Promise.all(
+          list.map((p) =>
+            qaApi
+              .get(p.id)
+              .then((d) => ({ id: p.id, imageUrls: d.imageUrls }))
+              .catch(() => null)
+          )
+        ).then((details) => {
+          if (cancelled) return;
+          const map = new Map(
+            details.filter((d): d is { id: number; imageUrls: string[] } => !!d && Array.isArray(d.imageUrls)).map((d) => [d.id, d.imageUrls])
+          );
+          if (map.size === 0) return;
+          setPosts((prev) => prev.map((p) => (map.has(p.id) ? { ...p, imageUrls: map.get(p.id) } : p)));
+        });
       })
       .catch(() => {
         if (!cancelled) setPosts([]);

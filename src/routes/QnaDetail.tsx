@@ -60,6 +60,18 @@ function LawyerIcon({ size = 22 }: { size?: number }) {
   );
 }
 
+function TrashSheetIcon({ size = 28 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
+      <path d="M3.5 7H24.4996" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22.166 7V23.333C22.166 24.4996 20.9994 25.6663 19.8327 25.6663H8.16629C6.99965 25.6663 5.83301 24.4996 5.83301 23.333V7" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M9.33301 7.00055V4.66727C9.33301 3.50063 10.4996 2.33398 11.6663 2.33398H16.3329C17.4995 2.33398 18.6661 3.50063 18.6661 4.66727V7.00055" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M11.666 12.834V19.8338" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16.333 12.834V19.8338" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 function ClockIcon({ size = 32, color = '#8c937d' }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
@@ -293,7 +305,8 @@ export default function QnaDetail() {
           </div>
         </div>
 
-        <div className="qd-sep" />
+        {/* 사용자 대기 화면(본인/남)에선 두꺼운 구분선 대신 아래 배경 패널로 구분 */}
+        {!(!isLawyer && post.status === 'pending') && <div className="qd-sep" />}
 
         {/* 변호사: 질문자 정보 */}
         {isLawyer && post.author && (
@@ -342,13 +355,18 @@ export default function QnaDetail() {
             )
           )
         ) : post.status === 'pending' ? (
-          <div className="qd-waiting">
-            <ClockIcon size={22} color="#8c937d" />
-            <div className="qd-waiting-text">
-              <div className="qd-waiting-title">변호사 답변 대기 중</div>
-              <div className="qd-waiting-desc">1~3일 내로 답변이 등록될 예정이에요.</div>
+          // 내 질문이면 팝업으로 안내하므로 인라인 대기박스는 숨김. 남의 질문이면 표시.
+          owned ? null : (
+            <div className="qd-pending-bg">
+              <div className="qd-waiting">
+                <ClockIcon size={22} color="#8c937d" />
+                <div className="qd-waiting-text">
+                  <div className="qd-waiting-title">변호사 답변 대기 중</div>
+                  <div className="qd-waiting-desc">1~3일 내로 답변이 등록될 예정이에요.</div>
+                </div>
+              </div>
             </div>
-          </div>
+          )
         ) : (
           post.answer && <AnswerCard answer={post.answer} />
         )}
@@ -388,19 +406,19 @@ export default function QnaDetail() {
         </div>
       </Overlay>
 
-      {/* 삭제 확인 */}
-      <Overlay visible={deleteOpen} onClose={() => setDeleteOpen(false)}>
-        <div className="qd-modal">
-          <div className="qd-modal-icon">
-            <IoTrashOutline size={30} color="#8c937d" />
+      {/* 삭제 확인 (바텀시트) */}
+      <Overlay visible={deleteOpen} onClose={() => setDeleteOpen(false)} align="bottom">
+        <div className="qd-sheet qd-sheet-delete">
+          <div className="qd-del-icon">
+            <TrashSheetIcon size={28} />
           </div>
-          <div className="qd-modal-title">질문을 삭제할까요?</div>
-          <p className="qd-modal-desc">삭제한 질문은 복구할 수 없어요.</p>
-          <div className="qd-modal-btns">
-            <button className="danger" onClick={doDelete}>
+          <div className="qd-sheet-title">질문을 삭제할까요?</div>
+          <p className="qd-del-desc">삭제한 질문은 복구할 수 없어요.</p>
+          <div className="qd-del-btns">
+            <button className="qd-del-btn danger" onClick={doDelete}>
               삭제하기
             </button>
-            <button className="ghost" onClick={() => setDeleteOpen(false)}>
+            <button className="qd-del-btn cancel" onClick={() => setDeleteOpen(false)}>
               취소
             </button>
           </div>
