@@ -97,7 +97,7 @@
 .cw-notice {
   background: #f9fafb;
   border-radius: 16px;
-  padding: 18px;
+  padding: 18px 13px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -117,19 +117,21 @@
 }
 .cw-notice-item-row {
   display: flex;
-  gap: 4px;
+  gap: 3px;
 }
 .cw-notice-num {
-  font-size: 12px;
+  font-size: 10.5px;
   color: #99a1af;
-  line-height: 20px;
-  width: 16px;
+  line-height: 18px;
+  width: 12px;
   flex-shrink: 0;
+  letter-spacing: -0.4px;
 }
 .cw-notice-item {
-  font-size: 12px;
+  font-size: 10.5px;
   color: #99a1af;
-  line-height: 20px;
+  line-height: 18px;
+  letter-spacing: -0.4px;
   flex: 1;
 }
 

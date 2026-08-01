@@ -20,11 +20,11 @@
   letter-spacing: 0.07px;
 }
 .cm-header-sub {
-  font-size: 17px;
-  font-weight: 300;
+  font-size: 14px;
+  font-weight: 400;
   color: #586144;
-  line-height: 28px;
-  letter-spacing: 0.07px;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.15px;
 }
 
 .cm-search-area {
@@ -219,7 +219,7 @@
 }
 .cm-poll-label {
   font-size: 12px;
-  color: #586144;
+  color: #1e2939;
   font-weight: 500;
   margin-left: 12px;
   position: relative;
@@ -227,7 +227,7 @@
 }
 .cm-poll-pct {
   font-size: 13px;
-  color: #586144;
+  color: #1e2939;
   font-weight: 600;
   width: 40px;
   text-align: right;

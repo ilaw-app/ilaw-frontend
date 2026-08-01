@@ -76,7 +76,7 @@ export default function CommunityWrite() {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  const canSubmit = title.trim().length > 0;
+  const canSubmit = title.trim().length > 0 && content.trim().length > 0;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -114,6 +114,7 @@ export default function CommunityWrite() {
 
   const handleSubmit = async () => {
     if (!title.trim()) { window.alert('제목을 입력해주세요.'); return; }
+    if (!content.trim()) { window.alert('내용을 입력해주세요.'); return; }
     if (!isAuthed) { window.alert('로그인 후 이용해주세요.'); return; }
     setSubmitting(true);
     try {
