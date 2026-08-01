@@ -1,11 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IoChevronBack, IoChevronForward, IoSearch, IoClose, IoSearchOutline, IoCall } from 'react-icons/io5';
+import { IoArrowBack, IoChevronForward, IoSearch, IoClose, IoSearchOutline } from 'react-icons/io5';
 import { manualApi } from '../api/manual';
 import type { ManualArticleSummary } from '../api/types';
 import { HighlightText } from '../components/HighlightText';
 import TabBar from '../components/TabBar';
 import './manualList.css';
+
+// 플로팅 "긴급 연락처 보기" 버튼용 전화 아이콘 (피그마 지정)
+function HelpPhoneIcon() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <g clipPath="url(#clip_help_phone)">
+        <path d="M14.6627 11.2773V13.2768C14.6634 13.4624 14.6254 13.6461 14.551 13.8162C14.4767 13.9863 14.3676 14.1389 14.2308 14.2644C14.094 14.3899 13.9326 14.4854 13.7567 14.5449C13.5809 14.6044 13.3946 14.6265 13.2097 14.6098C11.1588 14.3869 9.18869 13.6861 7.45779 12.5636C5.84741 11.5403 4.48209 10.175 3.45879 8.5646C2.33239 6.82584 1.63141 4.84619 1.41264 2.78604C1.39598 2.60173 1.41788 2.41598 1.47695 2.2406C1.53602 2.06522 1.63096 1.90406 1.75573 1.76738C1.88049 1.6307 2.03235 1.5215 2.20163 1.44673C2.37091 1.37195 2.55391 1.33325 2.73897 1.33307H4.73847C5.06193 1.32989 5.37551 1.44443 5.62076 1.65535C5.86601 1.86626 6.0262 2.15916 6.07147 2.47945C6.15587 3.11934 6.31238 3.74762 6.53802 4.35232C6.62769 4.59087 6.6471 4.85014 6.59394 5.09938C6.54079 5.34863 6.41729 5.57742 6.2381 5.75863L5.39164 6.60509C6.34044 8.2737 7.72203 9.65529 9.39064 10.6041L10.2371 9.75763C10.4183 9.57844 10.6471 9.45494 10.8963 9.40178C11.1456 9.34863 11.4049 9.36803 11.6434 9.45771C12.2481 9.68335 12.8764 9.83986 13.5163 9.92426C13.84 9.96993 14.1357 10.133 14.3471 10.3825C14.5585 10.6319 14.6708 10.9504 14.6627 11.2773Z" stroke="#FB2C36" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <defs>
+        <clipPath id="clip_help_phone">
+          <rect width="15.996" height="15.996" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
 
 const SLUG_TO_NAME: Record<string, string> = {
   finance: '금융',
@@ -81,10 +97,10 @@ export default function ManualList() {
   }
 
   return (
-    <div className="screen">
+    <div className="screen" style={{ background: '#fff' }}>
       <div className="ml-header">
         <button className="ml-back" onClick={() => navigate(-1)} aria-label="뒤로">
-          <IoChevronBack size={24} color="#586144" />
+          <IoArrowBack size={24} color="#101828" />
         </button>
         <h1>{SLUG_TO_NAME[categoryId] ?? '매뉴얼'}</h1>
         <button
@@ -99,6 +115,7 @@ export default function ManualList() {
       {searchOpen && (
         <div className="ml-search-area">
           <div className="ml-search-box">
+            <IoSearch size={18} color="#99a1af" />
             <input
               autoFocus
               placeholder="질문 검색..."
@@ -112,9 +129,19 @@ export default function ManualList() {
               }}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
-            <button className="ml-search-icon" onClick={handleSearch} aria-label="검색 실행">
-              <IoSearch size={20} color="#9caf88" />
-            </button>
+            {query && (
+              <button
+                className="ml-search-clear"
+                onClick={() => {
+                  setQuery('');
+                  setIsSearching(false);
+                  setResults([]);
+                }}
+                aria-label="지우기"
+              >
+                <IoClose size={16} color="#99a1af" />
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -170,15 +197,15 @@ export default function ManualList() {
         )}
       </div>
 
-      <div className="ml-help-wrap">
-        <span className="ml-help-caption">지금 힘드신가요?</span>
-        <button className="ml-help" onClick={() => navigate(`/manual-help?categoryId=${categoryId}`)}>
-          <span className="ml-help-icon">
-            <IoCall size={13} color="#fff" />
-          </span>
-          긴급 연락처 보기
-        </button>
-      </div>
+      <button className="ml-help" onClick={() => navigate(`/manual-help?categoryId=${categoryId}`)}>
+        <span className="ml-help-icon">
+          <HelpPhoneIcon />
+        </span>
+        <span className="ml-help-textcol">
+          <span className="ml-help-caption">지금 힘드신가요?</span>
+          <span className="ml-help-title">긴급 연락처 보기</span>
+        </span>
+      </button>
 
       <TabBar />
     </div>

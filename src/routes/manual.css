@@ -1,39 +1,45 @@
 .manual-scroll {
   padding: 0 0 80px;
+  background: #fff;
 }
 .manual-header {
-  padding: 50px 20px 16px;
+  padding: 46px 20px 14px;
 }
 .manual-header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
+  font-family: 'Instrument Sans', 'Noto Sans KR', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--fig-brand);
   line-height: 32px;
   letter-spacing: 0.07px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 .manual-header p {
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text);
-  line-height: 32px;
-  letter-spacing: 0.07px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fig-body);
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
+
+/* 카테고리 2단 그리드 */
 .manual-list {
   margin: 0 16px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 .manual-card {
-  height: 80px;
-  width: 100%;
-  padding: 0 20px;
   display: flex;
-  align-items: center;
-  gap: 0;
-  background: #fff;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 16px;
+  min-height: 128px;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px solid #f0f0f0;
   text-align: left;
 }
 .manual-icon {
@@ -48,27 +54,21 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .manual-card-text {
-  flex: 1;
-  padding: 0 14px;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 .manual-card-label {
   font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  line-height: 24px;
+  line-height: 22px;
   letter-spacing: -0.312px;
 }
 .manual-card-desc {
   font-size: 12px;
   font-weight: 400;
-  color: var(--text);
-  line-height: 24px;
+  color: #6a7282;
+  line-height: 16px;
   letter-spacing: -0.312px;
-}
-.manual-card-divider {
-  height: 1px;
-  background: #f0f5e8;
-  margin: 0 20px;
 }

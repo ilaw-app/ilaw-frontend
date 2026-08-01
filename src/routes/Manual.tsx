@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { IoChevronForward } from 'react-icons/io5';
 import TabBar from '../components/TabBar';
 import './manual.css';
 
@@ -78,26 +77,26 @@ export default function Manual() {
     <div className="screen">
       <div className="screen-scroll manual-scroll">
         <div className="manual-header">
-          <h1>어떤 도움이 필요하신가요?</h1>
+          <h1>매뉴얼</h1>
           <p>상황에 맞는 법률 정보를 확인해보세요</p>
         </div>
         <div className="manual-list">
-          {categories.map((cat, i) => {
+          {categories.map((cat) => {
             const Icon = cat.Icon;
             return (
-              <div key={cat.id}>
-                <button className="manual-card" onClick={() => navigate(`/manual-list?categoryId=${cat.id}`)}>
-                  <span className="manual-icon">
-                    <Icon />
-                  </span>
-                  <span className="manual-card-text">
-                    <span className="manual-card-label">{cat.label}</span>
-                    <span className="manual-card-desc">{cat.desc}</span>
-                  </span>
-                  <IoChevronForward size={18} color="#9caf88" />
-                </button>
-                {i < categories.length - 1 && <div className="manual-card-divider" />}
-              </div>
+              <button
+                key={cat.id}
+                className="manual-card"
+                onClick={() => navigate(`/manual-list?categoryId=${cat.id}`)}
+              >
+                <span className="manual-icon">
+                  <Icon />
+                </span>
+                <span className="manual-card-text">
+                  <span className="manual-card-label">{cat.label}</span>
+                  <span className="manual-card-desc">{cat.desc}</span>
+                </span>
+              </button>
             );
           })}
         </div>

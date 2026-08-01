@@ -1,28 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IoChevronBack, IoChevronDown, IoCheckmark, IoClose, IoCallOutline } from 'react-icons/io5';
+import { IoArrowBack, IoCheckmark, IoClose } from 'react-icons/io5';
 import { manualApi } from '../api/manual';
 import type { Agency } from '../api/types';
 import TabBar from '../components/TabBar';
 import { Overlay } from '../components/Overlay';
 import './manualHelp.css';
 
-const EMERGENCY: Record<string, { label: string; number: string }[]> = {
-  'child-abuse': [
-    { label: '아동학대', number: '112 또는 1577-1391' },
-    { label: '가정폭력', number: '112 또는 1366' },
-    { label: '학교폭력', number: '117' },
-  ],
-  'sexual-violence': [{ label: '여성긴급전화', number: '1366' }, { label: '성폭력 피해상담', number: '1899-3075' }],
-  'online-violence': [{ label: '사이버범죄 신고', number: '182' }],
-  'labor': [{ label: '고용노동부 상담', number: '1350' }],
-  'finance': [{ label: '금융감독원', number: '1332' }],
-  'school-violence': [
-    { label: '학교폭력 신고센터', number: '117' },
-    { label: '청소년사이버상담센터', number: '1388' },
-    { label: 'BTF 푸른나무재단', number: '1588-9128' },
-  ],
-};
+// 전국 공통 긴급번호 (고정)
+const NATIONAL = [
+  { label: '아동학대', number: '1577-1391' },
+  { label: '가정폭력', number: '1366' },
+  { label: '학교폭력', number: '117' },
+  { label: '청소년상담', number: '1388' },
+];
 
 const REGIONS = ['전체', '서울', '부산', '대구', '인천', '대전', '광주', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'];
 
@@ -39,20 +30,26 @@ const TIPS_FIELDS: { key: TipsKey; label: string; placeholder: string }[] = [
 
 const initTips = (): Record<TipsKey, string> => ({ where: '', who: '', what: '', help: '', question: '', evidence: '' });
 
-function EmergencyPhoneIcon() {
+// 12x12 전화 아이콘 (색상 지정) — 경찰신고(빨강)/기관(초록) 공용
+function Phone12({ color }: { color: string }) {
   return (
-    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-      <g clipPath="url(#clip0_emergency)">
-        <path
-          d="M14.6638 11.2778V13.2774C14.6645 13.4631 14.6265 13.6468 14.5521 13.8169C14.4778 13.987 14.3687 14.1397 14.2319 14.2651C14.0951 14.3906 13.9336 14.4862 13.7578 14.5457C13.5819 14.6051 13.3956 14.6272 13.2107 14.6105C11.1597 14.3876 9.1895 13.6868 7.4585 12.5642C5.84803 11.5409 4.48263 10.1755 3.45927 8.56501C2.33281 6.82614 1.63179 4.84639 1.413 2.78612C1.39635 2.6018 1.41825 2.41604 1.47732 2.24065C1.5364 2.06526 1.63134 1.90409 1.75611 1.7674C1.88089 1.63072 2.03275 1.52151 2.20204 1.44673C2.37134 1.37195 2.55434 1.33325 2.73941 1.33307H4.73903C5.0625 1.32989 5.3761 1.44444 5.62136 1.65537C5.86663 1.86629 6.02683 2.15921 6.0721 2.47952C6.1565 3.11944 6.31302 3.74776 6.53868 4.35249C6.62835 4.59106 6.64776 4.85033 6.5946 5.0996C6.54144 5.34886 6.41794 5.57766 6.23873 5.75888L5.39223 6.60538C6.34109 8.27409 7.72275 9.65576 9.39146 10.6046L10.238 9.75811C10.4192 9.5789 10.648 9.4554 10.8972 9.40224C11.1465 9.34908 11.4058 9.36849 11.6444 9.45816C12.2491 9.68382 12.8774 9.84034 13.5173 9.92474C13.8411 9.97042 14.1368 10.1335 14.3482 10.383C14.5596 10.6325 14.6719 10.9509 14.6638 11.2778Z"
-          stroke="#C10007" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round"
-        />
+    <svg width={12} height={12} viewBox="0 0 12 12" fill="none">
+      <g clipPath="url(#clip_phone12)">
+        <path d="M10.9995 8.45986V9.95982C11 10.0991 10.9715 10.2369 10.9157 10.3645C10.8599 10.4921 10.7781 10.6066 10.6755 10.7007C10.5729 10.7949 10.4518 10.8665 10.3199 10.9112C10.188 10.9558 10.0482 10.9723 9.9095 10.9598C8.37096 10.7926 6.89308 10.2669 5.59461 9.42484C4.38655 8.65719 3.36233 7.63297 2.59468 6.42491C1.74969 5.12055 1.22384 3.63548 1.05972 2.09002C1.04723 1.95176 1.06366 1.81241 1.10797 1.68084C1.15228 1.54928 1.2235 1.42838 1.3171 1.32585C1.41069 1.22332 1.52461 1.1414 1.6516 1.08531C1.77859 1.02922 1.91587 1.00018 2.0547 1.00005H3.55466C3.79731 0.99766 4.03254 1.08359 4.21652 1.24181C4.4005 1.40003 4.52067 1.61976 4.55464 1.86003C4.61795 2.34005 4.73536 2.81137 4.90463 3.26499C4.9719 3.44395 4.98646 3.63844 4.94658 3.82542C4.9067 4.0124 4.81406 4.18402 4.67963 4.31997L4.04465 4.95495C4.75641 6.20669 5.79283 7.24311 7.04457 7.95487L7.67956 7.31989C7.8155 7.18546 7.98713 7.09282 8.1741 7.05294C8.36108 7.01307 8.55557 7.02763 8.73453 7.0949C9.18816 7.26417 9.65948 7.38158 10.1395 7.44489C10.3824 7.47915 10.6042 7.60149 10.7627 7.78863C10.9213 7.97577 11.0056 8.21466 10.9995 8.45986Z" stroke={color} strokeWidth="0.999975" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <defs>
-        <clipPath id="clip0_emergency">
-          <rect width={15.9969} height={15.9969} fill="white" />
+        <clipPath id="clip_phone12">
+          <rect width="11.9997" height="11.9997" fill="white" />
         </clipPath>
       </defs>
+    </svg>
+  );
+}
+
+function ChevronDown16() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M4 6L7.9999 9.9999L11.9998 6" stroke="#99A1AF" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -83,8 +80,6 @@ export default function ManualHelp() {
     };
   }, [categoryId, selectedRegion]);
 
-  const emergency = EMERGENCY[categoryId ?? ''] ?? [{ label: '경찰', number: '112' }];
-
   const handleOpenTips = () => {
     setTipsValues(initTips());
     setShowTips(true);
@@ -113,33 +108,42 @@ export default function ManualHelp() {
     <div className="mh">
       <div className="mh-header">
         <button className="mh-back" onClick={() => navigate(-1)}>
-          <IoChevronBack size={24} color="#586144" />
+          <IoArrowBack size={24} color="#101828" />
         </button>
-        <h1 className="mh-title">여기에서 도움을 받을 수 있어요!</h1>
+        <h1 className="mh-title">긴급 연락처</h1>
       </div>
 
       <div className="screen-scroll mh-content">
-        <div className="mh-section-label">지역 선택</div>
-        <button className="mh-region-btn" onClick={() => setRegionModalVisible(true)}>
-          <span className="mh-region-btn-text">{selectedRegion === '전체' ? '지역 선택' : selectedRegion}</span>
-          <IoChevronDown size={18} color="#9CAF88" />
-        </button>
-
-        <div className="mh-emergency-box">
-          <div className="mh-emergency-header">
-            <EmergencyPhoneIcon />
-            <span className="mh-emergency-title">긴급 신고 (전국 공통)</span>
+        {/* 전국 공통 긴급번호 */}
+        <div className="mh-ec-card">
+          <div className="mh-ec-head">
+            <span className="mh-ec-dot" />
+            <span className="mh-ec-head-title">전국 공통 긴급번호</span>
           </div>
-          {emergency.map((e, i) => (
-            <button key={i} className="mh-emergency-row" onClick={() => handleEmergencyPress(e)}>
-              <span className="mh-emergency-line">
-                <span className="mh-emergency-label">{e.label}: </span>
-                {e.number}
-              </span>
-            </button>
-          ))}
+          <div className="mh-ec-grid">
+            {NATIONAL.map((n) => (
+              <button key={n.label} className="mh-ec-cell" onClick={() => handleEmergencyPress(n)}>
+                <span className="mh-ec-label">{n.label}</span>
+                <span className="mh-ec-num">{n.number}</span>
+              </button>
+            ))}
+          </div>
+          <button className="mh-ec-police" onClick={() => handleEmergencyPress({ label: '경찰 신고', number: '112' })}>
+            <span className="mh-ec-police-label">경찰 신고</span>
+            <span className="mh-ec-police-right">
+              <Phone12 color="#FB2C36" />
+              <span className="mh-ec-police-num">112</span>
+            </span>
+          </button>
         </div>
 
+        {/* 지역 필터 */}
+        <button className="mh-region-filter" onClick={() => setRegionModalVisible(true)}>
+          <span className="mh-region-filter-text">{selectedRegion === '전체' ? '지역 필터' : selectedRegion}</span>
+          <ChevronDown16 />
+        </button>
+
+        {/* 기관 목록 */}
         {loading ? (
           <div className="mh-spinner-wrap">
             <div className="spinner" />
@@ -147,16 +151,20 @@ export default function ManualHelp() {
         ) : agencies.length === 0 ? (
           <p className="mh-empty">선택한 지역에 등록된 기관이 없어요.</p>
         ) : (
-          agencies.map((agency) => (
-            <button key={agency.id} className="mh-center-card" onClick={() => setCallTarget(agency)}>
-              <span className="mh-center-name">{agency.name}</span>
-              {agency.role ? <span className="mh-role-text">{agency.role}</span> : null}
-              <span className="mh-phone-row">
-                <IoCallOutline size={14} color="#3C6802" />
-                <span className="mh-phone-text">{agency.contact}</span>
-              </span>
-            </button>
-          ))
+          <div className="mh-agency-card">
+            {agencies.map((agency) => (
+              <button key={agency.id} className="mh-agency" onClick={() => setCallTarget(agency)}>
+                <span className="mh-agency-info">
+                  <span className="mh-agency-name">{agency.name}</span>
+                  {agency.role ? <span className="mh-agency-desc">{agency.role}</span> : null}
+                </span>
+                <span className="mh-agency-phone">
+                  <Phone12 color="#5EA500" />
+                  <span className="mh-agency-num">{agency.contact}</span>
+                </span>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 
