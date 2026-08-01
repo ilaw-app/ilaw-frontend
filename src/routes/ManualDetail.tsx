@@ -16,6 +16,7 @@ export default function ManualDetail() {
   const [article, setArticle] = useState<ManualArticleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [scrapped, setScrapped] = useState(false);
+  const [scrapCount, setScrapCount] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,6 +32,7 @@ export default function ManualDetail() {
         .then((s) => {
           if (cancelled) return;
           setScrapped(s.scrapped);
+          setScrapCount(s.count ?? 0);
         })
         .catch(() => {});
     }
@@ -46,11 +48,13 @@ export default function ManualDetail() {
     }
     const prev = scrapped;
     setScrapped(!prev);
+    setScrapCount((c) => Math.max(0, c + (prev ? -1 : 1)));
     try {
       const r = await manualApi.toggleScrap(articleId);
       setScrapped(r.scrapped);
     } catch {
       setScrapped(prev);
+      setScrapCount((c) => Math.max(0, c + (prev ? 1 : -1)));
     }
   }
 
@@ -61,11 +65,6 @@ export default function ManualDetail() {
           <IoArrowBack size={24} color="#101828" />
         </button>
         <h1>{article?.category?.name ?? '매뉴얼'}</h1>
-        {article && (
-          <button className="md-bookmark" onClick={handleScrap} aria-label="스크랩">
-            {scrapped ? <IoBookmark size={22} color="#586144" /> : <IoBookmarkOutline size={22} color="#586144" />}
-          </button>
-        )}
       </div>
       <div className="md-header-divider" />
 
@@ -83,9 +82,21 @@ export default function ManualDetail() {
             <span className="md-q-text">{article.question}</span>
           </div>
 
-          {article.summary && <div className="md-summary">➜ {article.summary}</div>}
+          {article.summary && (
+            <div className="md-summary">
+              <span className="md-summary-arrow">➜</span> {article.summary}
+            </div>
+          )}
 
           <div className="manual-html" dangerouslySetInnerHTML={{ __html: article.content ?? '' }} />
+
+          <div className="md-scrap-area">
+            <button className={`md-scrap ${scrapped ? 'on' : ''}`} onClick={handleScrap}>
+              {scrapped ? <IoBookmark size={18} color="#fff" /> : <IoBookmarkOutline size={18} color="#fff" />}
+              {scrapped ? '스크랩됨' : '스크랩하기'}
+              {scrapCount > 0 && <span className="md-scrap-count">{scrapCount}</span>}
+            </button>
+          </div>
         </div>
       )}
       <TabBar />

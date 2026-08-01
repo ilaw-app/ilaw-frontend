@@ -56,14 +56,24 @@
   line-height: 24px;
   letter-spacing: -0.312px;
 }
-/* 답(요약) — 화살표 + 볼드 */
+/* 답(요약) — 읽기 쉬운 카드 + 초록 화살표 */
 .md-summary {
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 700;
+  display: flex;
+  gap: 6px;
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  font-weight: 600;
   color: #101828;
   line-height: 24px;
-  letter-spacing: -0.312px;
+  letter-spacing: -0.2px;
+}
+.md-summary-arrow {
+  flex-shrink: 0;
+  color: #5ea500;
+  font-weight: 700;
 }
 
 /* HTML 본문 태그 스타일 (원본 HTML_TAGS_STYLES 이식) */
@@ -128,7 +138,7 @@
   width: 20px;
   height: 20px;
   border-radius: 9999px;
-  background: #f9fafb;
+  background: #ecfcca;
 }
 .manual-html ul li::after {
   content: '';
