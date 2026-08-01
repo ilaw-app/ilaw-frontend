@@ -7,12 +7,13 @@ import {
   IoAdd,
   IoChatbubbleOutline,
   IoEllipsisVertical,
+  IoTrashOutline,
+  IoCreateOutline,
 } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import type { CommunityListItem } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { HighlightText } from '../components/HighlightText';
-import { TrashRedIcon, EditRedIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
 import './community.css';
 
@@ -343,12 +344,12 @@ export default function Community() {
               onClick={(e) => e.stopPropagation()}
             >
               <button className="cm-menu-item" onClick={handleDelete}>
-                <TrashRedIcon w={13} h={15} />
+                <IoTrashOutline size={16} color="#586144" />
                 <span className="cm-menu-delete">삭제하기</span>
               </button>
               <div className="cm-menu-sep" />
               <button className="cm-menu-item" onClick={handleEdit}>
-                <EditRedIcon w={16} h={16} />
+                <IoCreateOutline size={16} color="#FB8C00" />
                 <span className="cm-menu-edit">수정하기</span>
               </button>
             </div>

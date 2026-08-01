@@ -6,12 +6,14 @@ import {
   IoChatbubbleOutline,
   IoBookmark,
   IoBookmarkOutline,
+  IoTrashOutline,
+  IoCreateOutline,
 } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import type { CommunityComment, CommunityDetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
-import { TrashRedIcon, EditRedIcon, TrashSheetIcon } from '../components/PostMenuIcons';
+import { TrashSheetIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
 import './communityDetail.css';
 
@@ -159,7 +161,7 @@ function ReplyItem({ reply, onDelete, onLike }: { reply: Comment; onDelete: (id:
               {showMenu && (
                 <div className="cd-mini-dropdown">
                   <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(reply.id); }}>
-                    <TrashRedIcon w={12} h={14} />
+                    <IoTrashOutline size={14} color="#586144" />
                     <span className="cd-mini-dropdown-text">삭제하기</span>
                   </button>
                 </div>
@@ -199,7 +201,7 @@ function CommentItem({ comment, onReply, onDelete, onLike }: { comment: Comment;
                 {showMenu && (
                   <div className="cd-mini-dropdown">
                     <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(comment.id); }}>
-                      <TrashRedIcon w={12} h={14} />
+                      <IoTrashOutline size={14} color="#586144" />
                       <span className="cd-mini-dropdown-text">삭제하기</span>
                     </button>
                   </div>
@@ -477,12 +479,12 @@ export default function CommunityDetail() {
       <Overlay visible={!!post.isAuthor && showMenu} onClose={() => setShowMenu(false)}>
         <div className="cd-dropdown">
           <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowDeleteModal(true); }}>
-            <TrashRedIcon w={12} h={14} />
+            <IoTrashOutline size={14} color="#586144" />
             <span className="cd-dropdown-text">삭제하기</span>
           </button>
           <div className="cd-dropdown-divider" />
           <button type="button" className="cd-dropdown-item" onClick={goEdit}>
-            <EditRedIcon w={15} h={15} />
+            <IoCreateOutline size={14} color="#586144" />
             <span className="cd-dropdown-text">수정하기</span>
           </button>
         </div>

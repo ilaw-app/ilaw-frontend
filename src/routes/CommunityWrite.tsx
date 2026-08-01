@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IoArrowBack, IoCloseCircle, IoTrashOutline } from 'react-icons/io5';
+import { IoArrowBack, IoClose, IoCloseCircle } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import { uploadImage } from '../api/upload';
 import { useAuth } from '../context/AuthContext';
@@ -203,11 +203,11 @@ export default function CommunityWrite() {
           </div>
         )}
 
-        {/* 투표 (작성·수정 공통) */}
-        {pollActive && (
+        {/* 투표 (작성 시에만) */}
+        {pollActive && !editPoll && (
           <div className="cw-poll-card">
             <div className="cw-poll-header">
-              <span className="cw-poll-label">투표 만들기</span>
+              <span className="cw-poll-label">선택지 (2~5개)</span>
               <button
                 className="cw-poll-remove"
                 onClick={() => { setPollActive(false); setPollOptions(['', '']); }}
@@ -225,7 +225,7 @@ export default function CommunityWrite() {
                 />
                 {pollOptions.length > 2 && (
                   <button className="cw-icon-btn" onClick={() => removeOption(i)} aria-label="선택지 삭제">
-                    <IoTrashOutline size={18} color="#99A1AF" />
+                    <IoClose size={18} color="#99A1AF" />
                   </button>
                 )}
               </div>
@@ -256,7 +256,7 @@ export default function CommunityWrite() {
             <PhotoIcon />
             <span className="cw-media-btn-text">사진 추가</span>
           </button>
-          {!pollActive && (
+          {!pollActive && !editPoll && (
             <button className="cw-media-btn" onClick={() => setPollActive(true)}>
               <PollIcon />
               <span className="cw-media-btn-text">투표 추가</span>
