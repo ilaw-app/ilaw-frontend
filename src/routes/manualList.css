@@ -117,7 +117,8 @@
 /* 플로팅 "긴급 연락처 보기" (아이콘 + 2줄 텍스트, 흰 카드) */
 .ml-help {
   position: absolute;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 100px;
   display: flex;
   align-items: center;

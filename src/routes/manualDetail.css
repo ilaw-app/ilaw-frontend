@@ -17,18 +17,21 @@
   padding: 4px;
 }
 .md-header h1 {
-  font-size: 24px;
+  flex: 1;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text);
-  line-height: 32px;
-  letter-spacing: 0.07px;
+  color: #101828;
+  line-height: 28px;
+  letter-spacing: -0.439px;
+}
+.md-back,
+.md-bookmark {
+  flex-shrink: 0;
 }
 .md-header-divider {
-  height: 2.5px;
-  background: var(--border);
-  width: 348px;
-  max-width: 90%;
-  margin: 8px auto;
+  height: 1px;
+  background: #f3f4f6;
+  margin: 0;
   flex-shrink: 0;
 }
 .md-content {
@@ -38,70 +41,104 @@
   font-size: 15px;
   color: #999;
 }
+/* 질문 — 초록 포인트 박스 */
 .md-q {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 20px;
-}
-.md-q-label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #000;
-}
-.md-q-text {
-  flex: 1;
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 28px;
-}
-.md-summary {
+  border-radius: 0 16px 16px 0;
+  border-left: 3.616px solid #7ccf00;
   background: #f7fee7;
-  border-left: 3.861px solid var(--border);
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   padding: 16px;
   margin-bottom: 20px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #364153;
-  line-height: 22px;
+}
+.md-q-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+  line-height: 24px;
+  letter-spacing: -0.312px;
+}
+/* 답(요약) — 화살표 + 볼드 */
+.md-summary {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+  line-height: 24px;
+  letter-spacing: -0.312px;
 }
 
 /* HTML 본문 태그 스타일 (원본 HTML_TAGS_STYLES 이식) */
 .manual-html {
   font-size: 14px;
-  color: #364153;
+  color: #4a5565;
 }
-.manual-html h2 {
+/* 소제목 — 초록 | 바 */
+.manual-html h2,
+.manual-html h3 {
+  position: relative;
+  padding-left: 12px;
   font-size: 16px;
   font-weight: 700;
-  color: #1a1a1a;
-  margin: 20px 0 10px;
+  color: #101828;
+  line-height: 24px;
+  letter-spacing: -0.312px;
+  margin: 22px 0 10px;
 }
-.manual-html h3 {
-  font-size: 15px;
-  font-weight: 700;
-  color: #333;
-  margin: 18px 0 8px;
-  padding-left: 10px;
-  border-left: 3px solid var(--border);
+.manual-html h2::before,
+.manual-html h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: #7ccf00;
 }
 .manual-html p {
   font-size: 14px;
-  color: #364153;
-  line-height: 23px;
+  font-weight: 400;
+  color: #4a5565;
+  line-height: 22.75px;
+  letter-spacing: -0.15px;
   margin-bottom: 10px;
 }
-.manual-html li {
-  font-size: 14px;
-  color: #364153;
-  line-height: 22px;
-}
+/* 불릿 — 연회색 원 안 초록 점 */
 .manual-html ul,
 .manual-html ol {
-  margin-bottom: 10px;
-  padding-left: 22px;
+  margin: 4px 0;
+  padding-left: 0;
+  list-style: none;
+}
+.manual-html li {
+  list-style-type: none !important;
+  position: relative;
+  padding-left: 28px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #4a5565;
+  line-height: 22.75px;
+  letter-spacing: -0.15px;
+  margin-bottom: 4px;
+}
+.manual-html ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #f9fafb;
+}
+.manual-html ul li::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #7ccf00;
 }
 .manual-html strong {
   font-weight: 700;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IoArrowBack, IoCheckmark, IoClose, IoCopyOutline } from 'react-icons/io5';
+import { IoArrowBack, IoCheckmark, IoClose, IoCopyOutline, IoOpenOutline } from 'react-icons/io5';
 import { manualApi } from '../api/manual';
 import type { Agency } from '../api/types';
 import TabBar from '../components/TabBar';
@@ -123,8 +123,10 @@ export default function ManualHelp() {
   // 전국 공통 번호는 위 카드에 이미 있으므로 기관 목록에서 제외
   const NATIONAL_DIGITS = new Set(['15771391', '1366', '117', '1388', '112']);
   const onlyDigits = (s: string) => s.replace(/[^0-9]/g, '');
+  const isUrl = (s: string) => /^https?:\/\//i.test(s) || /^www\./i.test(s) || /\.(go|or|com|net|kr)\b/i.test(s);
+  const toHref = (s: string) => (/^https?:\/\//i.test(s) ? s : `https://${s}`);
   const visibleAgencies = agencies.filter(
-    (a) => !getNumbers(a.contact).some((n) => NATIONAL_DIGITS.has(onlyDigits(n)))
+    (a) => isUrl(a.contact) || !getNumbers(a.contact).some((n) => NATIONAL_DIGITS.has(onlyDigits(n)))
   );
 
   // 긴급 신고 번호도 기관 카드처럼 '전화 걸기' 팝업을 띄운다
@@ -180,22 +182,43 @@ export default function ManualHelp() {
           <p className="mh-empty">선택한 지역에 등록된 기관이 없어요.</p>
         ) : (
           <div className="mh-agency-card">
-            {visibleAgencies.map((agency) => (
-              <button key={agency.id} className="mh-agency" onClick={() => setCallTarget(agency)}>
-                <span className="mh-agency-info">
-                  <span className="mh-agency-name">{agency.name}</span>
-                  {agency.role ? <span className="mh-agency-desc">{agency.role}</span> : null}
-                </span>
-                <span className="mh-agency-phones">
-                  {getNumbers(agency.contact).map((num) => (
-                    <span key={num} className="mh-agency-phone">
-                      <Phone12 color="#5EA500" />
-                      <span className="mh-agency-num">{num}</span>
+            {visibleAgencies.map((agency) =>
+              isUrl(agency.contact) ? (
+                <a
+                  key={agency.id}
+                  className="mh-agency"
+                  href={toHref(agency.contact)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="mh-agency-info">
+                    <span className="mh-agency-name">{agency.name}</span>
+                    {agency.role ? <span className="mh-agency-desc">{agency.role}</span> : null}
+                  </span>
+                  <span className="mh-agency-phones">
+                    <span className="mh-agency-phone">
+                      <IoOpenOutline size={12} color="#5EA500" />
+                      <span className="mh-agency-num">홈페이지</span>
                     </span>
-                  ))}
-                </span>
-              </button>
-            ))}
+                  </span>
+                </a>
+              ) : (
+                <button key={agency.id} className="mh-agency" onClick={() => setCallTarget(agency)}>
+                  <span className="mh-agency-info">
+                    <span className="mh-agency-name">{agency.name}</span>
+                    {agency.role ? <span className="mh-agency-desc">{agency.role}</span> : null}
+                  </span>
+                  <span className="mh-agency-phones">
+                    {getNumbers(agency.contact).map((num) => (
+                      <span key={num} className="mh-agency-phone">
+                        <Phone12 color="#5EA500" />
+                        <span className="mh-agency-num">{num}</span>
+                      </span>
+                    ))}
+                  </span>
+                </button>
+              )
+            )}
           </div>
         )}
       </div>
