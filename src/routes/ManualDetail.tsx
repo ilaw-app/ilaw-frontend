@@ -79,6 +79,7 @@ export default function ManualDetail() {
       ) : (
         <div className="screen-scroll md-content">
           <div className="md-q">
+            <span className="md-q-label">Q{String(article.order).padStart(2, '0')}.</span>
             <span className="md-q-text">{article.question}</span>
           </div>
 

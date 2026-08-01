@@ -41,20 +41,28 @@
   font-size: 15px;
   color: #999;
 }
-/* 질문 — 초록 포인트 박스 */
+/* 질문 — Q01. + 텍스트 (박스 없음) */
 .md-q {
-  border-radius: 0 16px 16px 0;
-  border-left: 3.616px solid #7ccf00;
-  background: #f7fee7;
-  padding: 16px;
-  margin-bottom: 20px;
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
 }
-.md-q-text {
-  font-size: 16px;
+.md-q-label {
+  flex-shrink: 0;
+  font-size: 18px;
   font-weight: 700;
   color: #101828;
-  line-height: 24px;
+  line-height: 27px;
+}
+.md-q-text {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 700;
+  color: #101828;
+  line-height: 27px;
   letter-spacing: -0.312px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 /* 답(요약) — 읽기 쉬운 카드 + 초록 화살표 */
 .md-summary {
@@ -69,6 +77,8 @@
   color: #101828;
   line-height: 24px;
   letter-spacing: -0.2px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 .md-summary-arrow {
   flex-shrink: 0;
@@ -80,6 +90,8 @@
 .manual-html {
   font-size: 14px;
   color: #4a5565;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 /* 소제목 — 초록 | 바 */
 .manual-html h2,
