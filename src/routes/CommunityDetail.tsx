@@ -6,13 +6,12 @@ import {
   IoChatbubbleOutline,
   IoBookmark,
   IoBookmarkOutline,
-  IoTrashOutline,
-  IoCreateOutline,
 } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import type { CommunityComment, CommunityDetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
+import { TrashRedIcon, EditRedIcon, TrashSheetIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
 import './communityDetail.css';
 
@@ -160,7 +159,7 @@ function ReplyItem({ reply, onDelete, onLike }: { reply: Comment; onDelete: (id:
               {showMenu && (
                 <div className="cd-mini-dropdown">
                   <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(reply.id); }}>
-                    <IoTrashOutline size={14} color="#586144" />
+                    <TrashRedIcon w={12} h={14} />
                     <span className="cd-mini-dropdown-text">삭제하기</span>
                   </button>
                 </div>
@@ -200,7 +199,7 @@ function CommentItem({ comment, onReply, onDelete, onLike }: { comment: Comment;
                 {showMenu && (
                   <div className="cd-mini-dropdown">
                     <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(comment.id); }}>
-                      <IoTrashOutline size={14} color="#586144" />
+                      <TrashRedIcon w={12} h={14} />
                       <span className="cd-mini-dropdown-text">삭제하기</span>
                     </button>
                   </div>
@@ -478,12 +477,12 @@ export default function CommunityDetail() {
       <Overlay visible={!!post.isAuthor && showMenu} onClose={() => setShowMenu(false)}>
         <div className="cd-dropdown">
           <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowDeleteModal(true); }}>
-            <IoTrashOutline size={14} color="#586144" />
+            <TrashRedIcon w={12} h={14} />
             <span className="cd-dropdown-text">삭제하기</span>
           </button>
           <div className="cd-dropdown-divider" />
           <button type="button" className="cd-dropdown-item" onClick={goEdit}>
-            <IoCreateOutline size={14} color="#586144" />
+            <EditRedIcon w={15} h={15} />
             <span className="cd-dropdown-text">수정하기</span>
           </button>
         </div>
@@ -567,37 +566,41 @@ export default function CommunityDetail() {
         <img src={selectedImage ?? ''} alt="" className="cd-modal-image" />
       </Overlay>
 
-      {/* 게시글 삭제 확인 */}
-      <Overlay visible={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-        <div className="cd-delete-card">
-          <div className="cd-delete-icon-circle">
-            <IoTrashOutline size={32} color="#C10007" />
+      {/* 게시글 삭제 확인 (QnA와 동일한 바텀시트) */}
+      <Overlay visible={showDeleteModal} onClose={() => setShowDeleteModal(false)} align="bottom">
+        <div className="cd-sheet">
+          <div className="cd-sheet-icon">
+            <TrashSheetIcon size={28} />
           </div>
-          <div className="cd-delete-title">게시글 삭제</div>
-          <div className="cd-delete-text-container">
-            <div className="cd-delete-body">이 게시글을 삭제하시겠습니까?</div>
-            <div className="cd-delete-warning">삭제 후에는 복구할 수 없습니다.</div>
+          <div className="cd-sheet-title">글을 삭제할까요?</div>
+          <p className="cd-sheet-desc">삭제한 글은 복구할 수 없어요.</p>
+          <div className="cd-sheet-btns">
+            <button type="button" className="cd-sheet-btn danger" onClick={() => { setShowDeleteModal(false); handleDelete(); }}>
+              삭제하기
+            </button>
+            <button type="button" className="cd-sheet-btn cancel" onClick={() => setShowDeleteModal(false)}>
+              취소
+            </button>
           </div>
-          <button type="button" className="cd-delete-btn" onClick={() => { setShowDeleteModal(false); handleDelete(); }}>
-            삭제하기
-          </button>
         </div>
       </Overlay>
 
-      {/* 댓글 삭제 확인 */}
-      <Overlay visible={showCommentDeleteModal} onClose={() => setShowCommentDeleteModal(false)}>
-        <div className="cd-delete-card">
-          <div className="cd-delete-icon-circle">
-            <IoTrashOutline size={32} color="#C10007" />
+      {/* 댓글 삭제 확인 (동일 바텀시트) */}
+      <Overlay visible={showCommentDeleteModal} onClose={() => setShowCommentDeleteModal(false)} align="bottom">
+        <div className="cd-sheet">
+          <div className="cd-sheet-icon">
+            <TrashSheetIcon size={28} />
           </div>
-          <div className="cd-delete-title">댓글 삭제</div>
-          <div className="cd-delete-text-container">
-            <div className="cd-delete-body">이 댓글을 삭제하시겠습니까?</div>
-            <div className="cd-delete-warning">삭제 후에는 복구할 수 없습니다.</div>
+          <div className="cd-sheet-title">댓글을 삭제할까요?</div>
+          <p className="cd-sheet-desc">삭제한 댓글은 복구할 수 없어요.</p>
+          <div className="cd-sheet-btns">
+            <button type="button" className="cd-sheet-btn danger" onClick={confirmDeleteComment}>
+              삭제하기
+            </button>
+            <button type="button" className="cd-sheet-btn cancel" onClick={() => setShowCommentDeleteModal(false)}>
+              취소
+            </button>
           </div>
-          <button type="button" className="cd-delete-btn" onClick={confirmDeleteComment}>
-            삭제하기
-          </button>
         </div>
       </Overlay>
 

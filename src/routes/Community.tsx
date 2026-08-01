@@ -7,13 +7,12 @@ import {
   IoAdd,
   IoChatbubbleOutline,
   IoEllipsisVertical,
-  IoTrashOutline,
-  IoCreateOutline,
 } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import type { CommunityListItem } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { HighlightText } from '../components/HighlightText';
+import { TrashRedIcon, EditRedIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
 import './community.css';
 
@@ -155,8 +154,9 @@ export default function Community() {
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState<'latest' | 'popular'>('latest');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [submitted, setSubmitted] = useState('');
   const [menuPostId, setMenuPostId] = useState<number | null>(null);
   const [menuTop, setMenuTop] = useState(0);
 
@@ -184,30 +184,26 @@ export default function Community() {
     };
   }, []);
 
-  const exitSearch = () => {
-    setIsSearching(false);
-    setSearchQuery('');
-  };
-
-  const handleSearchSubmit = () => {
-    if (!searchQuery.trim()) {
-      exitSearch();
-      return;
-    }
-    setIsSearching(true);
-  };
+  function toggleSearch() {
+    setSearchOpen((open) => {
+      if (open) {
+        setQuery('');
+        setSubmitted('');
+      }
+      return !open;
+    });
+  }
 
   const displayPosts = useMemo(
     () =>
       [...posts]
-        .filter(
-          (p) =>
-            !(isSearching && searchQuery.trim()) ||
-            p.title.includes(searchQuery) ||
-            (p.content ?? '').includes(searchQuery)
-        )
+        .filter((p) => {
+          const q = submitted.trim();
+          if (!q) return true;
+          return p.title.includes(q) || (p.content ?? '').includes(q);
+        })
         .sort((a, b) => (sort === 'popular' ? b.likes - a.likes : 0)),
-    [posts, isSearching, searchQuery, sort]
+    [posts, submitted, sort]
   );
 
   const handleMenuPress = (postId: number, top: number) => {
@@ -229,22 +225,65 @@ export default function Community() {
     if (!id) return;
     const post = posts.find((p) => p.id === id);
     if (!post) return;
-    navigate(
-      `/community/write?editId=${id}&editTitle=${encodeURIComponent(
-        post.title
-      )}&editContent=${encodeURIComponent(post.content ?? '')}`
-    );
+    const qs = new URLSearchParams({
+      editId: String(id),
+      editTitle: post.title,
+      editContent: post.content ?? '',
+      editImageUrls: JSON.stringify(post.imageUrls ?? []),
+      editPoll: post.poll ? JSON.stringify(post.poll.options) : '',
+    });
+    navigate(`/community/write?${qs.toString()}`);
   };
 
-  const keyword = isSearching && searchQuery.trim() ? searchQuery : '';
+  const keyword = submitted.trim();
   const frame = document.getElementById('app-frame');
 
   return (
     <div className="screen cm-screen">
       <div className="cm-header">
-        <h1 className="cm-header-title">커뮤니티</h1>
-        <p className="cm-header-sub">정보 공유를 통해 함께 도움을 주고받아요</p>
+        <div className="cm-header-text">
+          <h1 className="cm-header-title">커뮤니티</h1>
+          <p className="cm-header-sub">정보 공유를 통해 함께 도움을 주고받아요</p>
+        </div>
+        <button className="cm-header-search" onClick={toggleSearch} aria-label="검색">
+          {searchOpen ? <IoClose size={24} color="#6a7282" /> : <IoSearch size={22} color="#6a7282" />}
+        </button>
       </div>
+
+      {searchOpen && (
+        <div className="cm-search-area">
+          <form
+            className="cm-search-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSubmitted(query);
+            }}
+          >
+            <IoSearch size={18} color="#99a1af" />
+            <input
+              autoFocus
+              placeholder="키워드로 검색해보세요!"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                if (!e.target.value.trim()) setSubmitted('');
+              }}
+            />
+            {query && (
+              <button
+                type="button"
+                className="cm-search-clear"
+                onClick={() => {
+                  setQuery('');
+                  setSubmitted('');
+                }}
+              >
+                <IoClose size={16} color="#99a1af" />
+              </button>
+            )}
+          </form>
+        </div>
+      )}
 
       {loading ? (
         <div className="spinner-center">
@@ -304,12 +343,12 @@ export default function Community() {
               onClick={(e) => e.stopPropagation()}
             >
               <button className="cm-menu-item" onClick={handleDelete}>
-                <IoTrashOutline size={16} color="#586144" />
+                <TrashRedIcon w={13} h={15} />
                 <span className="cm-menu-delete">삭제하기</span>
               </button>
               <div className="cm-menu-sep" />
               <button className="cm-menu-item" onClick={handleEdit}>
-                <IoCreateOutline size={16} color="#FB8C00" />
+                <EditRedIcon w={16} h={16} />
                 <span className="cm-menu-edit">수정하기</span>
               </button>
             </div>

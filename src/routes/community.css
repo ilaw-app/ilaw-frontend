@@ -8,10 +8,62 @@
   flex-shrink: 0;
   padding: 46px 19.991px 2px;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
+}
+.cm-header-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   gap: 2px;
 }
+.cm-header-search {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* 검색창 (QnA와 동일 디자인) */
+.cm-search-area {
+  flex-shrink: 0;
+  padding: 6px 16px 12px;
+}
+.cm-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  border-radius: 9999px;
+  background: var(--fig-fill);
+  padding: 0 16px;
+}
+.cm-search-box input {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--fig-title);
+  border: none;
+  outline: none;
+  background: transparent;
+  height: 100%;
+}
+.cm-search-box input::placeholder {
+  color: var(--fig-subtle);
+}
+.cm-search-clear {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+}
+
 .cm-header-title {
   font-size: 22px;
   font-weight: 700;
@@ -71,7 +123,7 @@
 .cm-sort-btns {
   display: flex;
   gap: 6px;
-  padding: 4px 20px 10px;
+  padding: 16px 20px 10px;
 }
 .cm-sort-divider {
   height: 1px;
