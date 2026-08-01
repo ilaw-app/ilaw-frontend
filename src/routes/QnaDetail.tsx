@@ -45,17 +45,6 @@ function staticLawyerAnswer(title: string) {
   return item?.answer ?? null;
 }
 
-function LawyerIcon({ size = 22 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <path d="M15.9983 20.9973V18.9975C15.9983 17.9368 15.5769 16.9195 14.8268 16.1695C14.0768 15.4194 13.0595 14.998 11.9988 14.998H5.9995C4.93877 14.998 3.92148 15.4194 3.17143 16.1695C2.42137 16.9195 2 17.9368 2 18.9975V20.9973" stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M8.99902 11C11.2082 11 12.999 9.20914 12.999 7C12.999 4.79086 11.2082 3 8.99902 3C6.78988 3 4.99902 4.79086 4.99902 7C4.99902 9.20914 6.78988 11 8.99902 11Z" stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M21.998 20.9989V18.9989C21.9974 18.1126 21.7024 17.2517 21.1594 16.5512C20.6164 15.8508 19.8562 15.3505 18.998 15.1289" stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M15.998 3.12891C16.8585 3.34921 17.6211 3.84961 18.1657 4.55122C18.7103 5.25283 19.0059 6.11574 19.0059 7.00391C19.0059 7.89208 18.7103 8.75499 18.1657 9.4566C17.6211 10.1582 16.8585 10.6586 15.998 10.8789" stroke="#B2D36E" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function TrashSheetIcon({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
@@ -467,9 +456,7 @@ function AnswerCard({
   return (
     <div className="qd-answer">
       <div className="qd-answer-head">
-        <div className="qd-avatar lawyer">
-          <LawyerIcon size={22} />
-        </div>
+        <img src="/assets/Container.png" className="qd-avatar-img" alt="" />
         <div className="qd-answer-who">
           <div className="qd-answer-name">{answer.lawyer?.nickname ?? '변호사'}</div>
           {answer.lawyer?.affiliation && (

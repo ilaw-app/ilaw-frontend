@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IoArrowBack, IoCheckmark, IoClose } from 'react-icons/io5';
+import { IoArrowBack, IoCheckmark, IoClose, IoCopyOutline } from 'react-icons/io5';
 import { manualApi } from '../api/manual';
 import type { Agency } from '../api/types';
 import TabBar from '../components/TabBar';
@@ -54,6 +54,22 @@ function ChevronDown16() {
   );
 }
 
+function ChevronUp16() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M12 10L8.0001 6.0001L4.0002 10" stroke="#99A1AF" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChatBubbleIcon() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M13.9997 9.9998C13.9997 10.3534 13.8592 10.6925 13.6092 10.9426C13.3591 11.1926 13.02 11.3331 12.6664 11.3331H4.6666L2 13.9997V3.3333C2 2.97969 2.14047 2.64056 2.39051 2.39051C2.64056 2.14047 2.97969 2 3.3333 2H12.6664C13.02 2 13.3591 2.14047 13.6092 2.39051C13.8592 2.64056 13.9997 2.97969 13.9997 3.3333V9.9998Z" stroke="#6A7282" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export default function ManualHelp() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -80,11 +96,6 @@ export default function ManualHelp() {
     };
   }, [categoryId, selectedRegion]);
 
-  const handleOpenTips = () => {
-    setTipsValues(initTips());
-    setShowTips(true);
-  };
-
   const handleCloseAll = () => {
     setShowTips(false);
     setCallTarget(null);
@@ -95,9 +106,26 @@ export default function ManualHelp() {
     window.location.href = `tel:${number.replace(/[^0-9]/g, '')}`;
   };
 
+  const copyTips = () => {
+    const text = TIPS_FIELDS.filter((f) => tipsValues[f.key].trim())
+      .map((f) => `${f.label}: ${tipsValues[f.key].trim()}`)
+      .join('\n');
+    navigator.clipboard?.writeText(text).then(
+      () => window.alert('내용을 복사했어요.'),
+      () => {}
+    );
+  };
+
   // "/", "또는", "," 모두 구분자로 처리 ("112 또는 1577-1391" → ["112", "1577-1391"])
   const getNumbers = (contact: string) =>
     contact.split(/\/|또는|,/).map(n => n.trim()).filter(Boolean);
+
+  // 전국 공통 번호는 위 카드에 이미 있으므로 기관 목록에서 제외
+  const NATIONAL_DIGITS = new Set(['15771391', '1366', '117', '1388', '112']);
+  const onlyDigits = (s: string) => s.replace(/[^0-9]/g, '');
+  const visibleAgencies = agencies.filter(
+    (a) => !getNumbers(a.contact).some((n) => NATIONAL_DIGITS.has(onlyDigits(n)))
+  );
 
   // 긴급 신고 번호도 기관 카드처럼 '전화 걸기' 팝업을 띄운다
   const handleEmergencyPress = (item: { label: string; number: string }) => {
@@ -148,19 +176,23 @@ export default function ManualHelp() {
           <div className="mh-spinner-wrap">
             <div className="spinner" />
           </div>
-        ) : agencies.length === 0 ? (
+        ) : visibleAgencies.length === 0 ? (
           <p className="mh-empty">선택한 지역에 등록된 기관이 없어요.</p>
         ) : (
           <div className="mh-agency-card">
-            {agencies.map((agency) => (
+            {visibleAgencies.map((agency) => (
               <button key={agency.id} className="mh-agency" onClick={() => setCallTarget(agency)}>
                 <span className="mh-agency-info">
                   <span className="mh-agency-name">{agency.name}</span>
                   {agency.role ? <span className="mh-agency-desc">{agency.role}</span> : null}
                 </span>
-                <span className="mh-agency-phone">
-                  <Phone12 color="#5EA500" />
-                  <span className="mh-agency-num">{agency.contact}</span>
+                <span className="mh-agency-phones">
+                  {getNumbers(agency.contact).map((num) => (
+                    <span key={num} className="mh-agency-phone">
+                      <Phone12 color="#5EA500" />
+                      <span className="mh-agency-num">{num}</span>
+                    </span>
+                  ))}
                 </span>
               </button>
             ))}
@@ -187,101 +219,81 @@ export default function ManualHelp() {
         </div>
       </Overlay>
 
-      {/* 전화 걸기 팝업 — 1단계: 기관 정보 */}
-      <Overlay visible={callTarget !== null && !showTips} onClose={() => setCallTarget(null)} dim={0.5}>
-        <div className="mh-modal-card">
-          <div className="mh-modal-header">
-            <span className="mh-modal-title">전화 걸기</span>
-            <button className="mh-icon-btn" onClick={() => setCallTarget(null)}>
-              <IoClose size={22} color="#586144" />
-            </button>
-          </div>
+      {/* 전화 걸기 바텀시트 (이렇게 말해보세요 토글) */}
+      <Overlay visible={callTarget !== null} onClose={handleCloseAll} align="bottom">
+        <div className={`mh-sheet${showTips ? ' expanded' : ''}`}>
           {callTarget && (
             <>
-              <div className="mh-modal-center-name">{callTarget.name}</div>
-              <div className="mh-modal-phone">{callTarget.contact}</div>
-              <div className="mh-modal-btns">
-                <button className="mh-tips-btn" onClick={handleOpenTips}>
-                  <span className="mh-tips-btn-text">이렇게 말하면 좋아요!</span>
+              <div className="mh-sheet-head">
+                <div className="mh-sheet-head-text">
+                  <div className="mh-sheet-name">{callTarget.name}</div>
+                  <div className="mh-sheet-num">{callTarget.contact}</div>
+                </div>
+                <button className="mh-sheet-x" onClick={handleCloseAll} aria-label="닫기">
+                  <IoClose size={20} color="#4a5565" />
                 </button>
+              </div>
+
+              <button className="mh-tips-toggle" onClick={() => setShowTips((v) => !v)}>
+                <span className="mh-tips-toggle-left">
+                  <ChatBubbleIcon />
+                  <span className="mh-tips-toggle-text">이렇게 말해보세요</span>
+                </span>
+                {showTips ? <ChevronUp16 /> : <ChevronDown16 />}
+              </button>
+
+              {showTips && (
+                <div className="mh-tips-body">
+                  <div className="mh-tips-body-hint">전화 전에 미리 정리하면 도움받기 쉬워요.</div>
+                  {TIPS_FIELDS.map((field) => (
+                    <div key={field.key} className="mh-tips-field">
+                      <div className="mh-tips-field-label">{field.label}</div>
+                      {field.key === 'what' ? (
+                        <textarea
+                          className="mh-tips-input large"
+                          placeholder={field.placeholder}
+                          value={tipsValues[field.key]}
+                          onChange={(e) => setTipsValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                        />
+                      ) : (
+                        <input
+                          className="mh-tips-input"
+                          placeholder={field.placeholder}
+                          value={tipsValues[field.key]}
+                          onChange={(e) => setTipsValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  <button className="mh-copy-btn" onClick={copyTips}>
+                    <IoCopyOutline size={16} color="#364153" />
+                    <span>내용 복사하기</span>
+                  </button>
+                </div>
+              )}
+
+              <div className="mh-sheet-btns">
                 {getNumbers(callTarget.contact).length > 1 ? (
                   getNumbers(callTarget.contact).map((num) => (
-                    <button key={num} className="mh-call-btn" onClick={() => handleCall(num)}>
-                      <span className="mh-call-btn-text">전화 걸기 ({num})</span>
+                    <button key={num} className="mh-sheet-btn danger" onClick={() => handleCall(num)}>
+                      <Phone12 color="#fff" />
+                      전화 걸기 ({num})
                     </button>
                   ))
                 ) : (
-                  <button className="mh-call-btn" onClick={() => handleCall(getNumbers(callTarget.contact)[0] ?? callTarget.contact)}>
-                    <span className="mh-call-btn-text">전화 걸기</span>
+                  <button className="mh-sheet-btn danger" onClick={() => handleCall(getNumbers(callTarget.contact)[0] ?? callTarget.contact)}>
+                    <Phone12 color="#fff" />
+                    전화 걸기
+                  </button>
+                )}
+                {!showTips && (
+                  <button className="mh-sheet-btn cancel" onClick={handleCloseAll}>
+                    취소
                   </button>
                 )}
               </div>
             </>
           )}
-        </div>
-      </Overlay>
-
-      {/* 전화 걸기 팝업 — 2단계: 말하기 팁 폼 */}
-      <Overlay visible={callTarget !== null && showTips} onClose={() => setShowTips(false)} dim={0.5}>
-        <div className="mh-tips-card">
-          <div className="mh-tips-card-top">
-            <div className="mh-modal-header">
-              <span className="mh-modal-title">전화 걸기</span>
-              <button className="mh-icon-btn" onClick={handleCloseAll}>
-                <IoClose size={22} color="#586144" />
-              </button>
-            </div>
-            {callTarget && (
-              <>
-                <div className="mh-modal-center-name">{callTarget.name}</div>
-                <div className="mh-modal-phone">{callTarget.contact}</div>
-              </>
-            )}
-          </div>
-
-          <div className="mh-tips-scroll">
-            <div className="mh-big-container">
-              <div className="mh-tips-hint">
-                <div className="mh-tips-hint-title">전화하기 전에 아래 내용을 정리해보세요</div>
-                <div className="mh-tips-hint-sub">차근차근 말하면 도움을 받기 쉬워요</div>
-              </div>
-
-              {TIPS_FIELDS.map(field => (
-                <div key={field.key} className="mh-tips-field">
-                  <div className="mh-tips-field-label">{field.label}</div>
-                  {field.key === 'what' ? (
-                    <textarea
-                      className="mh-tips-field-input large"
-                      placeholder={field.placeholder}
-                      value={tipsValues[field.key]}
-                      onChange={e => setTipsValues(prev => ({ ...prev, [field.key]: e.target.value }))}
-                    />
-                  ) : (
-                    <input
-                      className="mh-tips-field-input"
-                      placeholder={field.placeholder}
-                      value={tipsValues[field.key]}
-                      onChange={e => setTipsValues(prev => ({ ...prev, [field.key]: e.target.value }))}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mh-tips-card-bottom">
-            {callTarget && (getNumbers(callTarget.contact).length > 1 ? (
-              getNumbers(callTarget.contact).map((num) => (
-                <button key={num} className="mh-call-btn" onClick={() => handleCall(num)}>
-                  <span className="mh-call-btn-text">전화 걸기 ({num})</span>
-                </button>
-              ))
-            ) : (
-              <button className="mh-call-btn" onClick={() => handleCall(getNumbers(callTarget.contact)[0] ?? callTarget.contact)}>
-                <span className="mh-call-btn-text">전화 걸기</span>
-              </button>
-            ))}
-          </div>
         </div>
       </Overlay>
 
