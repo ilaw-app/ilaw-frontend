@@ -11,11 +11,15 @@
   padding: 4px;
 }
 .ml-header h1 {
+  flex: 1;
   font-size: 24px;
   font-weight: 700;
   color: var(--text);
   line-height: 32px;
   letter-spacing: 0.07px;
+}
+.ml-header-search {
+  flex-shrink: 0;
 }
 
 .ml-search-area {
@@ -32,9 +36,6 @@
   padding: 0 10px 0 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.ml-search-box.active {
-  border-color: var(--primary-dark);
-}
 .ml-search-box input {
   flex: 1;
   border: none;
@@ -47,15 +48,14 @@
 .ml-search-box input::placeholder {
   color: var(--placeholder);
 }
-.ml-search-btn {
+.ml-search-icon {
   width: 32px;
   height: 32px;
-  border-radius: 16px;
-  background: var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: transparent;
 }
 
 .ml-content {
@@ -92,6 +92,11 @@
   line-height: 24px;
   letter-spacing: -0.312px;
 }
+/* 매뉴얼 검색 하이라이트는 초록 (커뮤니티 회색과 분리) */
+.ml-q-text .hl-mark {
+  background: #eff4e1;
+  color: #3c6802;
+}
 .ml-divider {
   height: 1px;
   background: #f5f5f5;
@@ -107,19 +112,45 @@
   font-size: 15px;
 }
 
-.ml-help {
+/* 플로팅: "지금 힘드신가요?" 캡션 + 흰 알약 "긴급 연락처 보기" */
+.ml-help-wrap {
   position: absolute;
   bottom: 100px;
   right: 20px;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 5;
+}
+.ml-help-caption {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6a7282;
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.ml-help {
+  display: flex;
   align-items: center;
   gap: 8px;
-  background: #ff4444;
-  color: #fff;
+  background: #fff;
+  color: #1e2939;
   font-size: 15px;
-  font-weight: 600;
-  padding: 14px 20px;
-  border-radius: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 5;
+  font-weight: 700;
+  padding: 12px 18px 12px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+.ml-help-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #fb2c36;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }

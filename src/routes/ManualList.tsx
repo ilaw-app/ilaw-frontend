@@ -18,6 +18,8 @@ const SLUG_TO_NAME: Record<string, string> = {
   'school-violence': '학교폭력',
 };
 
+const qLabel = (n: number) => `Q${String(n).padStart(2, '0')}`;
+
 export default function ManualList() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -25,6 +27,7 @@ export default function ManualList() {
 
   const [articles, setArticles] = useState<ManualArticleSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -43,6 +46,11 @@ export default function ManualList() {
     };
   }, [categoryId]);
 
+  const qNum = (id: number, fallback: number) => {
+    const idx = articles.findIndex((a) => a.id === id);
+    return idx >= 0 ? idx + 1 : fallback;
+  };
+
   function handleSearch() {
     if (!query.trim()) return;
     setIsSearching(true);
@@ -52,55 +60,64 @@ export default function ManualList() {
       .then((data) => {
         const filtered = (data.results ?? [])
           .filter((r) => r.category?.slug === categoryId)
-          .map((r) => ({ id: r.id, question: r.question }));
+          .map((r) => ({ id: r.id, question: r.question }))
+          // 피그마: 검색 결과는 Q번호 오름차순
+          .sort((a, b) => qNum(a.id, 9999) - qNum(b.id, 9999));
         setResults(filtered);
       })
       .catch(() => setResults([]))
       .finally(() => setSearchLoading(false));
   }
 
-  function clearSearch() {
+  function openSearch() {
+    setSearchOpen(true);
+  }
+
+  function closeSearch() {
+    setSearchOpen(false);
     setQuery('');
     setIsSearching(false);
     setResults([]);
   }
 
-  const qNum = (id: number, fallback: number) => {
-    const idx = articles.findIndex((a) => a.id === id);
-    return idx >= 0 ? idx + 1 : fallback;
-  };
-
   return (
     <div className="screen">
       <div className="ml-header">
-        <button onClick={() => navigate(-1)}>
+        <button className="ml-back" onClick={() => navigate(-1)} aria-label="뒤로">
           <IoChevronBack size={24} color="#586144" />
         </button>
         <h1>{SLUG_TO_NAME[categoryId] ?? '매뉴얼'}</h1>
+        <button
+          className="ml-header-search"
+          onClick={searchOpen ? closeSearch : openSearch}
+          aria-label={searchOpen ? '검색 닫기' : '검색'}
+        >
+          {searchOpen ? <IoClose size={24} color="#586144" /> : <IoSearch size={22} color="#586144" />}
+        </button>
       </div>
 
-      <div className="ml-search-area">
-        <div className={`ml-search-box ${isSearching ? 'active' : ''}`}>
-          <input
-            placeholder="키워드로 검색해보세요!"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (!e.target.value.trim()) clearSearch();
-            }}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          {isSearching ? (
-            <button className="ml-search-btn" onClick={clearSearch}>
-              <IoClose size={16} color="#fff" />
+      {searchOpen && (
+        <div className="ml-search-area">
+          <div className="ml-search-box">
+            <input
+              autoFocus
+              placeholder="질문 검색..."
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                if (!e.target.value.trim()) {
+                  setIsSearching(false);
+                  setResults([]);
+                }
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
+            <button className="ml-search-icon" onClick={handleSearch} aria-label="검색 실행">
+              <IoSearch size={20} color="#9caf88" />
             </button>
-          ) : (
-            <button className="ml-search-btn" onClick={handleSearch}>
-              <IoSearch size={16} color="#fff" />
-            </button>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="screen-scroll ml-content">
         {loading ? (
@@ -122,7 +139,7 @@ export default function ManualList() {
               {results.map((item, idx) => (
                 <div key={item.id}>
                   <button className="ml-q" onClick={() => navigate(`/manual-detail?articleId=${item.id}`)}>
-                    <span className="ml-q-num">Q{qNum(item.id, idx + 1)}.</span>
+                    <span className="ml-q-num">{qLabel(qNum(item.id, idx + 1))}</span>
                     <span className="ml-q-text">
                       <HighlightText text={item.question} keyword={query} />
                     </span>
@@ -142,7 +159,7 @@ export default function ManualList() {
             {articles.map((article, index) => (
               <div key={article.id}>
                 <button className="ml-q" onClick={() => navigate(`/manual-detail?articleId=${article.id}`)}>
-                  <span className="ml-q-num">Q{index + 1}.</span>
+                  <span className="ml-q-num">{qLabel(index + 1)}</span>
                   <span className="ml-q-text">{article.question}</span>
                   <IoChevronForward size={18} color="#bbb" />
                 </button>
@@ -153,10 +170,15 @@ export default function ManualList() {
         )}
       </div>
 
-      <button className="ml-help" onClick={() => navigate(`/manual-help?categoryId=${categoryId}`)}>
-        <IoCall size={16} color="#fff" />
-        도움이 필요하신가요?
-      </button>
+      <div className="ml-help-wrap">
+        <span className="ml-help-caption">지금 힘드신가요?</span>
+        <button className="ml-help" onClick={() => navigate(`/manual-help?categoryId=${categoryId}`)}>
+          <span className="ml-help-icon">
+            <IoCall size={13} color="#fff" />
+          </span>
+          긴급 연락처 보기
+        </button>
+      </div>
 
       <TabBar />
     </div>
