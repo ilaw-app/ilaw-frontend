@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
 import Splash from './routes/Splash';
 import Login from './routes/Login';
 import AuthCallback from './routes/AuthCallback';
@@ -48,50 +49,58 @@ function useCanvasScale() {
   return scale;
 }
 
+// 로그인이 필요한 라우트 가드 — 세션 복구를 기다렸다가 미인증이면 스플래시로 보냄
+function RequireAuth({ children }: { children: ReactElement }) {
+  const { ready, isAuthed } = useAuth();
+  if (!ready) return null; // 세션 복구 대기 (깜빡임 방지)
+  if (!isAuthed) return <Navigate to="/" replace />;
+  return children;
+}
+
 export default function App() {
   const scale = useCanvasScale();
   return (
     <div className="app-viewport">
       <div className="app-frame" id="app-frame" style={{ transform: `scale(${scale})` }}>
         <Routes>
-          {/* 진입 / 인증 */}
+          {/* 진입 / 인증 (공개) */}
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
           <Route path="/auth" element={<AuthCallback />} />
-          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/onboarding" element={<RequireAuth><Onboarding /></RequireAuth>} />
 
           {/* 탭 */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/manual" element={<Manual />} />
-          <Route path="/qna" element={<QnaList />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
+          <Route path="/manual" element={<RequireAuth><Manual /></RequireAuth>} />
+          <Route path="/qna" element={<RequireAuth><QnaList /></RequireAuth>} />
+          <Route path="/community" element={<RequireAuth><Community /></RequireAuth>} />
+          <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
           {/* 매뉴얼 하위 */}
-          <Route path="/manual-list" element={<ManualList />} />
-          <Route path="/manual-detail" element={<ManualDetail />} />
-          <Route path="/manual-help" element={<ManualHelp />} />
+          <Route path="/manual-list" element={<RequireAuth><ManualList /></RequireAuth>} />
+          <Route path="/manual-detail" element={<RequireAuth><ManualDetail /></RequireAuth>} />
+          <Route path="/manual-help" element={<RequireAuth><ManualHelp /></RequireAuth>} />
 
           {/* Q&A 하위 */}
-          <Route path="/qna/ask" element={<QnaAsk />} />
-          <Route path="/qna/answer/:id" element={<QnaAnswer />} />
-          <Route path="/qna/:id" element={<QnaDetail />} />
+          <Route path="/qna/ask" element={<RequireAuth><QnaAsk /></RequireAuth>} />
+          <Route path="/qna/answer/:id" element={<RequireAuth><QnaAnswer /></RequireAuth>} />
+          <Route path="/qna/:id" element={<RequireAuth><QnaDetail /></RequireAuth>} />
 
           {/* 커뮤니티 하위 */}
-          <Route path="/community/write" element={<CommunityWrite />} />
-          <Route path="/community/:id" element={<CommunityDetail />} />
+          <Route path="/community/write" element={<RequireAuth><CommunityWrite /></RequireAuth>} />
+          <Route path="/community/:id" element={<RequireAuth><CommunityDetail /></RequireAuth>} />
 
           {/* 마이 / 기타 */}
-          <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="/my-questions" element={<MyQuestions />} />
-          <Route path="/my-answers" element={<MyAnswers />} />
-          <Route path="/my-scraps" element={<MyScraps />} />
-          <Route path="/my-qna-scraps" element={<MyQnaScraps />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/notification-settings" element={<NotificationSettings />} />
-          <Route path="/ai-chat" element={<AiChat />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/edit-profile" element={<RequireAuth><EditProfile /></RequireAuth>} />
+          <Route path="/my-questions" element={<RequireAuth><MyQuestions /></RequireAuth>} />
+          <Route path="/my-answers" element={<RequireAuth><MyAnswers /></RequireAuth>} />
+          <Route path="/my-scraps" element={<RequireAuth><MyScraps /></RequireAuth>} />
+          <Route path="/my-qna-scraps" element={<RequireAuth><MyQnaScraps /></RequireAuth>} />
+          <Route path="/notifications" element={<RequireAuth><Notifications /></RequireAuth>} />
+          <Route path="/notification-settings" element={<RequireAuth><NotificationSettings /></RequireAuth>} />
+          <Route path="/ai-chat" element={<RequireAuth><AiChat /></RequireAuth>} />
+          <Route path="/terms" element={<RequireAuth><Terms /></RequireAuth>} />
+          <Route path="/privacy" element={<RequireAuth><Privacy /></RequireAuth>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
