@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoArrowBack, IoCheckmark } from 'react-icons/io5';
+import { IoArrowBack } from 'react-icons/io5';
 import { useAuth } from '../context/AuthContext';
 import { authApi } from '../api/auth';
 import { ApiError } from '../api/client';
@@ -14,6 +14,8 @@ const REGIONS = [
   '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주',
 ];
 const YEARS = Array.from({ length: 40 }, (_, i) => String(2026 - i)); // 2026 → 1987
+const MONTHS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+const DAYS = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 const GENDERS: { value: Gender; label: string }[] = [
   { value: 'male', label: '남' },
   { value: 'female', label: '여' },
@@ -61,16 +63,19 @@ export default function EditProfile() {
   const navigate = useNavigate();
   const { user, role, setUser, logout } = useAuth();
 
+  const b0 = user?.birthDate ? user.birthDate.slice(0, 10) : '';
   const [nickname, setNickname] = useState(user?.nickname ?? '');
   const [nicknameError, setNicknameError] = useState('');
   const [region, setRegion] = useState(user?.region ?? '');
-  const [birthDate, setBirthDate] = useState(user?.birthDate ? user.birthDate.slice(0, 10) : '');
+  const [by, setBy] = useState(b0 ? b0.slice(0, 4) : '');
+  const [bm, setBm] = useState(b0 ? b0.slice(5, 7) : '');
+  const [bd, setBd] = useState(b0 ? b0.slice(8, 10) : '');
   const [gender, setGender] = useState<Gender | ''>(user?.gender ?? '');
   const [affiliation, setAffiliation] = useState(user?.affiliation ?? '');
   const [saving, setSaving] = useState(false);
-  const [picker, setPicker] = useState<'region' | 'year' | null>(null);
+  const [picker, setPicker] = useState<'region' | 'birth' | null>(null);
 
-  const birthYear = birthDate ? birthDate.slice(0, 4) : '';
+  const birthLabel = by && bm && bd ? `${by}년 ${Number(bm)}월 ${Number(bd)}일` : '';
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
@@ -85,7 +90,7 @@ export default function EditProfile() {
       const updated = await authApi.updateProfile({
         nickname,
         region: region || null,
-        birthDate: birthDate || null,
+        birthDate: by && bm && bd ? `${by}-${bm}-${bd}` : null,
         gender: gender || null,
         affiliation: role === 'lawyer' ? affiliation : undefined,
       });
@@ -105,15 +110,6 @@ export default function EditProfile() {
     await authApi.logout().catch(() => {});
     await logout();
     navigate('/login', { replace: true });
-  };
-
-  const pickerItems = picker === 'region' ? REGIONS : YEARS;
-  const pickerSelected = picker === 'region' ? region : birthYear;
-  const pickerFmt = (v: string) => (picker === 'year' ? `${v}년` : v);
-  const onPick = (v: string) => {
-    if (picker === 'region') setRegion(v);
-    else setBirthDate(`${v}-01-01`);
-    setPicker(null);
   };
 
   return (
@@ -159,10 +155,10 @@ export default function EditProfile() {
             <span className="ep-box-chevron"><ChevronDown /></span>
           </button>
 
-          {/* 출생연도 */}
-          <button className="ep-box ep-box-btn" onClick={() => setPicker('year')}>
-            <span className="ep-box-label">출생연도</span>
-            <span className={`ep-box-value ${birthYear ? '' : 'ph'}`}>{birthYear ? `${birthYear}년` : '출생연도를 선택해주세요'}</span>
+          {/* 생년월일 */}
+          <button className="ep-box ep-box-btn" onClick={() => setPicker('birth')}>
+            <span className="ep-box-label">생년월일</span>
+            <span className={`ep-box-value ${birthLabel ? '' : 'ph'}`}>{birthLabel || '생년월일을 선택해주세요'}</span>
             <span className="ep-box-chevron"><ChevronDown /></span>
           </button>
 
@@ -203,21 +199,46 @@ export default function EditProfile() {
         </div>
       </div>
 
-      {/* 지역/출생연도 선택 바텀시트 */}
-      <Overlay visible={picker !== null} onClose={() => setPicker(null)} align="bottom">
+      {/* 지역 선택 */}
+      <Overlay visible={picker === 'region'} onClose={() => setPicker(null)} align="bottom">
         <div className="ep-picker">
-          <div className="ep-picker-title">{picker === 'region' ? '지역 선택' : '출생연도 선택'}</div>
+          <div className="ep-picker-title">지역 선택</div>
           <div className="ep-picker-list">
-            {pickerItems.map((v) => {
-              const active = pickerSelected === v;
-              return (
-                <button key={v} className={`ep-picker-item ${active ? 'active' : ''}`} onClick={() => onPick(v)}>
-                  <span>{pickerFmt(v)}</span>
-                  {active && <IoCheckmark size={18} color="#5EA500" />}
-                </button>
-              );
-            })}
+            {REGIONS.map((v) => (
+              <button
+                key={v}
+                className={`ep-picker-item ${region === v ? 'active' : ''}`}
+                onClick={() => { setRegion(v); setPicker(null); }}
+              >
+                {v}
+              </button>
+            ))}
           </div>
+        </div>
+      </Overlay>
+
+      {/* 생년월일 선택 (년/월/일) */}
+      <Overlay visible={picker === 'birth'} onClose={() => setPicker(null)} align="bottom">
+        <div className="ep-picker">
+          <div className="ep-picker-title">생년월일 선택</div>
+          <div className="ep-birth-cols">
+            <div className="ep-birth-col">
+              {YEARS.map((v) => (
+                <button key={v} className={`ep-birth-item ${by === v ? 'active' : ''}`} onClick={() => setBy(v)}>{v}년</button>
+              ))}
+            </div>
+            <div className="ep-birth-col">
+              {MONTHS.map((v) => (
+                <button key={v} className={`ep-birth-item ${bm === v ? 'active' : ''}`} onClick={() => setBm(v)}>{Number(v)}월</button>
+              ))}
+            </div>
+            <div className="ep-birth-col">
+              {DAYS.map((v) => (
+                <button key={v} className={`ep-birth-item ${bd === v ? 'active' : ''}`} onClick={() => setBd(v)}>{Number(v)}일</button>
+              ))}
+            </div>
+          </div>
+          <button className="ep-picker-confirm" onClick={() => setPicker(null)}>확인</button>
         </div>
       </Overlay>
 

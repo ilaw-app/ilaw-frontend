@@ -5,11 +5,28 @@
   padding: 44px 24px 60px;
 }
 
+.ob-logo-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin-bottom: 12px;
+}
+.ob-shadow {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: 165px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
 .ob-logo {
+  position: relative;
+  z-index: 1;
   width: 130px;
   height: 130px;
   object-fit: contain;
-  margin-bottom: 12px;
 }
 .ob-subtitle {
   font-size: 20px;

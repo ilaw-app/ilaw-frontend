@@ -106,7 +106,10 @@ export default function Onboarding() {
   return (
     <div className="screen">
       <div className="screen-scroll ob-inner">
-        <img className="ob-logo" src="/assets/logo2.png" alt="아이로" />
+        <div className="ob-logo-wrap">
+          <img className="ob-shadow" src="/assets/shadow.png" alt="" aria-hidden="true" />
+          <img className="ob-logo" src="/assets/logo2.png" alt="아이로" />
+        </div>
 
         <p className="ob-subtitle font-airo">
           아이로가 더 잘 도와드릴 수 있도록

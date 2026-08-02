@@ -12,6 +12,7 @@
   padding: 4px;
 }
 .ml-header h1 {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   flex: 1;
   font-size: 18px;
   font-weight: 700;

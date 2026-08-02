@@ -8,9 +8,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 42px 16px 12px;
   background: #fff;
-  border-bottom: 0.633px solid #e5e7eb;
+  border-bottom: 1px solid #f3f4f6;
 }
 .noti-back {
   position: absolute;
@@ -30,7 +30,6 @@
 }
 
 .noti-list {
-  background: #fff;
   display: flex;
   flex-direction: column;
 }

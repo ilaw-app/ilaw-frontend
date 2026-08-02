@@ -7,9 +7,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 42px 16px 14px;
+  padding: 42px 16px 12px;
   background: #fff;
-  border-bottom: 0.633px solid #e5e7eb;
+  border-bottom: 1px solid #f3f4f6;
 }
 .mq-back {
   display: flex;
@@ -17,6 +17,7 @@
   flex-shrink: 0;
 }
 .mq-title-bar {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   color: #101828;
   font-size: 16px;
   font-weight: 700;

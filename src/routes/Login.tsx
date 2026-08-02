@@ -26,10 +26,13 @@ function GoogleIcon() {
 export default function Login() {
   return (
     <div className="login-screen">
-      <img className="login-logo" src="/assets/logo2.png" alt="아이로" />
-
-      <div className="login-bottom">
-      <h1 className="login-title font-airo">아이로와 함께 시작해요</h1>
+      <div className="login-top">
+        <div className="login-logo-wrap">
+          <img className="login-shadow" src="/assets/shadow.png" alt="" aria-hidden="true" />
+          <img className="login-logo" src="/assets/logo2.png" alt="아이로" />
+        </div>
+        <h1 className="login-title font-airo">아이로와 함께 시작해요</h1>
+      </div>
 
       <div className="login-btns">
         <button
@@ -50,7 +53,6 @@ export default function Login() {
           <GoogleIcon />
           <span>구글 로그인</span>
         </button>
-      </div>
       </div>
     </div>
   );

@@ -25,6 +25,7 @@
   align-items: center;
 }
 .mh-title {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #101828;

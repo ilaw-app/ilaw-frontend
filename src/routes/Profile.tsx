@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import TabBar from '../components/TabBar';
@@ -70,7 +71,21 @@ const APP_VERSION = 'v1.1.0';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, role } = useAuth();
+  const { user, role, setRoleOverride } = useAuth();
+  const tapCountRef = useRef(0);
+  const tapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 개발용: 앱버전 5회 빠르게 탭 → 변호사/사용자 UI 전환(프론트 프리뷰)
+  const handleVersionTap = () => {
+    tapCountRef.current += 1;
+    if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
+    tapTimerRef.current = setTimeout(() => { tapCountRef.current = 0; }, 1500);
+    if (tapCountRef.current >= 5) {
+      tapCountRef.current = 0;
+      if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
+      setRoleOverride(role === 'lawyer' ? 'user' : 'lawyer');
+    }
+  };
 
   const menuList = role === 'lawyer' ? LAWYER_MENU_ITEMS : USER_MENU_ITEMS;
 
@@ -100,13 +115,13 @@ export default function Profile() {
               <ChevronRight />
             </button>
           ))}
-          <div className="pf-row">
+          <button className="pf-row" onClick={handleVersionTap}>
             <span className="pf-row-left">
               <IcInfo />
               <span className="pf-row-label">앱버전</span>
             </span>
             <span className="pf-version">{APP_VERSION}</span>
-          </div>
+          </button>
         </div>
       </div>
 

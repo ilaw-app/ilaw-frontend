@@ -6,10 +6,11 @@ import type { Role, User } from '../api/types';
 type AuthState = {
   ready: boolean; // 부팅 세션 복구 완료 여부
   user: User | null;
-  role: Role; // 항상 서버(GET /auth/me)의 user.role
+  role: Role; // roleOverride(프론트 프리뷰) ?? 서버 user.role
   isAuthed: boolean;
   setTokens: (accessToken: string, refreshToken: string) => void;
   setUser: (u: User | null) => void;
+  setRoleOverride: (r: Role | null) => void; // 개발용: 마이페이지 앱버전 5탭
   refreshMe: () => Promise<User | null>;
   logout: () => Promise<void>;
 };
@@ -20,6 +21,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [user, setUserState] = useState<User | null>(null);
   const [authed, setAuthed] = useState<boolean>(!!tokenStore.getAccess());
+  // 개발용 역할 프리뷰(마이페이지 앱버전 5탭) — 서버엔 영향 없고 UI만 전환
+  const [roleOverride, setRoleOverrideState] = useState<Role | null>(() => {
+    const s = typeof localStorage !== 'undefined' ? localStorage.getItem('roleOverride') : null;
+    return s === 'lawyer' || s === 'user' ? (s as Role) : null;
+  });
+  const setRoleOverride = (r: Role | null) => {
+    try {
+      if (r) localStorage.setItem('roleOverride', r);
+      else localStorage.removeItem('roleOverride');
+    } catch { /* ignore */ }
+    setRoleOverrideState(r);
+  };
 
   async function refreshMe(): Promise<User | null> {
     if (!tokenStore.getAccess()) return null;
@@ -60,10 +73,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     tokenStore.clear();
     setUserState(null);
+    setRoleOverride(null);
     setAuthed(false);
   }
 
-  const role: Role = user?.role ?? 'user';
+  const role: Role = roleOverride ?? user?.role ?? 'user';
 
   const value: AuthState = {
     ready,
@@ -72,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthed: authed,
     setTokens,
     setUser: setUserState,
+    setRoleOverride,
     refreshMe,
     logout,
   };

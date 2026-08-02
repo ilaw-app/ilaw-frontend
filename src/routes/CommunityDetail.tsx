@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  IoChevronBack,
+  IoArrowBack,
   IoEllipsisVertical,
   IoChatbubbleOutline,
   IoBookmark,
@@ -438,7 +438,7 @@ export default function CommunityDetail() {
       <div className="cd-screen">
         <div className="cd-header">
           <button type="button" className="cd-back-btn" onClick={() => navigate(-1)}>
-            <IoChevronBack size={22} color="#586144" />
+            <IoArrowBack size={22} color="#586144" />
           </button>
         </div>
         <div className="cd-loading" />
@@ -452,7 +452,7 @@ export default function CommunityDetail() {
       <div className="cd-screen">
         <div className="cd-header">
           <button type="button" className="cd-back-btn" onClick={() => navigate(-1)}>
-            <IoChevronBack size={22} color="#586144" />
+            <IoArrowBack size={22} color="#586144" />
           </button>
         </div>
         <p className="cd-empty">게시글을 찾을 수 없습니다.</p>
@@ -466,7 +466,7 @@ export default function CommunityDetail() {
       {/* Header */}
       <div className="cd-header">
         <button type="button" className="cd-back-btn" onClick={() => navigate(-1)}>
-          <IoChevronBack size={22} color="#586144" />
+          <IoArrowBack size={22} color="#586144" />
         </button>
         {post.isAuthor && (
           <button type="button" className="cd-menu-btn" onClick={() => setShowMenu((v) => !v)}>

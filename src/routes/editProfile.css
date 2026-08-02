@@ -7,9 +7,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 42px 16px 14px;
+  padding: 42px 16px 12px;
   background: #fff;
-  border-bottom: 0.633px solid #e5e7eb;
+  border-bottom: 1px solid #f3f4f6;
 }
 .ep-back {
   display: flex;
@@ -17,6 +17,7 @@
   flex-shrink: 0;
 }
 .ep-header-title {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   flex: 1;
   text-align: center;
   color: #101828;
@@ -220,5 +221,42 @@
 }
 .ep-picker-item.active {
   color: #5ea500;
+  font-weight: 700;
+}
+
+/* 생년월일 3열 피커 */
+.ep-birth-cols {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  min-height: 0;
+}
+.ep-birth-col {
+  flex: 1;
+  max-height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.ep-birth-item {
+  padding: 12px 0;
+  text-align: center;
+  color: #6a7282;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+.ep-birth-item.active {
+  background: #f7fee7;
+  color: #5ea500;
+  font-weight: 700;
+}
+.ep-picker-confirm {
+  margin: 16px 16px 0;
+  height: 48px;
+  border-radius: 16px;
+  background: #b2d36e;
+  color: #fff;
+  font-size: 16px;
   font-weight: 700;
 }
