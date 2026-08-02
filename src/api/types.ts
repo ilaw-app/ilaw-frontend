@@ -27,11 +27,12 @@ export type User = {
 
 // ---- QnA ----
 export type QnAAuthorPublic = { nickname: string }; // 항상 '익명'
+// DB role이 lawyer인 사용자에게만 age/region/gender가 추가로 옴 (그 외엔 nickname만)
 export type QnAAuthorDetail = {
   nickname: string;
-  birthDate: string | null; // "YYYY-MM-DD"
-  region: string | null;
-  gender: string | null;
+  age?: number | null;
+  region?: string | null;
+  gender?: string | null;
 };
 
 export type QnAListItem = {
@@ -50,7 +51,6 @@ export type QnAListItem = {
 export type QnAAnswer = {
   id: number;
   postId: number;
-  lawyerId: string | null;
   content: string;
   createdAt: string;
   updatedAt: string;
@@ -60,7 +60,6 @@ export type QnAAnswer = {
 
 export type QnADetail = {
   id: number;
-  authorId: string | null;
   title: string;
   content: string;
   category: string;

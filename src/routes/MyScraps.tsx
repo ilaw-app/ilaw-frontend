@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronBack, IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
 import TabBar from '../components/TabBar';
@@ -61,7 +61,7 @@ export default function MyScraps() {
       manualApi.myScraps().then((d) => setManualItems(Array.isArray(d) ? d : [])).catch(() => setManualItems([])).finally(() => setLoadingManual(false));
     } else if (activeTab === 'qna') {
       setLoadingQna(true);
-      qaApi.myScraps().then((d) => setQnaItems(Array.isArray(d) ? d : [])).catch(() => setQnaItems([])).finally(() => setLoadingQna(false));
+      qnaApi.myScraps().then((d) => setQnaItems(Array.isArray(d) ? d : [])).catch(() => setQnaItems([])).finally(() => setLoadingQna(false));
     } else {
       setLoadingCommunity(true);
       communityApi.myBookmarks().then((d) => setCommunityItems(Array.isArray(d) ? d : [])).catch(() => setCommunityItems([])).finally(() => setLoadingCommunity(false));

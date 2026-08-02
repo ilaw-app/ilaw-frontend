@@ -1,16 +1,24 @@
 import { API_BASE, api } from './client';
 import type { User } from './types';
 
-// 웹 OAuth 시작 URL — 백엔드가 로그인 후 `${origin}/auth?accessToken=...&refreshToken=...&profileCompleted=...`로 리다이렉트
-export function oauthStartUrl(provider: 'kakao' | 'google' | 'naver'): string {
-  const redirectUri = `${window.location.origin}/auth`;
-  return `${API_BASE}/auth/${provider}?redirectUri=${encodeURIComponent(redirectUri)}`;
+// OAuth 시작 URL — 로그인 후 백엔드가 `${origin}/auth?code=<일회용코드>`로 리다이렉트
+export function oauthStartUrl(provider: 'kakao' | 'google'): string {
+  const host = window.location.hostname;
+  const target = host === 'localhost' || host === '127.0.0.1' ? 'local' : 'web';
+  return `${API_BASE}/auth/${provider}?target=${target}`;
 }
 
 export const authApi = {
   me: () => api.get<User>('/auth/me'),
   logout: () => api.post('/auth/logout'),
   deleteAccount: () => api.del('/auth/me'),
+
+  // OAuth 콜백 일회용 코드 → 토큰 교환
+  exchange: (code: string) =>
+    api.post<{ accessToken: string; refreshToken: string; profileCompleted: boolean }>(
+      '/auth/exchange',
+      { code },
+    ),
 
   // 온보딩(최초 프로필 완성)
   submitOnboarding: (body: {

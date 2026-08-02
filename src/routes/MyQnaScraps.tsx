@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import './myQnaScraps.css';
 
 export default function MyQnaScraps() {
@@ -11,7 +11,7 @@ export default function MyQnaScraps() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    qaApi
+    qnaApi
       .myScraps()
       .then((data) => {
         if (!cancelled) setPosts(Array.isArray(data) ? data : []);

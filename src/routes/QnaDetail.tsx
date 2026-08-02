@@ -11,7 +11,7 @@ import {
   IoTrashOutline,
   IoCheckmark,
 } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import { QNA_ITEMS } from '../data/qnaData';
 import type { QnADetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
@@ -19,17 +19,6 @@ import { Overlay } from '../components/Overlay';
 import { Markdown } from '../components/Markdown';
 import TabBar from '../components/TabBar';
 import './qnaDetail.css';
-
-function calcAge(birth?: string | null): number | null {
-  if (!birth) return null;
-  const b = new Date(birth);
-  if (isNaN(b.getTime())) return null;
-  const t = new Date();
-  let age = t.getFullYear() - b.getFullYear();
-  const m = t.getMonth() - b.getMonth();
-  if (m < 0 || (m === 0 && t.getDate() < b.getDate())) age--;
-  return age;
-}
 
 const genderLabel = (g?: string | null) =>
   g === 'female' ? '여성' : g === 'male' ? '남성' : g === 'other' ? '기타' : '-';
@@ -98,7 +87,7 @@ export default function QnaDetail() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    qaApi
+    qnaApi
       .get(id!)
       .then((data) => {
         if (cancelled) return;
@@ -111,7 +100,6 @@ export default function QnaDetail() {
               answer: {
                 id: data.answer?.id ?? 0,
                 postId: data.id,
-                lawyerId: null,
                 content: sa.content,
                 createdAt: sa.createdAt,
                 updatedAt: sa.createdAt,
@@ -125,7 +113,7 @@ export default function QnaDetail() {
       .catch(() => !cancelled && setNotFound(true))
       .finally(() => !cancelled && setLoading(false));
     // 소유권 보강: 로그인 시 /qa/mine 목록에 이 질문이 있으면 내 질문으로 간주
-    qaApi
+    qnaApi
       .mine()
       .then((mineList) => {
         if (cancelled) return;
@@ -134,7 +122,7 @@ export default function QnaDetail() {
       })
       .catch(() => {});
     // 스크랩 상태 (로그인 시)
-    qaApi
+    qnaApi
       .getScrap(id!)
       .then((s) => {
         if (cancelled) return;
@@ -163,7 +151,7 @@ export default function QnaDetail() {
     setScrapped(!prev);
     setScrapCount((c) => c + (prev ? -1 : 1));
     try {
-      const r = await qaApi.toggleScrap(post.id);
+      const r = await qnaApi.toggleScrap(post.id);
       setScrapped(r.scrapped);
     } catch {
       setScrapped(prev);
@@ -175,7 +163,7 @@ export default function QnaDetail() {
     if (!post || !answerText.trim() || submitting) return;
     setSubmitting(true);
     try {
-      await qaApi.answer(post.id, answerText.trim());
+      await qnaApi.answer(post.id, answerText.trim());
       setSuccessOpen(true);
     } catch (e: any) {
       alert(e?.status === 409 ? '이미 답변이 등록된 질문입니다.' : '답변 등록에 실패했습니다.');
@@ -188,7 +176,7 @@ export default function QnaDetail() {
     if (!post?.answer || !editText.trim() || submitting) return;
     setSubmitting(true);
     try {
-      await qaApi.editAnswer(post.id, editText.trim());
+      await qnaApi.editAnswer(post.id, editText.trim());
       setPost({ ...post, answer: { ...post.answer, content: editText.trim() } });
       setEditing(false);
     } catch {
@@ -201,7 +189,7 @@ export default function QnaDetail() {
   async function doDelete() {
     if (!post) return;
     try {
-      await qaApi.remove(post.id);
+      await qnaApi.remove(post.id);
       navigate('/qna', { replace: true });
     } catch {
       alert('삭제에 실패했습니다.');
@@ -300,7 +288,7 @@ export default function QnaDetail() {
               <IoPersonOutline size={16} /> 질문자 정보
             </div>
             <div className="qd-student-rows">
-              <span>나이 {calcAge(post.author.birthDate) != null ? `만 ${calcAge(post.author.birthDate)}세` : '-'}</span>
+              <span>나이 {post.author.age != null ? `만 ${post.author.age}세` : '-'}</span>
               <span>지역 {post.author.region ?? '-'}</span>
               <span>성별 {genderLabel(post.author.gender)}</span>
             </div>

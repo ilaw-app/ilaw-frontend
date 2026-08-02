@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 15%;
+  padding-top: 150px;
 }
 .splash-text {
   text-align: center;
@@ -38,7 +38,7 @@
   aspect-ratio: 73 / 90;
   height: auto;
   object-fit: contain;
-  margin-top: 20px;
+  margin-top: 44px;
 }
 
 /* 하단 흰색 카드 */

@@ -4,7 +4,7 @@ import { IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons
 import { homeApi } from '../api/home';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { HighlightText } from '../components/HighlightText';
@@ -151,7 +151,7 @@ export default function Home() {
     try {
       const [manual, qna, community] = await Promise.all([
         manualApi.search(term).catch(() => ({ results: [] as any[], expandedTerms: [] })),
-        qaApi.search(term).catch(() => ({ results: [] as any[], expandedTerms: [] })),
+        qnaApi.search(term).catch(() => ({ results: [] as any[], expandedTerms: [] })),
         communityApi.search(term).catch(() => ({ results: [] as any[], expandedTerms: [] })),
       ]);
       const merged: SearchResult[] = [

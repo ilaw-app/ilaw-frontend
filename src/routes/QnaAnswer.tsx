@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import TabBar from '../components/TabBar';
 import './qnaAnswer.css';
 
@@ -17,7 +17,7 @@ export default function QnaAnswer() {
     }
     setSubmitting(true);
     try {
-      await qaApi.answer(id!, answer);
+      await qnaApi.answer(id!, answer);
       window.alert('답변이 등록되었습니다.');
       navigate(-1);
     } catch (e: any) {

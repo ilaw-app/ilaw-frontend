@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import TabBar from '../components/TabBar';
 import './myQuestions.css';
 
@@ -33,7 +33,7 @@ export default function MyQuestions() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    qaApi
+    qnaApi
       .mine()
       .then(async (data) => {
         if (cancelled) return;
@@ -41,7 +41,7 @@ export default function MyQuestions() {
         const withContent = await Promise.all(
           list.map(async (post) => {
             try {
-              const detail = await qaApi.get(post.id);
+              const detail = await qnaApi.get(post.id);
               return { ...post, content: detail.content ?? undefined };
             } catch {
               return post;

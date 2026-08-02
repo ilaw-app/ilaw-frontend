@@ -103,6 +103,10 @@ export default function AiChat() {
   const handleSend = async () => {
     const text = input.trim();
     if (!text || loading || chatEnded) return;
+    if (text.length > 2000) {
+      window.alert('메시지는 2,000자까지 입력할 수 있어요.');
+      return;
+    }
 
     setMessages(prev => [...prev, { id: Date.now(), from: 'user', text, time: nowStr() }]);
     setInput('');
@@ -119,11 +123,16 @@ export default function AiChat() {
       setMessages(prev => [...prev, ...newMsgs]);
 
       if (data.chatEnded) setChatEnded(true);
-    } catch {
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1, from: 'ai', time: nowStr(),
-        text: '죄송합니다, 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-      }]);
+    } catch (e: any) {
+      const text =
+        e?.status === 429
+          ? '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.'
+          : e?.status === 401
+          ? '로그인 후 이용할 수 있어요.'
+          : e?.status === 400
+          ? '메시지는 2,000자까지 입력할 수 있어요.'
+          : '죄송합니다, 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      setMessages(prev => [...prev, { id: Date.now() + 1, from: 'ai', time: nowStr(), text }]);
     } finally {
       setLoading(false);
       scrollToEnd();
@@ -232,6 +241,7 @@ export default function AiChat() {
             <textarea
               className="aic-text-input"
               placeholder="상황을 입력하세요"
+              maxLength={2000}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {

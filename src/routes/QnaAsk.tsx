@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBack, IoCheckmark } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import { uploadImage } from '../api/upload';
 import { Overlay } from '../components/Overlay';
 import './qnaAsk.css';
@@ -72,7 +72,7 @@ export default function QnaAsk() {
       for (const img of images) {
         imageUrls.push(await uploadImage(img.file));
       }
-      await qaApi.create({
+      await qnaApi.create({
         title,
         content,
         category: selectedCategories.join(','),

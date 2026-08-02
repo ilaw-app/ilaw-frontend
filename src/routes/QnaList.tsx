@@ -7,7 +7,7 @@ import {
   IoTimeOutline,
   IoAdd,
 } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import type { QnAListItem } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { HighlightText } from '../components/HighlightText';
@@ -104,7 +104,7 @@ export default function QnaList() {
 
   useEffect(() => {
     let cancelled = false;
-    qaApi
+    qnaApi
       .list()
       .then((data) => {
         if (cancelled) return;
@@ -126,7 +126,7 @@ export default function QnaList() {
         // TODO(BE): GET /qa 응답에 imageUrls(또는 대표 이미지)를 추가하면 이 보강은 제거 가능.
         Promise.all(
           list.map((p) =>
-            qaApi
+            qnaApi
               .get(p.id)
               .then((d) => ({ id: p.id, imageUrls: d.imageUrls }))
               .catch(() => null)
@@ -147,7 +147,7 @@ export default function QnaList() {
         if (!cancelled) setLoading(false);
       });
     // 내가 쓴 질문 id 집합 (로그인 시에만 성공 → '내 질문' 배지 표시)
-    qaApi
+    qnaApi
       .mine()
       .then((mineList) => {
         if (cancelled) return;

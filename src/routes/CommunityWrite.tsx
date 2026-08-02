@@ -61,7 +61,6 @@ export default function CommunityWrite() {
     } catch { return null; }
   })() : null;
   const initPollOptions = initPollData?.labels ?? null;
-  const initPollVotes = initPollData?.votes ?? [];
 
   const [pollActive, setPollActive] = useState(!!initPollOptions);
   const [pollOptions, setPollOptions] = useState<string[]>(initPollOptions ?? ['', '']);
@@ -119,15 +118,11 @@ export default function CommunityWrite() {
     setSubmitting(true);
     try {
       const body: Record<string, any> = { title: title.trim(), content: content.trim() || undefined };
-      if (pollActive) {
+      // 투표는 새 글 작성 시에만 전송(label만). 수정 시엔 poll을 아예 빼서 409 방지.
+      if (pollActive && !isEditing) {
         const validOptions = pollOptions.filter(o => o.trim());
         if (validOptions.length >= 2) {
-          body.poll = {
-            options: validOptions.map((label, i) => ({
-              label,
-              votes: isEditing ? (initPollVotes[i] ?? 0) : 0,
-            })),
-          };
+          body.poll = { options: validOptions.map((label) => ({ label })) };
         }
       }
       if (photos.length > 0) {

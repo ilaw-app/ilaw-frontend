@@ -6,7 +6,7 @@ import {
   IoCreateOutline,
   IoCheckmarkCircleOutline,
 } from 'react-icons/io5';
-import { qaApi } from '../api/qa';
+import { qnaApi } from '../api/qna';
 import './myAnswers.css';
 
 export default function MyAnswers() {
@@ -16,7 +16,7 @@ export default function MyAnswers() {
 
   useEffect(() => {
     let cancelled = false;
-    qaApi
+    qnaApi
       .myAnswers()
       .then((data) => {
         if (!cancelled) setPosts(Array.isArray(data) ? data : []);
