@@ -1,109 +1,120 @@
+.mq {
+  background: #f9fafb;
+}
+
 .mq-header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 42px 16px 12px;
+  gap: 8px;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 0.633px solid #e5e7eb;
 }
 .mq-back {
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: var(--text);
-  font-size: 20px;
+  flex-shrink: 0;
+}
+.mq-title-bar {
+  color: #101828;
+  font-size: 16px;
   font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.312px;
 }
 
 .mq-list {
-  padding: 16px 16px 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
 .mq-card {
-  position: relative;
-  background: var(--card-bg);
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  background: #fff;
   text-align: left;
-  width: 100%;
 }
-
-.mq-status {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.mq-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mq-cat {
+  padding: 2px 8px;
   border-radius: 9999px;
-  padding: 4px 8px;
+  background: #f7fee7;
+  color: #5ea500;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+.mq-status {
   font-size: 12px;
   font-weight: 700;
   line-height: 16px;
 }
 .mq-status.answered {
-  background: var(--answered-bg);
-  color: var(--answered-text);
+  color: #5ea500;
 }
 .mq-status.pending {
-  background: var(--pending-bg);
-  color: var(--pending-text);
+  color: #fb2c36;
 }
-
-.mq-badge-row {
-  display: flex;
-  margin-bottom: 10px;
-  margin-right: 90px;
-}
-.mq-badge {
-  background: var(--badge-bg);
-  color: var(--badge-text);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.mq-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 27px;
-  letter-spacing: -0.439px;
-  margin-bottom: 6px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.mq-content {
+.mq-card-title {
+  color: #101828;
   font-size: 14px;
-  color: var(--text);
-  line-height: 20px;
+  font-weight: 700;
+  line-height: 19.25px;
   letter-spacing: -0.15px;
-  margin-bottom: 8px;
+  word-break: keep-all;
+}
+.mq-card-desc {
+  color: #6a7282;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 19.5px;
+  word-break: keep-all;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.mq-bottom {
+.mq-card-date {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 8px;
-}
-.mq-date {
+  color: #99a1af;
   font-size: 12px;
-  color: var(--text);
+  font-weight: 500;
+  line-height: 16px;
 }
 
+/* 빈 상태 */
 .mq-empty {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 60px;
-  gap: 12px;
-  color: var(--placeholder);
+  gap: 16px;
+  padding-top: 100px;
+}
+.mq-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mq-empty-text {
+  color: #99a1af;
   font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }

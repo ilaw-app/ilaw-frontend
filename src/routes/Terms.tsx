@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import { IoChevronBack, IoClose } from 'react-icons/io5';
 import { useAuth } from '../context/AuthContext';
 import { authApi } from '../api/auth';
 import { Overlay } from '../components/Overlay';
@@ -214,20 +214,32 @@ export default function Terms() {
         <div style={{ height: 40 }} />
       </div>
 
-      <Overlay visible={showWithdrawModal} onClose={() => setShowWithdrawModal(false)} dim={0.7}>
-        <div className="terms-modal-card">
-          <span className="terms-modal-title">정말로 아이로를 떠나시나요?</span>
-          <span className="terms-modal-body">{'탈퇴하시면\n지금까지 스크랩한 자료가\n 모두 사라져요.'}</span>
-          <button className="terms-modal-danger-btn" onClick={doWithdraw}>탈퇴할게요</button>
+      {/* 탈퇴 확인 (바텀시트) */}
+      <Overlay visible={showWithdrawModal} onClose={() => setShowWithdrawModal(false)} align="bottom">
+        <div className="tw-sheet">
+          <div className="tw-sheet-head">
+            <span className="tw-sheet-title">정말 탈퇴하시겠어요?</span>
+            <button className="tw-sheet-x" onClick={() => setShowWithdrawModal(false)} aria-label="닫기">
+              <IoClose size={20} color="#6A7282" />
+            </button>
+          </div>
+          <p className="tw-sheet-desc">
+            탈퇴 후에는 스크랩, 질문 내역 등<br />모든 데이터가 삭제되며 복구할 수 없어요.
+          </p>
+          <button className="tw-danger" onClick={doWithdraw}>탈퇴할게요</button>
+          <button className="tw-cancel" onClick={() => setShowWithdrawModal(false)}>돌아가기</button>
         </div>
       </Overlay>
 
-      <Overlay visible={showWithdrawSuccess} dim={0.7}>
-        <div className="terms-modal-card">
-          <span className="terms-modal-title">회원탈퇴가 완료되었습니다.</span>
-          <span className="terms-modal-body">{'언제든 다시 돌아와주세요.\n아이로는 항상 여러분을 응원합니다!'}</span>
+      {/* 탈퇴 완료 (중앙 팝업) */}
+      <Overlay visible={showWithdrawSuccess}>
+        <div className="tw-done">
+          <span className="tw-done-title">회원탈퇴가 완료되었습니다.</span>
+          <span className="tw-done-desc">
+            언제든 다시 돌아와주세요.<br />아이로는 항상 여러분을 응원합니다!
+          </span>
           <button
-            className="terms-modal-confirm-btn"
+            className="tw-done-confirm"
             onClick={() => { setShowWithdrawSuccess(false); navigate('/', { replace: true }); }}
           >
             확인

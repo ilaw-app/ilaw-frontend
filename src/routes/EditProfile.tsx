@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack, IoPersonOutline, IoLogOutOutline } from 'react-icons/io5';
+import { IoChevronBack } from 'react-icons/io5';
 import { useAuth } from '../context/AuthContext';
 import { authApi } from '../api/auth';
 import { ApiError } from '../api/client';
@@ -11,14 +11,48 @@ const REGIONS = [
   '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종',
   '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주',
 ];
-
 const GENDERS: { value: Gender; label: string }[] = [
-  { value: 'male', label: '남성' },
-  { value: 'female', label: '여성' },
+  { value: 'male', label: '남' },
+  { value: 'female', label: '여' },
   { value: 'other', label: '기타' },
 ];
-
 const NICKNAME_REGEX = /^[a-zA-Z0-9_]*$/;
+
+function PersonIcon() {
+  return (
+    <svg width={40} height={40} viewBox="0 0 40 40" fill="none">
+      <path d="M31.6658 34.9998V31.6665C31.6658 29.8984 30.9635 28.2028 29.7132 26.9526C28.463 25.7024 26.7674 25 24.9993 25H14.9995C13.2315 25 11.5358 25.7024 10.2856 26.9526C9.03537 28.2028 8.33301 29.8984 8.33301 31.6665V34.9998" stroke="#99A1AF" strokeWidth="2.49994" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M19.9995 18.333C23.6813 18.333 26.666 15.3483 26.666 11.6665C26.666 7.9847 23.6813 5 19.9995 5C16.3177 5 13.333 7.9847 13.333 11.6665C13.333 15.3483 16.3177 18.333 19.9995 18.333Z" stroke="#99A1AF" strokeWidth="2.49994" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function CameraIcon() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 14 14" fill="none">
+      <g clipPath="url(#clip_ep_cam)">
+        <path d="M8.4585 2.33398H5.5419L4.0836 4.08395H2.33363C2.02422 4.08395 1.72748 4.20686 1.50869 4.42565C1.28991 4.64444 1.16699 4.94118 1.16699 5.25059V10.5005C1.16699 10.8099 1.28991 11.1066 1.50869 11.3254C1.72748 11.5442 2.02422 11.6671 2.33363 11.6671H11.6668C11.9762 11.6671 12.2729 11.5442 12.4917 11.3254C12.7105 11.1066 12.8334 10.8099 12.8334 10.5005V5.25059C12.8334 4.94118 12.7105 4.64444 12.4917 4.42565C12.2729 4.20686 11.9762 4.08395 11.6668 4.08395H9.91681L8.4585 2.33398Z" stroke="#6A7282" strokeWidth="1.16664" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M6.99996 9.33391C7.96644 9.33391 8.74993 8.55042 8.74993 7.58395C8.74993 6.61747 7.96644 5.83398 6.99996 5.83398C6.03348 5.83398 5.25 6.61747 5.25 7.58395C5.25 8.55042 6.03348 9.33391 6.99996 9.33391Z" stroke="#6A7282" strokeWidth="1.16664" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <defs><clipPath id="clip_ep_cam"><rect width="13.9997" height="13.9997" fill="white" /></clipPath></defs>
+    </svg>
+  );
+}
+function LogoutIcon() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M5.9999 13.9997H3.3333C2.97969 13.9997 2.64056 13.8592 2.39051 13.6092C2.14047 13.3591 2 13.02 2 12.6664V3.3333C2 2.97969 2.14047 2.64056 2.39051 2.39051C2.64056 2.14047 2.97969 2 3.3333 2H5.9999" stroke="#FF6467" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.666 11.3325L13.9993 7.99927L10.666 4.66602" stroke="#FF6467" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13.9998 8H6" stroke="#FF6467" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function ChevronDown() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M4 6L7.9999 9.9999L11.9998 6" stroke="#D1D5DC" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -34,23 +68,12 @@ export default function EditProfile() {
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
-    if (text && !NICKNAME_REGEX.test(text)) {
-      setNicknameError('영어, 숫자, _만 사용 가능합니다.');
-    } else {
-      setNicknameError('');
-    }
+    setNicknameError(text && !NICKNAME_REGEX.test(text) ? '영어, 숫자, _만 사용 가능합니다.' : '');
   };
 
   const handleSave = async () => {
-    if (!nickname) {
-      window.alert('아이디를 입력해주세요.');
-      return;
-    }
-    if (!NICKNAME_REGEX.test(nickname)) {
-      setNicknameError('영어, 숫자, _만 사용 가능합니다.');
-      return;
-    }
-
+    if (!nickname) { window.alert('아이디를 입력해주세요.'); return; }
+    if (!NICKNAME_REGEX.test(nickname)) { setNicknameError('영어, 숫자, _만 사용 가능합니다.'); return; }
     setSaving(true);
     try {
       const updated = await authApi.updateProfile({
@@ -63,13 +86,9 @@ export default function EditProfile() {
       if (user) setUser({ ...user, ...updated });
       navigate(-1);
     } catch (err) {
-      if (err instanceof ApiError && err.status === 409) {
-        setNicknameError('이미 사용 중인 아이디입니다.');
-      } else if (err instanceof ApiError && err.status === 400) {
-        window.alert(err.body?.message ?? '입력값을 확인해주세요.');
-      } else {
-        window.alert('저장에 실패했습니다. 다시 시도해주세요.');
-      }
+      if (err instanceof ApiError && err.status === 409) setNicknameError('이미 사용 중인 아이디입니다.');
+      else if (err instanceof ApiError && err.status === 400) window.alert(err.body?.message ?? '입력값을 확인해주세요.');
+      else window.alert('저장에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setSaving(false);
     }
@@ -83,27 +102,31 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="screen">
+    <div className="screen ep">
       <div className="ep-header">
-        <button className="ep-back" onClick={() => navigate(-1)}>
-          <IoChevronBack size={22} color="#586144" />
-          <span className="ep-header-title">정보 수정</span>
+        <button className="ep-back" onClick={() => navigate(-1)} aria-label="뒤로">
+          <IoChevronBack size={22} color="#101828" />
+        </button>
+        <h1 className="ep-header-title">정보 수정</h1>
+        <button className="ep-save" onClick={handleSave} disabled={saving}>
+          {saving ? '저장 중' : '저장'}
         </button>
       </div>
 
       <div className="screen-scroll ep-inner">
         {/* 아바타 */}
         <div className="ep-avatar-section">
-          <span className="ep-avatar-circle">
-            <IoPersonOutline size={46} color="#fff" />
-          </span>
+          <button className="ep-avatar-btn">
+            <span className="ep-avatar"><PersonIcon /></span>
+            <span className="ep-avatar-cam"><CameraIcon /></span>
+          </button>
         </div>
 
         {/* 아이디 */}
-        <div className="ep-field">
-          <label className="ep-label">아이디</label>
+        <div className="ep-box">
+          <label className="ep-box-label">아이디</label>
           <input
-            className={`ep-input ${nicknameError ? 'ep-input-error' : ''}`}
+            className="ep-box-input"
             placeholder="영어, 숫자, _만 사용 가능"
             value={nickname}
             onChange={(e) => handleNicknameChange(e.target.value)}
@@ -114,40 +137,37 @@ export default function EditProfile() {
         </div>
 
         {/* 지역 */}
-        <div className="ep-field">
-          <label className="ep-label">지역</label>
+        <div className="ep-box">
+          <label className="ep-box-label">지역</label>
           <select
-            className={`ep-input ep-select ${region ? '' : 'ep-select-placeholder'}`}
+            className={`ep-box-input ep-select ${region ? '' : 'ep-placeholder'}`}
             value={region}
             onChange={(e) => setRegion(e.target.value)}
           >
             <option value="">지역을 선택해주세요</option>
-            {REGIONS.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
+            {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
           </select>
+          <span className="ep-box-chevron"><ChevronDown /></span>
         </div>
 
-        {/* 생년월일 */}
-        <div className="ep-field">
-          <label className="ep-label">생년월일</label>
+        {/* 출생연도 */}
+        <div className="ep-box">
+          <label className="ep-box-label">출생연도</label>
           <input
             type="date"
-            className={`ep-input ep-date ${birthDate ? '' : 'ep-date-empty'}`}
+            className={`ep-box-input ep-date ${birthDate ? '' : 'ep-placeholder'}`}
             value={birthDate}
             max="2026-12-31"
             onChange={(e) => setBirthDate(e.target.value)}
           />
         </div>
 
-        {/* 소속 (변호사 전용) */}
+        {/* 소속 (변호사) */}
         {role === 'lawyer' && (
-          <div className="ep-field">
-            <label className="ep-label">소속</label>
+          <div className="ep-box">
+            <label className="ep-box-label">소속</label>
             <input
-              className="ep-input"
+              className="ep-box-input"
               placeholder="소속 기관을 입력해주세요"
               value={affiliation}
               onChange={(e) => setAffiliation(e.target.value)}
@@ -156,8 +176,8 @@ export default function EditProfile() {
         )}
 
         {/* 성별 */}
-        <div className="ep-field">
-          <label className="ep-label">성별</label>
+        <div className="ep-box">
+          <label className="ep-box-label">성별</label>
           <div className="ep-gender-row">
             {GENDERS.map((g) => (
               <button
@@ -171,12 +191,9 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <button className="ep-submit" onClick={handleSave} disabled={saving}>
-          {saving ? '저장 중...' : '저장하기'}
-        </button>
-
+        {/* 로그아웃 */}
         <button className="ep-logout" onClick={handleLogout}>
-          <IoLogOutOutline size={16} color="#C10007" />
+          <LogoutIcon />
           <span>로그아웃</span>
         </button>
       </div>
