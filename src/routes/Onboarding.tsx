@@ -104,7 +104,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="screen">
+    <div className="screen ob-screen">
       <div className="screen-scroll ob-inner">
         <div className="ob-logo-wrap">
           <img className="ob-shadow" src="/assets/shadow.png" alt="" aria-hidden="true" />

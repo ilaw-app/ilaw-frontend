@@ -27,6 +27,7 @@
   padding: 4px;
 }
 .aic-header-title {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #586144;

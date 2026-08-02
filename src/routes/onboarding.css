@@ -1,8 +1,12 @@
+.ob-screen {
+  background: #f9fafb;
+}
 .ob-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 44px 24px 60px;
+  background: #f9fafb;
 }
 
 .ob-logo-wrap {
@@ -14,8 +18,8 @@
 .ob-shadow {
   position: absolute;
   left: 50%;
-  top: 54%;
-  width: 165px;
+  top: 50%;
+  width: 230px;
   height: auto;
   transform: translate(-50%, -50%);
   z-index: 0;

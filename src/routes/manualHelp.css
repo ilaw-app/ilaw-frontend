@@ -416,6 +416,7 @@
 }
 
 .mh-tips-field {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -546,6 +547,8 @@
   color: #d1d5dc;
 }
 .mh-copy-btn {
+  flex-shrink: 0;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
