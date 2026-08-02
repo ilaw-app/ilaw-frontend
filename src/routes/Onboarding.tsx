@@ -36,6 +36,7 @@ export default function Onboarding() {
 
   const allAgreed = agreedTerms && agreedPrivacy && agreedAge14 && agreedMarketing;
   const allRequiredAgreed = agreedTerms && agreedPrivacy && agreedAge14;
+  const canSubmit = nickname.trim().length > 0 && !nicknameError && allRequiredAgreed;
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
@@ -193,7 +194,11 @@ export default function Onboarding() {
           ))}
         </div>
 
-        <button className="ob-submit" onClick={handleSubmit} disabled={submitting}>
+        <button
+          className={`ob-submit${canSubmit ? ' active' : ''}`}
+          onClick={handleSubmit}
+          disabled={submitting}
+        >
           {submitting ? '가입 중...' : '가입하기'}
         </button>
       </div>

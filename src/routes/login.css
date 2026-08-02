@@ -9,19 +9,19 @@
   padding: 0 32px;
 }
 .login-logo {
-  width: 160px;
-  height: 160px;
+  width: 185px;
+  height: 185px;
   object-fit: contain;
   margin-bottom: 12px;
 }
 .login-title {
   font-size: 24px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 400;
+  color: #586144;
   text-align: center;
   line-height: 32px;
   letter-spacing: 0.123px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 .login-btns {
   width: 100%;

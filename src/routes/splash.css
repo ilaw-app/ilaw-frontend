@@ -1,37 +1,29 @@
 .splash {
-  flex: 1;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #cae396 0%, rgba(208, 221, 180, 0.93) 50%, #fdfff8 100%);
   position: relative;
-  background: linear-gradient(180deg, #88a54d 0%, #c1d39a 50%, #fdfff8 100%);
   overflow: hidden;
 }
 
-/* 원본: left 102 / bottom 146.94 / width 281 / height 347 (390 프레임 기준) → %로 환산 */
-.splash-logo {
-  position: absolute;
-  left: 26%;
-  bottom: 17.4%;
-  width: 72%;
-  aspect-ratio: 281 / 347;
-  height: auto;
-  object-fit: contain;
+.splash-hero {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15%;
 }
-
-/* 원본: paddingTop 170(web) / paddingHorizontal 36 */
 .splash-text {
-  position: absolute;
-  top: 20%;
-  left: 0;
-  right: 0;
-  padding: 0 36px;
+  text-align: center;
 }
 .splash-tagline {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 400;
   color: #fff;
   line-height: 32px;
   letter-spacing: 0.07px;
-  margin-bottom: 17px;
 }
 .splash-name {
   font-size: 75px;
@@ -39,4 +31,46 @@
   color: #fff;
   line-height: 72px;
   letter-spacing: 0.123px;
+  margin-top: 10px;
+}
+.splash-logo {
+  width: 215px;
+  aspect-ratio: 73 / 90;
+  height: auto;
+  object-fit: contain;
+  margin-top: 20px;
+}
+
+/* 하단 흰색 카드 */
+.splash-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 40px;
+  border-radius: 24px 24px 0 0;
+  background: #fff;
+}
+.splash-start {
+  width: 329px;
+  max-width: 100%;
+  padding: 16px 0;
+  border-radius: 16px;
+  background: #b2d36e;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.312px;
+  text-align: center;
+}
+.splash-existing {
+  background: transparent;
+  color: #99a1af;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
