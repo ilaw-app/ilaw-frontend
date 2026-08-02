@@ -161,13 +161,19 @@ export type Notification = {
 };
 
 // ---- AI chat ----
-export type AiSuggestion = { type: 'manual' | 'qa'; id: number; label: string };
+export type AiSuggestion =
+  | { type: 'manual'; id: number; label: string }
+  | { type: 'qa'; id: number; label: string }
+  | { type: 'agency'; id: number; label: string; contact: string; region?: string }
+  | { type: 'hotline'; label: string; phone: string };
 export type AiChatResult = {
-  status: 'relevant' | 'unrelated';
+  status: 'relevant' | 'unrelated' | 'needs_clarification' | 'crisis';
   situationSummary: string;
   legalAdvice: string;
   suggestions: AiSuggestion[];
+  followUpQuestion?: string; // 지금은 안 옴(멀티턴 off)
   chatEnded: boolean;
+  conversationId?: string; // 지금은 안 옴(멀티턴 off)
 };
 export type AiChatHistoryItem = {
   id: number;

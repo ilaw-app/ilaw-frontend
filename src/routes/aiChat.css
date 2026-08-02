@@ -191,6 +191,13 @@
   line-height: 20px;
   letter-spacing: -0.15px;
 }
+.aic-sg-phone {
+  font-size: 13px;
+  font-weight: 700;
+  color: #364153;
+  line-height: 18px;
+  letter-spacing: -0.15px;
+}
 
 /* User message */
 .aic-user-col {

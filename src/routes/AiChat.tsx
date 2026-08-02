@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack, IoBookOutline, IoChatbubbleOutline } from 'react-icons/io5';
+import { IoChevronBack, IoBookOutline, IoChatbubbleOutline, IoCallOutline } from 'react-icons/io5';
 import { aiApi } from '../api/ai';
 import { useAuth } from '../context/AuthContext';
 import type { AiSuggestion } from '../api/types';
@@ -39,16 +39,26 @@ function SendIcon() {
   );
 }
 
+const SG_META: Record<AiSuggestion['type'], { tag: string; color: string }> = {
+  manual: { tag: '매뉴얼', color: '#9CAF88' },
+  qa: { tag: 'Q&A', color: '#9CAF88' },
+  agency: { tag: '기관', color: '#9CAF88' },
+  hotline: { tag: '긴급전화', color: '#C0492F' },
+};
+
 function SuggestionCard({ sg, onPress }: { sg: AiSuggestion; onPress: () => void }) {
+  const meta = SG_META[sg.type];
+  const phone = sg.type === 'agency' ? sg.contact : sg.type === 'hotline' ? sg.phone : null;
+  const Icon =
+    sg.type === 'manual' ? IoBookOutline : sg.type === 'qa' ? IoChatbubbleOutline : IoCallOutline;
   return (
     <button type="button" className="aic-sg-card" onClick={onPress}>
       <div className="aic-sg-type-row">
-        {sg.type === 'manual'
-          ? <IoBookOutline size={12} color="#9CAF88" />
-          : <IoChatbubbleOutline size={12} color="#9CAF88" />}
-        <span className="aic-sg-type-text">{sg.type === 'manual' ? '매뉴얼' : 'Q&A'}</span>
+        <Icon size={12} color={meta.color} />
+        <span className="aic-sg-type-text" style={{ color: meta.color }}>{meta.tag}</span>
       </div>
       <span className="aic-sg-title">{sg.label}</span>
+      {phone && <span className="aic-sg-phone">{phone}</span>}
     </button>
   );
 }
@@ -82,16 +92,20 @@ export default function AiChat() {
           { id: -(i * 2 + 1), from: 'user' as const, time: toTimeStr(h.createdAt), text: h.question },
           { id: -(i * 2 + 2), from: 'ai' as const, time: toTimeStr(h.createdAt), text: h.legalAdvice, suggestions: h.suggestions },
         ]);
-        setMessages([GREETING, ...historyMessages]);
+        // 인사말은 맨 아래(열자마자 보임), 히스토리는 위로 스크롤 시 표시
+        setMessages([...historyMessages, GREETING]);
         scrollToEnd(false);
       })
       .catch(() => {});
   }, [isAuthed]);
 
-  const goSuggestion = (sg: AiSuggestion) =>
-    sg.type === 'qa'
-      ? navigate(`/qna/${sg.id}`)
-      : navigate(`/manual-detail?articleId=${sg.id}`);
+  const goSuggestion = (sg: AiSuggestion) => {
+    if (sg.type === 'manual') return navigate(`/manual-detail?articleId=${sg.id}`);
+    if (sg.type === 'qa') return navigate(`/qna/${sg.id}`);
+    // agency / hotline → 전화 걸기
+    const phone = sg.type === 'agency' ? sg.contact : sg.phone;
+    window.location.href = `tel:${phone.replace(/[^0-9+]/g, '')}`;
+  };
 
   const handleNewChat = () => {
     setMessages(prev => [...prev, { ...GREETING, id: Date.now(), time: nowStr() }]);
