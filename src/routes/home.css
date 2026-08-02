@@ -8,8 +8,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 92px;
-  padding: 0 16px;
+  padding: 44px 16px 12px;
   background: #fff;
   border-bottom: 0.723px solid #f3f4f6;
 }
