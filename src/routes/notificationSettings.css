@@ -1,95 +1,103 @@
 .ns {
-  background: var(--bg);
+  background: #f9fafb;
 }
 
 .ns-header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 42px 16px 12px;
+  gap: 8px;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 0.633px solid #e5e7eb;
 }
 .ns-back {
   display: flex;
   align-items: center;
-  gap: 4px;
+  flex-shrink: 0;
 }
 .ns-header-title {
-  font-size: 20px;
+  color: #101828;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text);
+  line-height: 24px;
+  letter-spacing: -0.312px;
 }
 
+.ns-scroll {
+  padding: 16px;
+}
 .ns-list {
-  padding: 8px 16px 0;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .ns-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 20px 0;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 0.633px solid #f3f4f6;
 }
-
+.ns-row:last-child {
+  border-bottom: none;
+}
 .ns-icon-box {
   width: 40px;
   height: 40px;
   border-radius: 9999px;
-  background: var(--accent);
+  background: #ecfcca;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
-
 .ns-text-group {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 .ns-row-title {
-  font-size: 18px;
+  color: #101828;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--text);
-  line-height: 27px;
-  letter-spacing: -0.439px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .ns-row-desc {
+  color: #99a1af;
   font-size: 12px;
   font-weight: 400;
-  color: var(--text);
   line-height: 16px;
 }
 
-.ns-divider {
-  height: 1px;
-  background: var(--divider);
-}
-
-/* ── 토글 스위치 ────────────────────────────────── */
+/* ── 토글 스위치 ── */
 .ns-track {
   width: 44px;
-  height: 26px;
-  border-radius: 13px;
-  padding: 3px;
-  background: #e4eed4;
+  height: 24px;
+  border-radius: 9999px;
+  padding: 2px;
+  background: #e5e7eb;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   transition: background-color 0.2s ease;
 }
 .ns-track.on {
-  background: var(--accent);
+  background: #9ae600;
 }
 .ns-thumb {
   width: 20px;
   height: 20px;
-  border-radius: 10px;
+  border-radius: 9999px;
   background: #fff;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   transform: translateX(0);
   transition: transform 0.2s ease;
 }
 .ns-track.on .ns-thumb {
-  transform: translateX(18px);
+  transform: translateX(20px);
 }

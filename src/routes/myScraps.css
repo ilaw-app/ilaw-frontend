@@ -1,245 +1,136 @@
-.ms-header {
+.msc {
+  background: #f9fafb;
+}
+
+.msc-header {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 42px 16px 12px;
+  gap: 8px;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 0.633px solid #e5e7eb;
 }
-.ms-back {
+.msc-back {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.msc-title {
+  color: #101828;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.312px;
+}
+
+/* 탭 (알약) */
+.msc-tabs {
+  flex-shrink: 0;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  margin: 16px;
+  background: #f3f4f6;
+  border-radius: 9999px;
+}
+.msc-tab {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 9999px;
+  text-align: center;
+  color: #6a7282;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+.msc-tab.active {
+  background: #9ae600;
+  color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.msc-list {
+  padding: 0 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.msc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  text-align: left;
+}
+.msc-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.msc-card-cat {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--text);
-  font-size: 20px;
+  color: #6a7282;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.msc-card-scrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #99a1af;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.msc-card-title {
+  color: #101828;
+  font-size: 14px;
   font-weight: 700;
+  line-height: 19.25px;
+  letter-spacing: -0.15px;
+  word-break: keep-all;
+}
+.msc-card-desc {
+  color: #6a7282;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 19.5px;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.ms-tabs {
-  flex-shrink: 0;
-  display: flex;
-  margin: 0 16px 12px;
-  background: #fff;
-  border-radius: 9999px;
-  border: 1.356px solid var(--border);
-  padding: 4px;
-  gap: 8px;
-  height: 51px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.ms-tab {
+/* 빈 상태 */
+.msc-empty {
   flex: 1;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 100px;
+}
+.msc-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--placeholder);
 }
-.ms-tab.active {
-  background: var(--accent);
-  color: #fff;
-}
-
-.ms-list {
-  padding: 0 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* ── 공통 카드 (매뉴얼 / 커뮤니티) ── */
-.ms-card {
-  position: relative;
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: left;
-  width: 100%;
-}
-
-/* ── 매뉴얼 카드 ── */
-.ms-manual-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.ms-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--badge-bg);
-  color: var(--badge-text);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.ms-scrap-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--text);
-}
-.ms-manual-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 27px;
-  letter-spacing: -0.439px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.ms-summary {
-  font-size: 13px;
-  color: var(--placeholder);
-  line-height: 20px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ── 커뮤니티 카드 ── */
-.ms-community-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 27px;
-  letter-spacing: -0.439px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.ms-community-content {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 20px;
-  letter-spacing: -0.15px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.ms-community-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
-}
-.ms-community-date-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.ms-community-date {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 16px;
-}
-.ms-community-scrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.ms-community-scrap-text {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 16px;
-}
-
-/* ── Q&A 카드 ── */
-.ms-qna-card {
-  position: relative;
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  width: 100%;
-}
-.ms-qna-status {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  border-radius: 9999px;
-  padding: 4px 8px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 16px;
-}
-.ms-qna-status.answered {
-  background: var(--answered-bg);
-  color: var(--answered-text);
-}
-.ms-qna-status.pending {
-  background: var(--pending-bg);
-  color: var(--pending-text);
-}
-.ms-qna-badge-row {
-  display: flex;
-  margin-bottom: 10px;
-  margin-right: 90px;
-}
-.ms-qna-badge {
-  background: var(--badge-bg);
-  color: var(--badge-text);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.ms-qna-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 27px;
-  letter-spacing: -0.439px;
-  margin-bottom: 6px;
-}
-.ms-qna-content {
+.msc-empty-text {
+  color: #99a1af;
   font-size: 14px;
   font-weight: 400;
-  color: var(--text);
   line-height: 20px;
   letter-spacing: -0.15px;
-  margin-bottom: 8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.ms-qna-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 12px;
-  color: var(--text);
-}
-.ms-qna-meta-left,
-.ms-qna-meta-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ms-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 80px;
-  gap: 12px;
-  color: var(--placeholder);
-  font-size: 14px;
 }

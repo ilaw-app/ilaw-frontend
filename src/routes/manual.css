@@ -6,10 +6,10 @@
   padding: 46px 20px 14px;
 }
 .manual-header h1 {
-  font-family: 'Instrument Sans', 'Noto Sans KR', sans-serif;
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 24px;
-  font-weight: 800;
-  color: var(--fig-brand);
+  font-weight: 400;
+  color: #678720;
   line-height: 32px;
   letter-spacing: 0.07px;
   margin-bottom: 3px;

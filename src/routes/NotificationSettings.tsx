@@ -81,29 +81,26 @@ export default function NotificationSettings() {
   return (
     <div className="screen ns">
       <div className="ns-header">
-        <button className="ns-back" onClick={() => navigate(-1)}>
-          <IoChevronBack size={22} color="#586144" />
-          <h1 className="ns-header-title">알림 설정</h1>
+        <button className="ns-back" onClick={() => navigate(-1)} aria-label="뒤로">
+          <IoChevronBack size={22} color="#101828" />
         </button>
+        <h1 className="ns-header-title">알림 설정</h1>
       </div>
 
-      <div className="screen-scroll">
+      <div className="screen-scroll ns-scroll">
         <div className="ns-list">
-          {toggles.map((item, idx) => {
+          {toggles.map((item) => {
             const Icon = item.icon;
             return (
-              <div key={item.key}>
-                <div className="ns-row">
-                  <div className="ns-icon-box">
-                    <Icon size={20} color="#fff" />
-                  </div>
-                  <div className="ns-text-group">
-                    <span className="ns-row-title">{item.title}</span>
-                    <span className="ns-row-desc">{item.desc}</span>
-                  </div>
-                  <Toggle value={enabled[item.key]} onChange={() => toggle(item.key)} />
+              <div key={item.key} className="ns-row">
+                <div className="ns-icon-box">
+                  <Icon size={20} color="#5EA500" />
                 </div>
-                {idx < toggles.length - 1 && <div className="ns-divider" />}
+                <div className="ns-text-group">
+                  <span className="ns-row-title">{item.title}</span>
+                  <span className="ns-row-desc">{item.desc}</span>
+                </div>
+                <Toggle value={enabled[item.key]} onChange={() => toggle(item.key)} />
               </div>
             );
           })}

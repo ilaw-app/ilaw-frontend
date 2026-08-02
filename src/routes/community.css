@@ -65,9 +65,10 @@
 }
 
 .cm-header-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #586144;
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #678720;
   line-height: 32px;
   letter-spacing: 0.07px;
 }
