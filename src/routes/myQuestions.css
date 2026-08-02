@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 42px 16px 14px;
   background: #fff;
   border-bottom: 0.633px solid #e5e7eb;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import { IoArrowBack } from 'react-icons/io5';
 import { qnaApi } from '../api/qna';
 import TabBar from '../components/TabBar';
 import './myQuestions.css';
@@ -59,7 +59,7 @@ export default function MyQuestions() {
     <div className="screen mq">
       <div className="mq-header">
         <button className="mq-back" onClick={() => navigate(-1)} aria-label="뒤로">
-          <IoChevronBack size={22} color="#101828" />
+          <IoArrowBack size={22} color="#101828" />
         </button>
         <h1 className="mq-title-bar">내 질문</h1>
       </div>

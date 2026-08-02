@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 42px 16px 14px;
   background: #fff;
   border-bottom: 0.633px solid #e5e7eb;
 }
@@ -69,9 +69,11 @@
 }
 .ns-row-desc {
   color: #99a1af;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 15px;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
 }
 
 /* ── 토글 스위치 ── */

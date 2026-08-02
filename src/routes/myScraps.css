@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 42px 16px 14px;
   background: #fff;
   border-bottom: 0.633px solid #e5e7eb;
 }
@@ -24,13 +24,16 @@
   letter-spacing: -0.312px;
 }
 
-/* 탭 (알약) */
-.msc-tabs {
+/* 탭 (알약) — 흰 컨테이너 안 */
+.msc-tabs-wrap {
   flex-shrink: 0;
+  background: #fff;
+  padding: 12px 16px 16px;
+}
+.msc-tabs {
   display: flex;
   gap: 2px;
   padding: 4px;
-  margin: 16px;
   background: #f3f4f6;
   border-radius: 9999px;
 }

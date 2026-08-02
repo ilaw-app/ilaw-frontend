@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  IoChevronBack,
+  IoArrowBack,
   IoChatbubbleOutline,
   IoBookmarkOutline,
   IoBookOutline,
@@ -82,7 +82,7 @@ export default function NotificationSettings() {
     <div className="screen ns">
       <div className="ns-header">
         <button className="ns-back" onClick={() => navigate(-1)} aria-label="뒤로">
-          <IoChevronBack size={22} color="#101828" />
+          <IoArrowBack size={22} color="#101828" />
         </button>
         <h1 className="ns-header-title">알림 설정</h1>
       </div>

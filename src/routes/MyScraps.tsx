@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack, IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons/io5';
+import { IoArrowBack, IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons/io5';
 import { qnaApi } from '../api/qna';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
@@ -88,15 +88,17 @@ export default function MyScraps() {
     <div className="screen msc">
       <div className="msc-header">
         <button className="msc-back" onClick={() => navigate(-1)} aria-label="뒤로">
-          <IoChevronBack size={22} color="#101828" />
+          <IoArrowBack size={22} color="#101828" />
         </button>
         <h1 className="msc-title">내 스크랩</h1>
       </div>
 
-      <div className="msc-tabs">
-        <button className={`msc-tab ${activeTab === 'manual' ? 'active' : ''}`} onClick={() => setActiveTab('manual')}>매뉴얼</button>
-        <button className={`msc-tab ${activeTab === 'qna' ? 'active' : ''}`} onClick={() => setActiveTab('qna')}>Q&amp;A</button>
-        <button className={`msc-tab ${activeTab === 'community' ? 'active' : ''}`} onClick={() => setActiveTab('community')}>커뮤니티</button>
+      <div className="msc-tabs-wrap">
+        <div className="msc-tabs">
+          <button className={`msc-tab ${activeTab === 'manual' ? 'active' : ''}`} onClick={() => setActiveTab('manual')}>매뉴얼</button>
+          <button className={`msc-tab ${activeTab === 'qna' ? 'active' : ''}`} onClick={() => setActiveTab('qna')}>Q&amp;A</button>
+          <button className={`msc-tab ${activeTab === 'community' ? 'active' : ''}`} onClick={() => setActiveTab('community')}>커뮤니티</button>
+        </div>
       </div>
 
       {loading ? (

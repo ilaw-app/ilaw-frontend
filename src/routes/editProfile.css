@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 16px;
+  padding: 42px 16px 14px;
   background: #fff;
   border-bottom: 0.633px solid #e5e7eb;
 }
@@ -39,17 +39,17 @@
 }
 
 .ep-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 24px 16px 40px;
+  padding: 0 0 100px;
 }
 
-/* 아바타 */
+/* 아바타 — 흰 컨테이너 */
 .ep-avatar-section {
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 8px;
+  padding: 24px 0;
+  background: #fff;
+  border-bottom: 0.723px solid #f3f4f6;
 }
 .ep-avatar-btn {
   position: relative;
@@ -79,7 +79,13 @@
   justify-content: center;
 }
 
-/* 필드 박스 */
+/* 필드 */
+.ep-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 16px 0;
+}
 .ep-box {
   position: relative;
   display: flex;
@@ -88,6 +94,11 @@
   padding: 16px;
   border-radius: 16px;
   background: #fff;
+}
+.ep-box-btn {
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
 }
 .ep-box-label {
   color: #99a1af;
@@ -108,13 +119,18 @@
   font-family: inherit;
   padding: 0;
 }
-.ep-box-input.ep-placeholder,
 .ep-box-input::placeholder {
   color: #99a1af;
 }
-.ep-select {
-  appearance: none;
-  -webkit-appearance: none;
+.ep-box-value {
+  color: #101828;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+.ep-box-value.ph {
+  color: #99a1af;
 }
 .ep-box-chevron {
   position: absolute;
@@ -165,4 +181,44 @@
   font-weight: 700;
   line-height: 20px;
   letter-spacing: -0.15px;
+}
+
+/* 지역/출생연도 선택 바텀시트 */
+.ep-picker {
+  width: 100%;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 0 32px;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+}
+.ep-picker-title {
+  text-align: center;
+  color: #101828;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.312px;
+  padding: 0 24px 12px;
+}
+.ep-picker-list {
+  overflow-y: auto;
+  min-height: 0;
+}
+.ep-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 24px;
+  text-align: left;
+  color: #4a5565;
+  font-size: 15px;
+  font-weight: 500;
+  border-bottom: 0.633px solid #f3f4f6;
+}
+.ep-picker-item.active {
+  color: #5ea500;
+  font-weight: 700;
 }

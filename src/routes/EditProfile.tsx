@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import { IoArrowBack, IoCheckmark } from 'react-icons/io5';
 import { useAuth } from '../context/AuthContext';
 import { authApi } from '../api/auth';
 import { ApiError } from '../api/client';
+import { Overlay } from '../components/Overlay';
+import TabBar from '../components/TabBar';
 import type { Gender } from '../api/types';
 import './editProfile.css';
 
@@ -11,6 +13,7 @@ const REGIONS = [
   '서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종',
   '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주',
 ];
+const YEARS = Array.from({ length: 40 }, (_, i) => String(2026 - i)); // 2026 → 1987
 const GENDERS: { value: Gender; label: string }[] = [
   { value: 'male', label: '남' },
   { value: 'female', label: '여' },
@@ -65,6 +68,9 @@ export default function EditProfile() {
   const [gender, setGender] = useState<Gender | ''>(user?.gender ?? '');
   const [affiliation, setAffiliation] = useState(user?.affiliation ?? '');
   const [saving, setSaving] = useState(false);
+  const [picker, setPicker] = useState<'region' | 'year' | null>(null);
+
+  const birthYear = birthDate ? birthDate.slice(0, 4) : '';
 
   const handleNicknameChange = (text: string) => {
     setNickname(text);
@@ -101,11 +107,20 @@ export default function EditProfile() {
     navigate('/login', { replace: true });
   };
 
+  const pickerItems = picker === 'region' ? REGIONS : YEARS;
+  const pickerSelected = picker === 'region' ? region : birthYear;
+  const pickerFmt = (v: string) => (picker === 'year' ? `${v}년` : v);
+  const onPick = (v: string) => {
+    if (picker === 'region') setRegion(v);
+    else setBirthDate(`${v}-01-01`);
+    setPicker(null);
+  };
+
   return (
     <div className="screen ep">
       <div className="ep-header">
         <button className="ep-back" onClick={() => navigate(-1)} aria-label="뒤로">
-          <IoChevronBack size={22} color="#101828" />
+          <IoArrowBack size={22} color="#101828" />
         </button>
         <h1 className="ep-header-title">정보 수정</h1>
         <button className="ep-save" onClick={handleSave} disabled={saving}>
@@ -114,7 +129,7 @@ export default function EditProfile() {
       </div>
 
       <div className="screen-scroll ep-inner">
-        {/* 아바타 */}
+        {/* 아바타 (흰 컨테이너) */}
         <div className="ep-avatar-section">
           <button className="ep-avatar-btn">
             <span className="ep-avatar"><PersonIcon /></span>
@@ -122,81 +137,91 @@ export default function EditProfile() {
           </button>
         </div>
 
-        {/* 아이디 */}
-        <div className="ep-box">
-          <label className="ep-box-label">아이디</label>
-          <input
-            className="ep-box-input"
-            placeholder="영어, 숫자, _만 사용 가능"
-            value={nickname}
-            onChange={(e) => handleNicknameChange(e.target.value)}
-            autoCapitalize="none"
-            autoCorrect="off"
-          />
-          {nicknameError ? <p className="ep-error-text">{nicknameError}</p> : null}
-        </div>
-
-        {/* 지역 */}
-        <div className="ep-box">
-          <label className="ep-box-label">지역</label>
-          <select
-            className={`ep-box-input ep-select ${region ? '' : 'ep-placeholder'}`}
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
-          >
-            <option value="">지역을 선택해주세요</option>
-            {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-          </select>
-          <span className="ep-box-chevron"><ChevronDown /></span>
-        </div>
-
-        {/* 출생연도 */}
-        <div className="ep-box">
-          <label className="ep-box-label">출생연도</label>
-          <input
-            type="date"
-            className={`ep-box-input ep-date ${birthDate ? '' : 'ep-placeholder'}`}
-            value={birthDate}
-            max="2026-12-31"
-            onChange={(e) => setBirthDate(e.target.value)}
-          />
-        </div>
-
-        {/* 소속 (변호사) */}
-        {role === 'lawyer' && (
+        <div className="ep-fields">
+          {/* 아이디 */}
           <div className="ep-box">
-            <label className="ep-box-label">소속</label>
+            <label className="ep-box-label">아이디</label>
             <input
               className="ep-box-input"
-              placeholder="소속 기관을 입력해주세요"
-              value={affiliation}
-              onChange={(e) => setAffiliation(e.target.value)}
+              placeholder="영어, 숫자, _만 사용 가능"
+              value={nickname}
+              onChange={(e) => handleNicknameChange(e.target.value)}
+              autoCapitalize="none"
+              autoCorrect="off"
             />
+            {nicknameError ? <p className="ep-error-text">{nicknameError}</p> : null}
           </div>
-        )}
 
-        {/* 성별 */}
-        <div className="ep-box">
-          <label className="ep-box-label">성별</label>
-          <div className="ep-gender-row">
-            {GENDERS.map((g) => (
-              <button
-                key={g.value}
-                className={`ep-gender-btn ${gender === g.value ? 'active' : ''}`}
-                onClick={() => setGender(gender === g.value ? '' : g.value)}
-              >
-                {g.label}
-              </button>
-            ))}
+          {/* 지역 */}
+          <button className="ep-box ep-box-btn" onClick={() => setPicker('region')}>
+            <span className="ep-box-label">지역</span>
+            <span className={`ep-box-value ${region ? '' : 'ph'}`}>{region || '지역을 선택해주세요'}</span>
+            <span className="ep-box-chevron"><ChevronDown /></span>
+          </button>
+
+          {/* 출생연도 */}
+          <button className="ep-box ep-box-btn" onClick={() => setPicker('year')}>
+            <span className="ep-box-label">출생연도</span>
+            <span className={`ep-box-value ${birthYear ? '' : 'ph'}`}>{birthYear ? `${birthYear}년` : '출생연도를 선택해주세요'}</span>
+            <span className="ep-box-chevron"><ChevronDown /></span>
+          </button>
+
+          {/* 소속 (변호사) */}
+          {role === 'lawyer' && (
+            <div className="ep-box">
+              <label className="ep-box-label">소속</label>
+              <input
+                className="ep-box-input"
+                placeholder="소속 기관을 입력해주세요"
+                value={affiliation}
+                onChange={(e) => setAffiliation(e.target.value)}
+              />
+            </div>
+          )}
+
+          {/* 성별 */}
+          <div className="ep-box">
+            <label className="ep-box-label">성별</label>
+            <div className="ep-gender-row">
+              {GENDERS.map((g) => (
+                <button
+                  key={g.value}
+                  className={`ep-gender-btn ${gender === g.value ? 'active' : ''}`}
+                  onClick={() => setGender(gender === g.value ? '' : g.value)}
+                >
+                  {g.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 로그아웃 */}
+          <button className="ep-logout" onClick={handleLogout}>
+            <LogoutIcon />
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 지역/출생연도 선택 바텀시트 */}
+      <Overlay visible={picker !== null} onClose={() => setPicker(null)} align="bottom">
+        <div className="ep-picker">
+          <div className="ep-picker-title">{picker === 'region' ? '지역 선택' : '출생연도 선택'}</div>
+          <div className="ep-picker-list">
+            {pickerItems.map((v) => {
+              const active = pickerSelected === v;
+              return (
+                <button key={v} className={`ep-picker-item ${active ? 'active' : ''}`} onClick={() => onPick(v)}>
+                  <span>{pickerFmt(v)}</span>
+                  {active && <IoCheckmark size={18} color="#5EA500" />}
+                </button>
+              );
+            })}
           </div>
         </div>
+      </Overlay>
 
-        {/* 로그아웃 */}
-        <button className="ep-logout" onClick={handleLogout}>
-          <LogoutIcon />
-          <span>로그아웃</span>
-        </button>
-      </div>
+      <TabBar />
     </div>
   );
 }
