@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoArrowBack, IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons/io5';
+import { IoArrowBack, IoBookOutline, IoChatbubbleOutline } from 'react-icons/io5';
+import CommunityIcon from '../components/CommunityIcon';
 import { qnaApi } from '../api/qna';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
@@ -18,7 +19,7 @@ const TAB_EMPTY: Record<Tab, string> = {
 function TypeIcon({ tab }: { tab: Tab }) {
   if (tab === 'manual') return <IoBookOutline size={14} color="#99A1AF" />;
   if (tab === 'qna') return <IoChatbubbleOutline size={14} color="#99A1AF" />;
-  return <IoPeopleOutline size={14} color="#99A1AF" />;
+  return <CommunityIcon size={14} color="#99A1AF" />;
 }
 
 function BookmarkSmall() {

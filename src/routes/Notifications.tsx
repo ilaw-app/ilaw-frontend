@@ -5,6 +5,7 @@ import type { Notification } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { useNotificationSettings } from '../context/NotificationSettingsContext';
 import TabBar from '../components/TabBar';
+import CommunityGlyph from '../components/CommunityIcon';
 import './notifications.css';
 
 type NotificationSettingKey = 'answer' | 'scrap' | 'manual' | 'newQuestion' | 'community';
@@ -57,29 +58,11 @@ function ManualUpdateIcon() {
   );
 }
 
-function CommunityIcon() {
-  return (
-    <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <path
-        d="M12.4937 1.66602H4.9975C4.55569 1.66602 4.13198 1.84152 3.81958 2.15393C3.50717 2.46633 3.33167 2.89004 3.33167 3.33185V16.6585C3.33167 17.1003 3.50717 17.524 3.81958 17.8364C4.13198 18.1488 4.55569 18.3244 4.9975 18.3244H14.9925C15.4343 18.3244 15.858 18.1488 16.1704 17.8364C16.4828 17.524 16.6583 17.1003 16.6583 16.6585V5.8306L12.4937 1.66602Z"
-        stroke="#364153" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round"
-      />
-      <path
-        d="M11.6608 1.66602V4.99768C11.6608 5.43949 11.8363 5.8632 12.1487 6.1756C12.4611 6.48801 12.8849 6.66352 13.3267 6.66352H16.6583"
-        stroke="#364153" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round"
-      />
-      <path d="M8.32916 7.49609H6.66333" stroke="#364153" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M13.3267 10.8281H6.66333" stroke="#364153" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M13.3267 14.1592H6.66333" stroke="#364153" strokeWidth={1.33308} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function NotiIcon({ type }: { type: string }) {
   if (type === 'answer' || type === 'qna_answered') return <QnaAnswerIcon />;
   if (type === 'scrap_answer') return <ScrapAnswerIcon />;
   if (type === 'manual_update') return <ManualUpdateIcon />;
-  if (type === 'community_comment' || type === 'community_like') return <CommunityIcon />;
+  if (type === 'community_comment' || type === 'community_like') return <CommunityGlyph size={20} color="#364153" />;
   return <QnaAnswerIcon />;
 }
 

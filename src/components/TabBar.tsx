@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import CommunityIcon from './CommunityIcon';
 import './TabBar.css';
 
 // 탭 아이콘 — stroke는 currentColor로, tab-item 색(비활성 #99A1AF / 활성 #B2D36E)을 상속
@@ -26,16 +27,6 @@ function QnaIcon() {
     </svg>
   );
 }
-function CommunityIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M15.9983 20.9973V18.9975C15.9983 17.9368 15.5769 16.9195 14.8268 16.1695C14.0768 15.4194 13.0595 14.998 11.9988 14.998H5.9995C4.93877 14.998 3.92148 15.4194 3.17143 16.1695C2.42137 16.9195 2 17.9368 2 18.9975V20.9973" stroke="currentColor" strokeWidth="1.79978" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8.99902 11C11.2082 11 12.999 9.20914 12.999 7C12.999 4.79086 11.2082 3 8.99902 3C6.78988 3 4.99902 4.79086 4.99902 7C4.99902 9.20914 6.78988 11 8.99902 11Z" stroke="currentColor" strokeWidth="1.79978" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M21.998 20.9989V18.9989C21.9974 18.1126 21.7024 17.2517 21.1594 16.5512C20.6164 15.8508 19.8562 15.3505 18.998 15.1289" stroke="currentColor" strokeWidth="1.79978" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M15.998 3.12891C16.8585 3.34921 17.6211 3.84961 18.1657 4.55122C18.7103 5.25283 19.0059 6.11574 19.0059 7.00391C19.0059 7.89208 18.7103 8.75499 18.1657 9.4566C17.6211 10.1582 16.8585 10.6586 15.998 10.8789" stroke="currentColor" strokeWidth="1.79978" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
 function MyPageIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -51,7 +42,7 @@ const TABS: Tab[] = [
   { path: '/home', title: '홈', Icon: HomeIcon },
   { path: '/manual', title: '매뉴얼', Icon: ManualIcon },
   { path: '/qna', title: 'Q&A', Icon: QnaIcon },
-  { path: '/community', title: '커뮤니티', Icon: CommunityIcon },
+  { path: '/community', title: '커뮤니티', Icon: () => <CommunityIcon /> },
   { path: '/profile', title: '마이페이지', Icon: MyPageIcon },
 ];
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoBookOutline, IoChatbubbleOutline, IoPeopleOutline } from 'react-icons/io5';
+import { IoBookOutline, IoChatbubbleOutline } from 'react-icons/io5';
+import CommunityIcon from '../components/CommunityIcon';
 import { homeApi } from '../api/home';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
@@ -36,7 +37,7 @@ const TYPE_COLOR: Record<ResultType, string> = { manual: '#9AE600', qna: '#51A2F
 function TypeIcon({ type, size = 14 }: { type: ResultType; size?: number }) {
   const c = TYPE_COLOR[type];
   if (type === 'manual') return <IoBookOutline size={size} color={c} />;
-  if (type === 'community') return <IoPeopleOutline size={size} color={c} />;
+  if (type === 'community') return <CommunityIcon size={size} color={c} />;
   return <IoChatbubbleOutline size={size} color={c} />;
 }
 
@@ -77,17 +78,6 @@ function QuickQnaIcon() {
         <path d="M6.58354 16.666C8.17398 17.4819 10.0035 17.7029 11.7425 17.2892C13.4814 16.8754 15.0155 15.8542 16.0681 14.4096C17.1207 12.9649 17.6228 11.1918 17.4837 9.40967C17.3447 7.6276 16.5738 5.95377 15.3098 4.68982C14.0459 3.42587 12.372 2.65492 10.59 2.51589C8.80789 2.37687 7.03475 2.87891 5.59008 3.93155C4.1454 4.98419 3.1242 6.5182 2.71049 8.25716C2.29677 9.99612 2.51776 11.8257 3.33362 13.4161L1.66699 18.3327L6.58354 16.666Z" stroke="#2B7FFF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <defs><clipPath id="clip_myq"><rect width="19.9995" height="19.9995" fill="white" /></clipPath></defs>
-    </svg>
-  );
-}
-
-function QuickCommunityIcon() {
-  return (
-    <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <path d="M13.3334 17.4999V15.8333C13.3334 14.9492 12.9822 14.1014 12.3571 13.4763C11.732 12.8512 10.8842 12.5 10.0001 12.5H5.00024C4.11621 12.5 3.26838 12.8512 2.64328 13.4763C2.01817 14.1014 1.66699 14.9492 1.66699 15.8333V17.4999" stroke="#AD46FF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M7.50024 9.1665C9.34115 9.1665 10.8335 7.67415 10.8335 5.83325C10.8335 3.99235 9.34115 2.5 7.50024 2.5C5.65934 2.5 4.16699 3.99235 4.16699 5.83325C4.16699 7.67415 5.65934 9.1665 7.50024 9.1665Z" stroke="#AD46FF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M18.3329 17.4999V15.8333C18.3324 15.0948 18.0866 14.3773 17.6341 13.7936C17.1816 13.2099 16.5481 12.793 15.833 12.6084" stroke="#AD46FF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M13.333 2.6084C14.05 2.79198 14.6855 3.20897 15.1393 3.79363C15.5932 4.37829 15.8395 5.09736 15.8395 5.83748C15.8395 6.57761 15.5932 7.29668 15.1393 7.88134C14.6855 8.466 14.05 8.88299 13.333 9.06657" stroke="#AD46FF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -331,7 +321,7 @@ export default function Home() {
             <span className="home-quick-label">내 질문</span>
           </button>
           <button className="home-quick-item" onClick={() => navigate('/community')}>
-            <span className="home-quick-icon community"><QuickCommunityIcon /></span>
+            <span className="home-quick-icon community"><CommunityIcon size={20} color="#AD46FF" /></span>
             <span className="home-quick-label">내 커뮤니티 글</span>
           </button>
         </div>

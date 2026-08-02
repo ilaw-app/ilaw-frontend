@@ -4,9 +4,9 @@ import {
   IoChatbubbleOutline,
   IoBookmarkOutline,
   IoBookOutline,
-  IoPeopleOutline,
 } from 'react-icons/io5';
 import type { IconType } from 'react-icons';
+import CommunityIcon from '../components/CommunityIcon';
 import { useAuth } from '../context/AuthContext';
 import {
   useNotificationSettings,
@@ -51,7 +51,7 @@ const USER_TOGGLES: ToggleItem[] = [
   },
   {
     key: 'community',
-    icon: IoPeopleOutline,
+    icon: CommunityIcon,
     title: '커뮤니티 좋아요, 댓글 알림',
     desc: '내 글에 댓글이나 좋아요가 달리면 알려드려요',
   },
