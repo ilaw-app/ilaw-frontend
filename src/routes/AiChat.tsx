@@ -183,6 +183,7 @@ export default function AiChat() {
                 <span className="aic-ai-name">아이로</span>
               </div>
 
+              <div className="aic-ai-body-row">
               {msg.summary ? (
                 <div className="aic-ai-boxes">
                   <div className="aic-ai-bubble">
@@ -214,14 +215,15 @@ export default function AiChat() {
                 </div>
               )}
 
-              <div className="aic-msg-time">{msg.time}</div>
+                <div className="aic-msg-time">{msg.time}</div>
+              </div>
             </div>
           ) : (
             <div key={msg.id} className="aic-user-col">
+              <div className="aic-msg-time">{msg.time}</div>
               <div className="aic-user-bubble">
                 <div className="aic-user-bubble-text">{msg.text}</div>
               </div>
-              <div className="aic-msg-time">{msg.time}</div>
             </div>
           )
         )}
