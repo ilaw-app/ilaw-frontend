@@ -100,7 +100,8 @@
   font-weight: 400;
   color: #6a7282;
   line-height: 16px;
-  margin-left: 4px;
+  align-self: flex-end;
+  margin-right: 4px;
 }
 
 .aic-ai-boxes {
@@ -131,8 +132,8 @@
   font-size: 12px;
   font-weight: 400;
   color: #1e2939;
-  line-height: 22px;
-  letter-spacing: -0.15px;
+  line-height: 18px;
+  letter-spacing: -0.312px;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -215,7 +216,8 @@
 .aic-user-bubble-text {
   font-size: 12px;
   color: #1e2939;
-  line-height: 21px;
+  line-height: 18px;
+  letter-spacing: -0.312px;
   white-space: pre-wrap;
   word-break: break-word;
 }
