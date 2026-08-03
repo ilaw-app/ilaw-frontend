@@ -97,7 +97,7 @@ body {
      Noto Sans KR을 웹폰트로 강제. 데스크탑 OS와 무관하게 같은 폰트로 렌더됨. */
   font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
     'Malgun Gothic', Roboto, Helvetica, Arial, sans-serif;
-  background: #2e4a1c;
+  background: #3f3f46;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
@@ -107,7 +107,7 @@ body {
 .app-viewport {
   position: fixed;
   inset: 0;
-  background: #2e4a1c;
+  background: #3f3f46;
   display: flex;
   align-items: center;
   justify-content: center;
