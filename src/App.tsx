@@ -50,8 +50,10 @@ function useCanvasScale() {
 }
 
 // 로그인이 필요한 라우트 가드 — 세션 복구를 기다렸다가 미인증이면 스플래시로 보냄
+// (로컬 개발 서버에서는 가드를 건너뛰어 /home 등에 바로 접근 가능)
 function RequireAuth({ children }: { children: ReactElement }) {
   const { ready, isAuthed } = useAuth();
+  if (import.meta.env.DEV) return children;
   if (!ready) return null; // 세션 복구 대기 (깜빡임 방지)
   if (!isAuthed) return <Navigate to="/" replace />;
   return children;
