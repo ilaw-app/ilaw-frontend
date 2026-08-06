@@ -206,8 +206,8 @@ export default function Home() {
             aria-label="뒤로"
           >
             <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-              <path d="M9.99618 15.8273L4.16504 9.99618L9.99618 4.16504" stroke="#9bcb11" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M15.8273 9.99609H4.16504" stroke="#9bcb11" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9.99618 15.8273L4.16504 9.99618L9.99618 4.16504" stroke="#101828" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M15.8273 9.99609H4.16504" stroke="#101828" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
           <h2 className="hs-head-title">'{submittedQuery}' 검색 결과</h2>

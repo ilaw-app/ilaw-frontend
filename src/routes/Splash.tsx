@@ -32,7 +32,7 @@ export default function Splash() {
         <button className="splash-start" onClick={() => navigate('/login')}>
           시작하기
         </button>
-        <p className="splash-existing">App Version 1.0.0</p>
+        <p className="splash-existing">App Version 1.2.0</p>
       </div>
     </div>
   );

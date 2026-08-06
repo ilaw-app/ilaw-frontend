@@ -153,13 +153,10 @@
   flex-shrink: 0;
 }
 .qna-status.answered {
-  color: #5ea500;
-  background: #f7fee7;
-  padding: 2px 8px;
-  border-radius: 9999px;
+  color: #bee966;
 }
 .qna-status.answered .qna-status-dot {
-  background: #5ea500;
+  background: #bee966;
 }
 .qna-status.pending {
   color: var(--fig-subtle);

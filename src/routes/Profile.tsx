@@ -88,7 +88,7 @@ const LAWYER_MENU_ITEMS: MenuItem[] = [
   { Icon: IcShield, label: '개인정보처리방침', route: '/privacy' },
 ];
 
-const APP_VERSION = 'v1.1.0';
+const APP_VERSION = 'v1.2.0';
 
 export default function Profile() {
   const navigate = useNavigate();
