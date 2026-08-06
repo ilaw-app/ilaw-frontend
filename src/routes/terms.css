@@ -99,7 +99,7 @@
 .terms-header {
   display: flex;
   align-items: center;
-  padding: 42px 16px 12px;
+  padding: 42px 16px 16px;
   border-bottom: 1px solid #f3f4f6;
 }
 .terms-back {

@@ -20,6 +20,7 @@ import CommunityWrite from './routes/CommunityWrite';
 import Profile from './routes/Profile';
 import EditProfile from './routes/EditProfile';
 import MyQuestions from './routes/MyQuestions';
+import MyCommunityPosts from './routes/MyCommunityPosts';
 import MyAnswers from './routes/MyAnswers';
 import MyScraps from './routes/MyScraps';
 import MyQnaScraps from './routes/MyQnaScraps';
@@ -95,6 +96,7 @@ export default function App() {
           {/* 마이 / 기타 */}
           <Route path="/edit-profile" element={<RequireAuth><EditProfile /></RequireAuth>} />
           <Route path="/my-questions" element={<RequireAuth><MyQuestions /></RequireAuth>} />
+          <Route path="/my-community-posts" element={<RequireAuth><MyCommunityPosts /></RequireAuth>} />
           <Route path="/my-answers" element={<RequireAuth><MyAnswers /></RequireAuth>} />
           <Route path="/my-scraps" element={<RequireAuth><MyScraps /></RequireAuth>} />
           <Route path="/my-qna-scraps" element={<RequireAuth><MyQnaScraps /></RequireAuth>} />

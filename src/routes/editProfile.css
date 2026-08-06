@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 42px 16px 12px;
+  padding: 42px 16px 16px;
   background: #fff;
   border-bottom: 1px solid #f3f4f6;
 }
@@ -161,8 +161,8 @@
   letter-spacing: -0.15px;
 }
 .ep-gender-btn.active {
-  border-color: #7ccf00;
-  background: #7ccf00;
+  border-color: #bee966;
+  background: #bee966;
   color: #fff;
 }
 

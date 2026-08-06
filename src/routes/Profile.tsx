@@ -1,9 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import TabBar from '../components/TabBar';
+import CommunityIcon from '../components/CommunityIcon';
 import './profile.css';
 
 const G = { stroke: '#99A1AF', strokeWidth: '1.24997', strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+
+function IcCommunity() {
+  return <CommunityIcon size={20} color="#99A1AF" />;
+}
+function IcTutorial() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+      <path d="M9.99743 18.3288C14.5987 18.3288 18.3288 14.5987 18.3288 9.99743C18.3288 5.39612 14.5987 1.66602 9.99743 1.66602C5.39612 1.66602 1.66602 5.39612 1.66602 9.99743C1.66602 14.5987 5.39612 18.3288 9.99743 18.3288Z" stroke="#99A1AF" strokeWidth="1.24971" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.33105 6.66602L13.3299 9.99858L8.33105 13.3311V6.66602Z" stroke="#99A1AF" strokeWidth="1.24971" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 function PersonIcon() {
   return (
@@ -50,18 +63,27 @@ function IcInfo() {
   return (<svg width={20} height={20} viewBox="0 0 20 20" fill="none"><path d="M10.0001 18.3323C14.6024 18.3323 18.3332 14.6014 18.3332 9.99914C18.3332 5.39688 14.6024 1.66602 10.0001 1.66602C5.39786 1.66602 1.66699 5.39688 1.66699 9.99914C1.66699 14.6014 5.39786 18.3323 10.0001 18.3323Z" {...G} /><path d="M10 13.3333V10" {...G} /><path d="M10 6.66602H10.0083" {...G} /></svg>);
 }
 
-type MenuItem = { Icon: () => React.ReactElement; label: string; route: string };
+type MenuItem = { Icon: () => React.ReactElement; label: string; route?: string; onPress?: () => void };
+
+const TUTORIAL_ITEM: MenuItem = {
+  Icon: IcTutorial,
+  label: '튜토리얼 다시보기',
+  onPress: () => window.alert('튜토리얼 다시보기는 준비 중이에요.'),
+};
 
 const USER_MENU_ITEMS: MenuItem[] = [
   { Icon: IcScrap, label: '내 스크랩', route: '/my-scraps' },
   { Icon: IcMyQ, label: '내 질문 보기', route: '/my-questions' },
+  { Icon: IcCommunity, label: '내 커뮤니티 글', route: '/my-community-posts' },
   { Icon: IcBell, label: '알림설정', route: '/notification-settings' },
+  TUTORIAL_ITEM,
   { Icon: IcDoc, label: '이용약관', route: '/terms' },
   { Icon: IcShield, label: '개인정보처리방침', route: '/privacy' },
 ];
 const LAWYER_MENU_ITEMS: MenuItem[] = [
   { Icon: IcMyQ, label: '내 답변 보기', route: '/my-answers' },
   { Icon: IcBell, label: '알림설정', route: '/notification-settings' },
+  TUTORIAL_ITEM,
   { Icon: IcDoc, label: '이용약관', route: '/terms' },
   { Icon: IcShield, label: '개인정보처리방침', route: '/privacy' },
 ];
@@ -92,7 +114,7 @@ export default function Profile() {
 
         <div className="pf-menu">
           {menuList.map((item) => (
-            <button key={item.label} className="pf-row" onClick={() => navigate(item.route)}>
+            <button key={item.label} className="pf-row" onClick={() => (item.onPress ? item.onPress() : navigate(item.route!))}>
               <span className="pf-row-left">
                 <item.Icon />
                 <span className="pf-row-label">{item.label}</span>

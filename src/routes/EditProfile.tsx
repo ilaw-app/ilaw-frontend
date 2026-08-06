@@ -31,17 +31,6 @@ function PersonIcon() {
     </svg>
   );
 }
-function CameraIcon() {
-  return (
-    <svg width={14} height={14} viewBox="0 0 14 14" fill="none">
-      <g clipPath="url(#clip_ep_cam)">
-        <path d="M8.4585 2.33398H5.5419L4.0836 4.08395H2.33363C2.02422 4.08395 1.72748 4.20686 1.50869 4.42565C1.28991 4.64444 1.16699 4.94118 1.16699 5.25059V10.5005C1.16699 10.8099 1.28991 11.1066 1.50869 11.3254C1.72748 11.5442 2.02422 11.6671 2.33363 11.6671H11.6668C11.9762 11.6671 12.2729 11.5442 12.4917 11.3254C12.7105 11.1066 12.8334 10.8099 12.8334 10.5005V5.25059C12.8334 4.94118 12.7105 4.64444 12.4917 4.42565C12.2729 4.20686 11.9762 4.08395 11.6668 4.08395H9.91681L8.4585 2.33398Z" stroke="#6A7282" strokeWidth="1.16664" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M6.99996 9.33391C7.96644 9.33391 8.74993 8.55042 8.74993 7.58395C8.74993 6.61747 7.96644 5.83398 6.99996 5.83398C6.03348 5.83398 5.25 6.61747 5.25 7.58395C5.25 8.55042 6.03348 9.33391 6.99996 9.33391Z" stroke="#6A7282" strokeWidth="1.16664" strokeLinecap="round" strokeLinejoin="round" />
-      </g>
-      <defs><clipPath id="clip_ep_cam"><rect width="13.9997" height="13.9997" fill="white" /></clipPath></defs>
-    </svg>
-  );
-}
 function LogoutIcon() {
   return (
     <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
@@ -127,10 +116,9 @@ export default function EditProfile() {
       <div className="screen-scroll ep-inner">
         {/* 아바타 (흰 컨테이너) */}
         <div className="ep-avatar-section">
-          <button className="ep-avatar-btn">
+          <div className="ep-avatar-btn">
             <span className="ep-avatar"><PersonIcon /></span>
-            <span className="ep-avatar-cam"><CameraIcon /></span>
-          </button>
+          </div>
         </div>
 
         <div className="ep-fields">

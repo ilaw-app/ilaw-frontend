@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 42px 16px 12px;
+  padding: 42px 16px 16px;
   background: #fff;
   border-bottom: 1px solid #f3f4f6;
 }
@@ -89,7 +89,7 @@
   transition: background-color 0.2s ease;
 }
 .ns-track.on {
-  background: #9ae600;
+  background: #bee966;
 }
 .ns-thumb {
   width: 20px;
