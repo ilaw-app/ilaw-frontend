@@ -107,7 +107,7 @@ function mapComment(c: CommunityComment): Comment {
     // DEMO_FLAGGED: 신고댓글 디자인 미리보기용 임시(확인 후 false로 되돌릴 것).
     // 실제로는 BE가 flagged/hidden/masked/reported 플래그를 내려줘야 동작함.
     flagged:
-      DEMO_FLAGGED ||
+      (DEMO_FLAGGED && c.id % 2 === 0) ||
       !!(c as any).flagged || !!(c as any).hidden || !!(c as any).masked || !!(c as any).reported,
     parentId: c.parentId ?? null,
     replies: (c.replies ?? []).map(mapComment),
