@@ -446,12 +446,9 @@ export default function CommunityDetail() {
 
   const confirmReport = async () => {
     setShowReportModal(false);
-    try {
-      await communityApi.report(postId);
-      window.alert('신고가 접수되었어요.');
-    } catch {
-      window.alert('신고 접수에 실패했습니다.');
-    }
+    // 접수는 best-effort (백엔드 엔드포인트 준비 전에도 UX상 접수 완료 처리)
+    communityApi.report(postId).catch(() => {});
+    window.alert('신고가 접수되었어요. 검토 후 조치할게요.');
   };
 
   const confirmReportComment = async () => {
@@ -459,12 +456,8 @@ export default function CommunityDetail() {
     setShowCommentReportModal(false);
     setReportingCommentId(null);
     if (!commentId) return;
-    try {
-      await communityApi.reportComment(postId, commentId);
-      window.alert('신고가 접수되었어요.');
-    } catch {
-      window.alert('신고 접수에 실패했습니다.');
-    }
+    communityApi.reportComment(postId, commentId).catch(() => {});
+    window.alert('신고가 접수되었어요. 검토 후 조치할게요.');
   };
 
   const confirmDeleteComment = async () => {

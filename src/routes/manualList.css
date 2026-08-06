@@ -129,19 +129,15 @@
   background: #fff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   z-index: 5;
-  animation: ml-help-bob 2s ease-in-out infinite;
+  animation: ml-help-bob 1.6s ease-in-out infinite;
   transition: box-shadow 0.15s ease;
 }
 @keyframes ml-help-bob {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-4px); }
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(-50%) translateY(-7px) scale(1.03); }
 }
 .ml-help:active {
-  animation: none;
   transform: translateX(-50%) scale(0.96);
-}
-@media (prefers-reduced-motion: reduce) {
-  .ml-help { animation: none; }
 }
 .ml-help-icon {
   width: 32px;

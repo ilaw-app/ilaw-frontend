@@ -17,6 +17,9 @@ import { HighlightText } from '../components/HighlightText';
 import TabBar from '../components/TabBar';
 import './community.css';
 
+// 화면에서 숨길 게시글 (제목 공백 제거 후 부분일치)
+const HIDDEN_POST_KEYWORDS = ['3개월째월급안주는사장'];
+
 type PollOption = { label: string; votes: number };
 type NormalizedPoll = { options: PollOption[]; total: number };
 type CommunityPost = Omit<CommunityListItem, 'poll'> & { poll: NormalizedPoll | null };
@@ -223,6 +226,7 @@ export default function Community() {
   const displayPosts = useMemo(
     () =>
       [...posts]
+        .filter((p) => !HIDDEN_POST_KEYWORDS.some((k) => (p.title ?? '').replace(/\s/g, '').includes(k)))
         .filter((p) => {
           const q = submitted.trim();
           if (!q) return true;
@@ -310,6 +314,8 @@ export default function Community() {
           </form>
         </div>
       )}
+
+      <div className="cm-header-divider" />
 
       {loading ? (
         <div className="spinner-center">

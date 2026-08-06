@@ -7,10 +7,14 @@
 .cm-header {
   flex-shrink: 0;
   padding: 46px 19.991px 16px;
-  border-bottom: 0.549px solid #e5e7eb;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+}
+.cm-header-divider {
+  flex-shrink: 0;
+  height: 0.549px;
+  background: #e5e7eb;
 }
 .cm-header-text {
   min-width: 0;
