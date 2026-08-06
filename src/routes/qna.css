@@ -27,9 +27,10 @@
   letter-spacing: 0.07px;
 }
 .qna-header p {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 15px;
   font-weight: 500;
-  color: var(--fig-body);
+  color: #c8db72;
   line-height: 20px;
   letter-spacing: -0.15px;
   margin-top: 3px;

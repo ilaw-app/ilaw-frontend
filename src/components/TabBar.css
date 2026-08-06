@@ -6,7 +6,8 @@
   padding: 0 19px;
   height: 80px;
   background: #fff;
-  border-top: 2px solid #9bcb11;
+  border-top: 1.647px solid #d4d8e1;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
 .tab {

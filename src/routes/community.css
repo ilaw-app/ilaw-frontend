@@ -73,9 +73,10 @@
   letter-spacing: 0.07px;
 }
 .cm-header-sub {
+  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #586144;
+  color: #c8db72;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.15px;
 }
