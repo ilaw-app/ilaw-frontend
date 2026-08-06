@@ -269,7 +269,7 @@ export default function Community() {
       <div className="cm-header">
         <div className="cm-header-text">
           <h1 className="cm-header-title">커뮤니티</h1>
-          <p className="cm-header-sub">정보 공유를 통해 함께 도움을 주고받아요</p>
+          <p className="cm-header-sub">자유롭게 소통하고 정보를 나눠요</p>
         </div>
         <button className="cm-header-search" onClick={toggleSearch} aria-label="검색">
           {searchOpen ? <IoClose size={24} color="#6a7282" /> : <IoSearch size={22} color="#6a7282" />}

@@ -86,11 +86,11 @@
   margin-bottom: 14px;
 }
 .cd-nickname {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  color: #1e2939;
-  line-height: 24px;
-  letter-spacing: -0.312px;
+  color: #101828;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .cd-date {
   font-size: 12px;
@@ -331,19 +331,23 @@
   gap: 8px;
 }
 .cd-comment-nickname {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: #1e2939;
+  color: #101828;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .cd-reply-nickname {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: #6a7282;
+  color: #101828;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .cd-author-nickname {
   font-size: 14px;
   font-weight: 700;
-  color: #5a7b10;
+  color: #101828;
   line-height: 20px;
   letter-spacing: -0.15px;
 }

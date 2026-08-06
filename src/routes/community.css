@@ -6,7 +6,8 @@
 
 .cm-header {
   flex-shrink: 0;
-  padding: 46px 19.991px 0;
+  padding: 46px 19.991px 16px;
+  border-bottom: 0.549px solid #e5e7eb;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;

@@ -19,7 +19,7 @@ import './communityDetail.css';
 
 /* ── 커스텀 SVG 아이콘 (원본 verbatim) ────────────────────────── */
 function ThumbsUpIcon({ filled = false, size = 19 }: { filled?: boolean; size?: number }) {
-  const color = filled ? '#3C6802' : '#6A7282';
+  const color = filled ? '#364153' : '#6A7282';
   return (
     <svg width={size} height={size} viewBox="0 0 19 19" fill="none">
       <path
@@ -183,8 +183,8 @@ function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDe
               <div className="cd-mini-dropdown">
                 {reply.isAuthor ? (
                   <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(reply.id); }}>
-                    <IoTrashOutline size={14} color="#586144" />
-                    <span className="cd-mini-dropdown-text">삭제하기</span>
+                    <IoTrashOutline size={14} color="#FB2C36" />
+                    <span className="cd-mini-dropdown-text" style={{ color: '#FB2C36' }}>삭제하기</span>
                   </button>
                 ) : (
                   <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onReport(reply.id); }}>
@@ -199,7 +199,7 @@ function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDe
         <p className="cd-comment-text">{reply.text}</p>
         <button type="button" className="cd-comment-like" onClick={() => onLike(reply.id)}>
           <ThumbsUpIcon filled={reply.liked} size={13} />
-          <span className="cd-reply-meta" style={reply.liked ? { color: '#3C6802' } : undefined}>{reply.likes}</span>
+          <span className="cd-reply-meta" style={reply.liked ? { color: '#364153' } : undefined}>{reply.likes}</span>
         </button>
       </div>
     </div>
@@ -228,8 +228,8 @@ function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment
                 <div className="cd-mini-dropdown">
                   {comment.isAuthor ? (
                     <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(comment.id); }}>
-                      <IoTrashOutline size={14} color="#586144" />
-                      <span className="cd-mini-dropdown-text">삭제하기</span>
+                      <IoTrashOutline size={14} color="#FB2C36" />
+                    <span className="cd-mini-dropdown-text" style={{ color: '#FB2C36' }}>삭제하기</span>
                     </button>
                   ) : (
                     <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onReport(comment.id); }}>
@@ -245,7 +245,7 @@ function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment
           <div className="cd-comment-actions">
             <button type="button" className="cd-comment-like" onClick={() => onLike(comment.id)}>
               <ThumbsUpIcon filled={comment.liked} size={13} />
-              <span className="cd-reply-meta" style={comment.liked ? { color: '#3C6802' } : undefined}>{comment.likes}</span>
+              <span className="cd-reply-meta" style={comment.liked ? { color: '#364153' } : undefined}>{comment.likes}</span>
             </button>
             <button type="button" className="cd-reply-btn" onClick={() => onReply(comment.id)}>답글</button>
           </div>
@@ -542,13 +542,13 @@ export default function CommunityDetail() {
           {post.isAuthor ? (
             <>
               <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowDeleteModal(true); }}>
-                <IoTrashOutline size={14} color="#586144" />
-                <span className="cd-dropdown-text">삭제하기</span>
+                <IoTrashOutline size={14} color="#FB2C36" />
+                <span className="cd-dropdown-text" style={{ color: '#FB2C36' }}>삭제하기</span>
               </button>
               <div className="cd-dropdown-divider" />
               <button type="button" className="cd-dropdown-item" onClick={goEdit}>
-                <IoCreateOutline size={14} color="#586144" />
-                <span className="cd-dropdown-text">수정하기</span>
+                <IoCreateOutline size={14} color="#364153" />
+                <span className="cd-dropdown-text" style={{ color: '#364153' }}>수정하기</span>
               </button>
             </>
           ) : (
@@ -605,7 +605,7 @@ export default function CommunityDetail() {
           <div className="cd-actions-left">
             <button type="button" className="cd-action-btn" onClick={handleLike}>
               <ThumbsUpIcon filled={liked} size={18} />
-              <span className="cd-action-text" style={liked ? { color: '#3C6802' } : undefined}>{likeCount}</span>
+              <span className="cd-action-text" style={liked ? { color: '#364153' } : undefined}>{likeCount}</span>
             </button>
             <button type="button" className="cd-action-btn">
               <IoChatbubbleOutline size={18} color="#6A7282" />
@@ -613,8 +613,8 @@ export default function CommunityDetail() {
             </button>
           </div>
           <button type="button" className="cd-action-btn" onClick={handleBookmark}>
-            {bookmarked ? <IoBookmark size={18} color="#6A7282" /> : <IoBookmarkOutline size={18} color="#6A7282" />}
-            <span className="cd-action-text" style={bookmarked ? { color: '#3C6802' } : undefined}>{scrapCount}</span>
+            {bookmarked ? <IoBookmark size={18} color="#364153" /> : <IoBookmarkOutline size={18} color="#6A7282" />}
+            <span className="cd-action-text" style={bookmarked ? { color: '#364153' } : undefined}>{scrapCount}</span>
           </button>
         </div>
 
