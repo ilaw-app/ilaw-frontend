@@ -94,7 +94,6 @@ export default function Manual() {
                 </span>
                 <span className="manual-card-text">
                   <span className="manual-card-label">{cat.label}</span>
-                  <span className="manual-card-desc">{cat.desc}</span>
                 </span>
               </button>
             );
