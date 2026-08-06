@@ -12,6 +12,7 @@ type Message = {
   time: string;
   text?: string;
   summary?: string;
+  answer?: boolean; // true면 '상황 요약' 제목 표시(실제 답변)
   suggestions?: AiSuggestion[];
 };
 
@@ -40,9 +41,9 @@ function SendIcon() {
 }
 
 const SG_META: Record<AiSuggestion['type'], { tag: string; color: string }> = {
-  manual: { tag: '매뉴얼', color: '#9CAF88' },
-  qa: { tag: 'Q&A', color: '#9CAF88' },
-  agency: { tag: '기관', color: '#9CAF88' },
+  manual: { tag: '매뉴얼', color: '#567411' },
+  qa: { tag: 'Q&A', color: '#567411' },
+  agency: { tag: '기관', color: '#567411' },
   hotline: { tag: '긴급전화', color: '#C0492F' },
 };
 
@@ -90,7 +91,7 @@ export default function AiChat() {
         if (!history.length) return;
         const historyMessages: Message[] = history.flatMap((h, i) => [
           { id: -(i * 2 + 1), from: 'user' as const, time: toTimeStr(h.createdAt), text: h.question },
-          { id: -(i * 2 + 2), from: 'ai' as const, time: toTimeStr(h.createdAt), text: h.legalAdvice, suggestions: h.suggestions },
+          { id: -(i * 2 + 2), from: 'ai' as const, time: toTimeStr(h.createdAt), text: h.legalAdvice, answer: true, suggestions: h.suggestions },
         ]);
         // 인사말은 맨 아래(열자마자 보임), 히스토리는 위로 스크롤 시 표시
         setMessages([...historyMessages, GREETING]);
@@ -132,7 +133,7 @@ export default function AiChat() {
       const now = nowStr();
       const advice = (data.legalAdvice ?? '').trim();
       const newMsgs: Message[] = [];
-      if (advice) newMsgs.push({ id: Date.now() + 2, from: 'ai', time: now, text: advice, suggestions: data.suggestions });
+      if (advice) newMsgs.push({ id: Date.now() + 2, from: 'ai', time: now, text: advice, answer: true, suggestions: data.suggestions });
       if (newMsgs.length === 0) newMsgs.push({ id: Date.now() + 1, from: 'ai', time: now, text: '죄송합니다, 답변을 불러오는 중 오류가 발생했습니다.' });
       setMessages(prev => [...prev, ...newMsgs]);
 
@@ -162,13 +163,9 @@ export default function AiChat() {
             <IoChevronBack size={22} color="#586144" />
           </button>
           <div>
-            <div className="aic-header-title">상황 진단하기</div>
-            <div className="aic-header-sub">AI 법률 진단 챗봇</div>
+            <div className="aic-header-title">상황진단 AI 챗봇</div>
           </div>
         </div>
-        {chatEnded && (
-          <button className="aic-new-chat-btn" onClick={handleNewChat}>다른질문하기</button>
-        )}
       </div>
 
       {/* Messages */}
@@ -202,6 +199,7 @@ export default function AiChat() {
               ) : (
                 <div className="aic-ai-boxes">
                   <div className="aic-ai-bubble">
+                    {msg.answer && <div className="aic-summary-header">상황 요약</div>}
                     <div className="aic-ai-bubble-text">{msg.text}</div>
                   </div>
                   {(msg.suggestions ?? []).length > 0 && (
@@ -250,7 +248,7 @@ export default function AiChat() {
       <div className="aic-input-bar">
         {chatEnded ? (
           <div className="aic-chat-ended-bar">
-            <div className="aic-chat-ended-text">새 문의는 다른질문하기를 누르세요</div>
+            <div className="aic-chat-ended-text">새 문의는 다른 질문하기를 누르세요</div>
           </div>
         ) : (
           <div className="aic-input-row">
@@ -277,6 +275,10 @@ export default function AiChat() {
           </div>
         )}
       </div>
+
+      {chatEnded && (
+        <button className="aic-new-chat-btn" onClick={handleNewChat}>다른 질문하기</button>
+      )}
     </div>
   );
 }
