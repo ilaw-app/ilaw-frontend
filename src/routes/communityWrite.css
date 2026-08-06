@@ -37,7 +37,7 @@
   color: var(--fig-subtle);
 }
 .cw-done.active {
-  color: var(--fig-danger);
+  color: #5ea500;
   font-weight: 700;
 }
 .cw-done:disabled {

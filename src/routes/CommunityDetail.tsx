@@ -116,13 +116,35 @@ function mapPoll(poll: any): PollT | undefined {
 }
 
 function Avatar({ size = 32 }: { size?: number }) {
+  const icon = Math.round(size * 0.57);
   return (
-    <img
-      src="/assets/Container.png"
-      alt=""
+    <span
       className="cd-avatar"
-      style={{ width: size, height: size, borderRadius: size / 2 }}
-    />
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        background: '#E5E7EB',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+      }}
+    >
+      <svg width={icon} height={icon} viewBox="0 0 16 16" fill="none">
+        <path d="M12.6652 13.9985V12.6654C12.6652 11.9582 12.3843 11.28 11.8843 10.78C11.3842 10.2799 10.706 9.99902 9.99888 9.99902H5.99936C5.2922 9.99902 4.614 10.2799 4.11396 10.78C3.61393 11.28 3.33301 11.9582 3.33301 12.6654V13.9985" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M7.99936 7.3327C9.47194 7.3327 10.6657 6.13893 10.6657 4.66635C10.6657 3.19377 9.47194 2 7.99936 2C6.52677 2 5.33301 3.19377 5.33301 4.66635C5.33301 6.13893 6.52677 7.3327 7.99936 7.3327Z" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
+}
+
+function ReportIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none">
+      <path d="M2.33301 8.75C2.33301 8.75 2.91632 8.16669 4.66624 8.16669C6.41617 8.16669 7.58278 9.33331 9.33271 9.33331C11.0826 9.33331 11.6659 8.75 11.6659 8.75V1.7503C11.6659 1.7503 11.0826 2.33361 9.33271 2.33361C7.58278 2.33361 6.41617 1.16699 4.66624 1.16699C2.91632 1.16699 2.33301 1.7503 2.33301 1.7503V8.75Z" stroke="#FB2C36" strokeWidth="1.16662" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.33301 12.8332V8.75" stroke="#FB2C36" strokeWidth="1.16662" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -141,7 +163,7 @@ function PollBar({ option, total, selected, onVote }: { option: PollOption; tota
 }
 
 /* ── ReplyItem ───────────────────────────────────────────────── */
-function ReplyItem({ reply, onDelete, onLike }: { reply: Comment; onDelete: (id: number) => void; onLike: (id: number) => void }) {
+function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDelete: (id: number) => void; onLike: (id: number) => void; onReport: (id: number) => void }) {
   const [showMenu, setShowMenu] = useState(false);
   const isOP = !!reply.isPostAuthor;
   return (
@@ -153,21 +175,26 @@ function ReplyItem({ reply, onDelete, onLike }: { reply: Comment; onDelete: (id:
             <span className={isOP ? 'cd-author-nickname' : 'cd-reply-nickname'}>{reply.nickname}</span>
             <span className="cd-reply-date">{reply.date}</span>
           </div>
-          {reply.isAuthor && (
-            <div className="cd-menu-anchor">
-              <button type="button" className="cd-dots-btn" onClick={() => setShowMenu((v) => !v)}>
-                <DotsIcon />
-              </button>
-              {showMenu && (
-                <div className="cd-mini-dropdown">
+          <div className="cd-menu-anchor">
+            <button type="button" className="cd-dots-btn" onClick={() => setShowMenu((v) => !v)}>
+              <DotsIcon />
+            </button>
+            {showMenu && (
+              <div className="cd-mini-dropdown">
+                {reply.isAuthor ? (
                   <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(reply.id); }}>
                     <IoTrashOutline size={14} color="#586144" />
                     <span className="cd-mini-dropdown-text">삭제하기</span>
                   </button>
-                </div>
-              )}
-            </div>
-          )}
+                ) : (
+                  <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onReport(reply.id); }}>
+                    <ReportIcon />
+                    <span className="cd-mini-dropdown-text" style={{ color: '#FB2C36' }}>신고하기</span>
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <p className="cd-comment-text">{reply.text}</p>
         <button type="button" className="cd-comment-like" onClick={() => onLike(reply.id)}>
@@ -180,7 +207,7 @@ function ReplyItem({ reply, onDelete, onLike }: { reply: Comment; onDelete: (id:
 }
 
 /* ── CommentItem ─────────────────────────────────────────────── */
-function CommentItem({ comment, onReply, onDelete, onLike }: { comment: Comment; onReply: (id: number) => void; onDelete: (id: number) => void; onLike: (id: number) => void }) {
+function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment: Comment; onReply: (id: number) => void; onDelete: (id: number) => void; onLike: (id: number) => void; onReport: (id: number) => void }) {
   const [showMenu, setShowMenu] = useState(false);
   const isOP = !!comment.isPostAuthor;
   return (
@@ -193,21 +220,26 @@ function CommentItem({ comment, onReply, onDelete, onLike }: { comment: Comment;
               <span className={isOP ? 'cd-author-nickname' : 'cd-comment-nickname'}>{comment.nickname}</span>
               <span className="cd-reply-date">{comment.date}</span>
             </div>
-            {comment.isAuthor && (
-              <div className="cd-menu-anchor">
-                <button type="button" className="cd-dots-btn" onClick={() => setShowMenu((v) => !v)}>
-                  <DotsIcon />
-                </button>
-                {showMenu && (
-                  <div className="cd-mini-dropdown">
+            <div className="cd-menu-anchor">
+              <button type="button" className="cd-dots-btn" onClick={() => setShowMenu((v) => !v)}>
+                <DotsIcon />
+              </button>
+              {showMenu && (
+                <div className="cd-mini-dropdown">
+                  {comment.isAuthor ? (
                     <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onDelete(comment.id); }}>
                       <IoTrashOutline size={14} color="#586144" />
                       <span className="cd-mini-dropdown-text">삭제하기</span>
                     </button>
-                  </div>
-                )}
-              </div>
-            )}
+                  ) : (
+                    <button type="button" className="cd-mini-dropdown-item" onClick={() => { setShowMenu(false); onReport(comment.id); }}>
+                      <ReportIcon />
+                      <span className="cd-mini-dropdown-text" style={{ color: '#FB2C36' }}>신고하기</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
           <p className="cd-comment-text">{comment.text}</p>
           <div className="cd-comment-actions">
@@ -220,7 +252,7 @@ function CommentItem({ comment, onReply, onDelete, onLike }: { comment: Comment;
         </div>
       </div>
       {(comment.replies ?? []).map((reply) => (
-        <ReplyItem key={reply.id} reply={reply} onDelete={onDelete} onLike={onLike} />
+        <ReplyItem key={reply.id} reply={reply} onDelete={onDelete} onLike={onLike} onReport={onReport} />
       ))}
     </div>
   );
@@ -249,6 +281,9 @@ export default function CommunityDetail() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showCommentDeleteModal, setShowCommentDeleteModal] = useState(false);
   const [deletingCommentId, setDeletingCommentId] = useState<number | null>(null);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showCommentReportModal, setShowCommentReportModal] = useState(false);
+  const [reportingCommentId, setReportingCommentId] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -398,6 +433,34 @@ export default function CommunityDetail() {
     setShowCommentDeleteModal(true);
   };
 
+  const handleReportComment = (commentId: number) => {
+    setReportingCommentId(commentId);
+    setShowCommentReportModal(true);
+  };
+
+  const confirmReport = async () => {
+    setShowReportModal(false);
+    try {
+      await communityApi.report(postId);
+      window.alert('신고가 접수되었어요.');
+    } catch {
+      window.alert('신고 접수에 실패했습니다.');
+    }
+  };
+
+  const confirmReportComment = async () => {
+    const commentId = reportingCommentId;
+    setShowCommentReportModal(false);
+    setReportingCommentId(null);
+    if (!commentId) return;
+    try {
+      await communityApi.reportComment(postId, commentId);
+      window.alert('신고가 접수되었어요.');
+    } catch {
+      window.alert('신고 접수에 실패했습니다.');
+    }
+  };
+
   const confirmDeleteComment = async () => {
     if (!deletingCommentId) return;
     const commentId = deletingCommentId;
@@ -468,25 +531,32 @@ export default function CommunityDetail() {
         <button type="button" className="cd-back-btn" onClick={() => navigate(-1)}>
           <IoArrowBack size={22} color="#586144" />
         </button>
-        {post.isAuthor && (
-          <button type="button" className="cd-menu-btn" onClick={() => setShowMenu((v) => !v)}>
-            <IoEllipsisVertical size={20} color="#586144" />
-          </button>
-        )}
+        <button type="button" className="cd-menu-btn" onClick={() => setShowMenu((v) => !v)}>
+          <IoEllipsisVertical size={20} color="#586144" />
+        </button>
       </div>
 
-      {/* 삭제/수정 메뉴 */}
-      <Overlay visible={!!post.isAuthor && showMenu} onClose={() => setShowMenu(false)}>
+      {/* 삭제/수정 (작성자) 또는 신고하기 (비작성자) 메뉴 */}
+      <Overlay visible={showMenu} onClose={() => setShowMenu(false)}>
         <div className="cd-dropdown">
-          <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowDeleteModal(true); }}>
-            <IoTrashOutline size={14} color="#586144" />
-            <span className="cd-dropdown-text">삭제하기</span>
-          </button>
-          <div className="cd-dropdown-divider" />
-          <button type="button" className="cd-dropdown-item" onClick={goEdit}>
-            <IoCreateOutline size={14} color="#586144" />
-            <span className="cd-dropdown-text">수정하기</span>
-          </button>
+          {post.isAuthor ? (
+            <>
+              <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowDeleteModal(true); }}>
+                <IoTrashOutline size={14} color="#586144" />
+                <span className="cd-dropdown-text">삭제하기</span>
+              </button>
+              <div className="cd-dropdown-divider" />
+              <button type="button" className="cd-dropdown-item" onClick={goEdit}>
+                <IoCreateOutline size={14} color="#586144" />
+                <span className="cd-dropdown-text">수정하기</span>
+              </button>
+            </>
+          ) : (
+            <button type="button" className="cd-dropdown-item" onClick={() => { setShowMenu(false); setShowReportModal(true); }}>
+              <ReportIcon />
+              <span className="cd-dropdown-text" style={{ color: '#FB2C36' }}>신고하기</span>
+            </button>
+          )}
         </div>
       </Overlay>
 
@@ -559,6 +629,7 @@ export default function CommunityDetail() {
             onReply={(cid) => setReplyingTo(replyingTo === cid ? null : cid)}
             onDelete={handleDeleteComment}
             onLike={handleCommentLike}
+            onReport={handleReportComment}
           />
         ))}
       </div>
@@ -600,6 +671,44 @@ export default function CommunityDetail() {
               삭제하기
             </button>
             <button type="button" className="cd-sheet-btn cancel" onClick={() => setShowCommentDeleteModal(false)}>
+              취소
+            </button>
+          </div>
+        </div>
+      </Overlay>
+
+      {/* 게시글 신고 확인 */}
+      <Overlay visible={showReportModal} onClose={() => setShowReportModal(false)} align="bottom">
+        <div className="cd-sheet">
+          <div className="cd-sheet-icon">
+            <ReportIcon size={28} />
+          </div>
+          <div className="cd-sheet-title">이 글을 신고할까요?</div>
+          <p className="cd-sheet-desc">부적절한 게시글은 검토 후 조치돼요.</p>
+          <div className="cd-sheet-btns">
+            <button type="button" className="cd-sheet-btn danger" onClick={confirmReport}>
+              신고하기
+            </button>
+            <button type="button" className="cd-sheet-btn cancel" onClick={() => setShowReportModal(false)}>
+              취소
+            </button>
+          </div>
+        </div>
+      </Overlay>
+
+      {/* 댓글 신고 확인 */}
+      <Overlay visible={showCommentReportModal} onClose={() => setShowCommentReportModal(false)} align="bottom">
+        <div className="cd-sheet">
+          <div className="cd-sheet-icon">
+            <ReportIcon size={28} />
+          </div>
+          <div className="cd-sheet-title">이 댓글을 신고할까요?</div>
+          <p className="cd-sheet-desc">부적절한 댓글은 검토 후 조치돼요.</p>
+          <div className="cd-sheet-btns">
+            <button type="button" className="cd-sheet-btn danger" onClick={confirmReportComment}>
+              신고하기
+            </button>
+            <button type="button" className="cd-sheet-btn cancel" onClick={() => setShowCommentReportModal(false)}>
               취소
             </button>
           </div>

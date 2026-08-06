@@ -37,4 +37,8 @@ export const communityApi = {
   removeComment: (id: number | string, commentId: number) =>
     api.del(`/community/${id}/comments/${commentId}`),
   myBookmarks: () => api.get<any[]>('/community/my-bookmarks'),
+  report: (id: number | string, reason?: string) =>
+    api.post(`/community/${id}/report`, { reason }),
+  reportComment: (id: number | string, commentId: number, reason?: string) =>
+    api.post(`/community/${id}/comments/${commentId}/report`, { reason }),
 };

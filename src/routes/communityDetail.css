@@ -172,11 +172,11 @@
   left: 0;
   top: 0;
   bottom: 0;
-  background: #eff4e1;
+  background: #ecf9d1;
   border-radius: 8px;
 }
 .cd-poll-bar-fill.selected {
-  background: #c4d99a;
+  background: #cdeb9c;
 }
 .cd-poll-bar-label {
   font-size: 14px;
