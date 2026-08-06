@@ -178,18 +178,18 @@
   min-width: 0;
 }
 .cm-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: #101828;
-  line-height: 19.25px;
+  line-height: 22px;
   letter-spacing: -0.15px;
   margin-bottom: 4px;
 }
 .cm-content {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: #6a7282;
-  line-height: 19.5px;
+  line-height: 20px;
   letter-spacing: -0.15px;
   margin-bottom: 8px;
   display: -webkit-box;

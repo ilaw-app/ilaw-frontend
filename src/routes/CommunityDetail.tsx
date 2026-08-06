@@ -65,8 +65,8 @@ function BarChartIcon() {
 }
 
 /* ── 타입 & 헬퍼 ─────────────────────────────────────────────── */
-// 임시: 신고 누적/욕설 감지 댓글 디자인 미리보기(모든 댓글에 적용). 확인 후 false로 되돌릴 것.
-const DEMO_FLAGGED = true;
+// 신고 누적/욕설 감지 댓글 표시. 실제로는 BE가 flagged/hidden/masked/reported 플래그를 내려줘야 동작.
+const DEMO_FLAGGED = false;
 
 type PollOption = { label: string; votes: number };
 type PollT = { options: PollOption[]; total: number; votedOptionIndex: number | null };
