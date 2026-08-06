@@ -153,10 +153,13 @@
   flex-shrink: 0;
 }
 .qna-status.answered {
-  color: var(--fig-brand);
+  color: #5ea500;
+  background: #f7fee7;
+  padding: 2px 8px;
+  border-radius: 9999px;
 }
 .qna-status.answered .qna-status-dot {
-  background: var(--fig-brand);
+  background: #5ea500;
 }
 .qna-status.pending {
   color: var(--fig-subtle);
@@ -289,39 +292,54 @@
 }
 
 /* ===== 변호사 목록 ===== */
+.qna-header-lawyer h1 {
+  font-family: inherit;
+  color: #101828;
+  font-weight: 700;
+}
+.qna-header-lawyer p {
+  font-family: inherit;
+  color: #6a7282;
+  font-weight: 400;
+}
 .qna-lawyer-list {
-  padding: 0 16px 40px;
+  padding: 0 0 40px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 .qna-section {
-  border-radius: 16px;
-  border: 1px solid var(--border);
   background: #fff;
-  padding: 16px;
 }
 .qna-section-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 12px;
-  font-size: 20px;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 0.723px solid #f3f4f6;
+}
+.qna-wait-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #fb2c36;
+  opacity: 0.9974;
+  flex-shrink: 0;
+}
+.qna-section-title {
+  color: #101828;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 28px;
-  letter-spacing: -0.449px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .qna-section-empty {
   font-size: 14px;
   color: var(--placeholder);
-  padding-left: 4px;
-  margin-bottom: 12px;
+  padding: 16px;
 }
 .qna-section-cards {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 8px;
 }
 
 /* ===== 상세 화면 ===== */

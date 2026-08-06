@@ -100,10 +100,10 @@
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  color: var(--fig-danger);
+  color: #fe9a2f;
 }
 .qd-mine .qd-dot {
-  background: var(--fig-danger);
+  background: #fe9a2f;
 }
 .qd-title {
   font-size: 20px;
@@ -166,9 +166,10 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--fig-title);
+  color: #364153;
+  letter-spacing: -0.15px;
 }
 .qd-student-rows {
   display: flex;
@@ -211,8 +212,8 @@
   align-self: stretch;
   margin-top: 4px;
   padding: 15px 0;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, var(--fig-fab-a), var(--fig-fab-b));
+  border-radius: 16px;
+  background: #bee966;
   color: #fff;
   font-size: 16px;
   font-weight: 700;

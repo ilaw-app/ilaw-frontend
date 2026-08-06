@@ -285,7 +285,7 @@ export default function QnaDetail() {
         {isLawyer && post.author && (
           <div className="qd-student">
             <div className="qd-student-head">
-              <IoPersonOutline size={16} /> 질문자 정보
+              <IoPersonOutline size={16} color="#99A1AF" /> 질문자 정보
             </div>
             <div className="qd-student-rows">
               <span>나이 {post.author.age != null ? `만 ${post.author.age}세` : '-'}</span>

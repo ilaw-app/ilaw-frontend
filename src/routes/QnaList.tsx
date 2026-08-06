@@ -4,7 +4,6 @@ import {
   IoSearch,
   IoClose,
   IoChatbubbleOutline,
-  IoTimeOutline,
   IoAdd,
 } from 'react-icons/io5';
 import { qnaApi } from '../api/qna';
@@ -182,7 +181,7 @@ export default function QnaList() {
     const answered = posts.filter((p) => p.status !== 'pending');
     return (
       <div className="screen qna-screen">
-        <div className="qna-header">
+        <div className="qna-header qna-header-lawyer">
           <div className="qna-header-text">
             <h1>Q&amp;A 답변 관리</h1>
             <p>아이들의 질문에 답변해주세요</p>
@@ -196,8 +195,8 @@ export default function QnaList() {
           <div className="screen-scroll qna-lawyer-list">
             <section className="qna-section">
               <div className="qna-section-row">
-                <IoTimeOutline size={17} color="#c10007" />
-                <span style={{ color: '#c10007' }}>답변 대기 중 ({pending.length})</span>
+                <span className="qna-wait-dot" />
+                <span className="qna-section-title">답변 대기 중 ({pending.length})</span>
               </div>
               {pending.length === 0 ? (
                 <p className="qna-section-empty">대기 중인 질문이 없습니다</p>
@@ -211,8 +210,8 @@ export default function QnaList() {
             </section>
             <section className="qna-section">
               <div className="qna-section-row">
-                <IoChatbubbleOutline size={17} color="#2b56b5" />
-                <span style={{ color: '#2b56b5' }}>답변 완료 ({answered.length})</span>
+                <IoChatbubbleOutline size={15} color="#7ccf00" />
+                <span className="qna-section-title">답변 완료 ({answered.length})</span>
               </div>
               {answered.length === 0 ? (
                 <p className="qna-section-empty">완료된 답변이 없습니다</p>
