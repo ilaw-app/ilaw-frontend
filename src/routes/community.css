@@ -6,7 +6,7 @@
 
 .cm-header {
   flex-shrink: 0;
-  padding: 46px 19.991px 16px;
+  padding: 46px 19.991px 14px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -35,7 +35,7 @@
 /* 검색창 (QnA와 동일 디자인) */
 .cm-search-area {
   flex-shrink: 0;
-  padding: 6px 16px 12px;
+  padding: 0 16px 12px;
 }
 .cm-search-box {
   display: flex;
