@@ -65,6 +65,9 @@ export default function ManualDetail() {
           <IoArrowBack size={24} color="#101828" />
         </button>
         <h1>{article?.category?.name ?? '매뉴얼'}</h1>
+        <button className="md-header-scrap" onClick={handleScrap} aria-label="스크랩">
+          {scrapped ? <IoBookmark size={22} color="#9BCB11" /> : <IoBookmarkOutline size={22} color="#101828" />}
+        </button>
       </div>
       <div className="md-header-divider" />
 
@@ -79,7 +82,7 @@ export default function ManualDetail() {
       ) : (
         <div className="screen-scroll md-content">
           <div className="md-q">
-            <span className="md-q-label">Q{String(article.order).padStart(2, '0')}.</span>
+            <span className="md-q-label">Q.</span>
             <span className="md-q-text">{article.question}</span>
           </div>
 

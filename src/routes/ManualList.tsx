@@ -34,7 +34,7 @@ const SLUG_TO_NAME: Record<string, string> = {
   'school-violence': '학교폭력',
 };
 
-const qLabel = (n: number) => `Q${String(n).padStart(2, '0')}`;
+const qLabel = (n: number) => `Q${n}`;
 
 export default function ManualList() {
   const navigate = useNavigate();

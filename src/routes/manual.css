@@ -3,6 +3,9 @@
   background: #fff;
 }
 .manual-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 46px 20px 14px;
 }
 .manual-header h1 {

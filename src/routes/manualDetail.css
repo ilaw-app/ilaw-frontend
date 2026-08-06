@@ -124,17 +124,20 @@
   letter-spacing: -0.15px;
   margin-bottom: 10px;
 }
-/* 불릿 — 연회색 원 안 초록 점 */
+/* 불릿 — QnA 답변처럼 단순 동그라미 하나 */
 .manual-html ul,
 .manual-html ol {
   margin: 4px 0;
-  padding-left: 0;
-  list-style: none;
+  padding-left: 20px;
+}
+.manual-html ul {
+  list-style: disc;
+}
+.manual-html ol {
+  list-style: decimal;
 }
 .manual-html li {
-  list-style-type: none !important;
-  position: relative;
-  padding-left: 28px;
+  padding-left: 4px;
   font-size: 14px;
   font-weight: 400;
   color: #4a5565;
@@ -142,25 +145,8 @@
   letter-spacing: -0.15px;
   margin-bottom: 4px;
 }
-.manual-html ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1px;
-  width: 20px;
-  height: 20px;
-  border-radius: 9999px;
-  background: #ecfcca;
-}
-.manual-html ul li::after {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 8px;
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background: #7ccf00;
+.manual-html ul li::marker {
+  color: #9bcb11;
 }
 .manual-html strong {
   font-weight: 700;

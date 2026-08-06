@@ -81,7 +81,7 @@
   padding: 2px 8px;
   border-radius: 9999px;
   background: #f7fee7;
-  color: #5ea500;
+  color: #9bcb11;
   font-size: 12px;
   font-weight: 700;
   line-height: 16px;
@@ -94,10 +94,10 @@
   line-height: 19.25px;
   letter-spacing: -0.15px;
 }
-/* 매뉴얼 검색 하이라이트는 초록 (커뮤니티 회색과 분리) */
+/* 매뉴얼 검색 하이라이트 (홈검색과 동일: 연노랑 배경, 글자는 본문색) */
 .ml-q-text .hl-mark {
-  background: #eff4e1;
-  color: #3c6802;
+  background: #fffce3;
+  color: inherit;
 }
 .ml-divider {
   height: 1px;
@@ -129,6 +129,19 @@
   background: #fff;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   z-index: 5;
+  animation: ml-help-bob 2s ease-in-out infinite;
+  transition: box-shadow 0.15s ease;
+}
+@keyframes ml-help-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+.ml-help:active {
+  animation: none;
+  transform: translateX(-50%) scale(0.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ml-help { animation: none; }
 }
 .ml-help-icon {
   width: 32px;

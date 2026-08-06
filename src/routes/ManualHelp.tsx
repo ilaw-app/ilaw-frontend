@@ -158,13 +158,6 @@ export default function ManualHelp() {
               </button>
             ))}
           </div>
-          <button className="mh-ec-police" onClick={() => handleEmergencyPress({ label: '경찰 신고', number: '112' })}>
-            <span className="mh-ec-police-label">경찰 신고</span>
-            <span className="mh-ec-police-right">
-              <Phone12 color="#FB2C36" />
-              <span className="mh-ec-police-num">112</span>
-            </span>
-          </button>
         </div>
 
         {/* 지역 필터 */}
@@ -197,7 +190,7 @@ export default function ManualHelp() {
                   </span>
                   <span className="mh-agency-phones">
                     <span className="mh-agency-phone">
-                      <IoOpenOutline size={12} color="#5EA500" />
+                      <IoOpenOutline size={12} color="#9BCB11" />
                       <span className="mh-agency-num">홈페이지</span>
                     </span>
                   </span>
@@ -211,7 +204,7 @@ export default function ManualHelp() {
                   <span className="mh-agency-phones">
                     {getNumbers(agency.contact).map((num) => (
                       <span key={num} className="mh-agency-phone">
-                        <Phone12 color="#5EA500" />
+                        <Phone12 color="#9BCB11" />
                         <span className="mh-agency-num">{num}</span>
                       </span>
                     ))}
