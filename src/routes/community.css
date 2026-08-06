@@ -85,33 +85,29 @@
   padding-bottom: 100px;
 }
 
-.cm-sort-btns {
+.cm-sort-tabs {
   display: flex;
-  gap: 6px;
-  padding: 8px 20px 10px;
+  border-bottom: 1px solid #f0f0f0;
 }
-.cm-sort-divider {
-  height: 1px;
-  background: #f0f0f0;
-}
-.cm-sort-btn {
-  width: 74px;
-  height: 25px;
+.cm-sort-tab {
+  flex: 1;
+  padding: 12px 0;
   display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 50px;
-  border: 1px solid #d1d5dc;
-  background: #fff;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
   font-size: 14px;
-  font-weight: 500;
-  color: #6a7282;
+  font-weight: 700;
+  color: #99a1af;
   line-height: 20px;
-  letter-spacing: 0.1px;
+  letter-spacing: -0.15px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
 }
-.cm-sort-btn.active {
-  background: #eff4e1;
-  border-color: #ccd9ba;
+.cm-sort-tab.active {
+  color: #9bcb11;
+  border-bottom-color: #bee966;
 }
 
 /* ===== 카드 ===== */
@@ -134,16 +130,20 @@
   gap: 8px;
 }
 .cm-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  object-fit: contain;
+  width: 27.999px;
+  height: 27.999px;
+  border-radius: 9999px;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 .cm-nickname {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  color: #586144;
-  line-height: 22px;
+  color: #1e2939;
+  line-height: 20px;
   letter-spacing: -0.15px;
 }
 .cm-top-right {
@@ -173,18 +173,18 @@
   min-width: 0;
 }
 .cm-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
-  color: #586144;
-  line-height: 27px;
-  letter-spacing: -0.439px;
+  color: #101828;
+  line-height: 19.25px;
+  letter-spacing: -0.15px;
   margin-bottom: 4px;
 }
 .cm-content {
-  font-size: 14px;
-  font-weight: 400;
-  color: #586144;
-  line-height: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6a7282;
+  line-height: 19.5px;
   letter-spacing: -0.15px;
   margin-bottom: 8px;
   display: -webkit-box;
@@ -231,7 +231,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  background: #eff4e1;
+  background: #ecf9d1;
   border-radius: 8px;
 }
 .cm-poll-label {
@@ -292,11 +292,11 @@
   width: 56px;
   height: 56px;
   border-radius: 9999px;
-  background: #678720;
+  background: linear-gradient(135deg, #d1f08c 0%, #b1d469 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   z-index: 5;
 }
 

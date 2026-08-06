@@ -31,6 +31,31 @@ function ThumbsUpIcon() {
   );
 }
 
+function ClockIcon({ color }: { color: string }) {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M7.99888 14.6648C11.6803 14.6648 14.6648 11.6803 14.6648 7.99888C14.6648 4.31742 11.6803 1.33301 7.99888 1.33301C4.31742 1.33301 1.33301 4.31742 1.33301 7.99888C1.33301 11.6803 4.31742 14.6648 7.99888 14.6648Z" stroke={color} strokeWidth="1.33317" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7.99902 4V7.99952L10.6654 9.3327" stroke={color} strokeWidth="1.33317" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function TrendIcon({ color }: { color: string }) {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M14.6648 4.66602L8.99876 10.332L5.66583 6.99907L1.33301 11.3319" stroke={color} strokeWidth="1.33317" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.665 4.66602H14.6646V8.66554" stroke={color} strokeWidth="1.33317" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function CmPersonIcon() {
+  return (
+    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <path d="M12.6652 13.9985V12.6654C12.6652 11.9582 12.3843 11.28 11.8843 10.78C11.3842 10.2799 10.706 9.99902 9.99888 9.99902H5.99936C5.2922 9.99902 4.614 10.2799 4.11396 10.78C3.61393 11.28 3.33301 11.9582 3.33301 12.6654V13.9985" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7.99936 7.3327C9.47194 7.3327 10.6657 6.13893 10.6657 4.66635C10.6657 3.19377 9.47194 2 7.99936 2C6.52677 2 5.33301 3.19377 5.33301 4.66635C5.33301 6.13893 6.52677 7.3327 7.99936 7.3327Z" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function formatDate(iso: string): string {
   const date = new Date(iso);
   const now = new Date();
@@ -95,7 +120,7 @@ function PostCard({
     <div className="cm-card" onClick={onPress}>
       <div className="cm-card-top">
         <div className="cm-avatar-row">
-          <img src="/assets/Container.png" className="cm-avatar" alt="" />
+          <span className="cm-avatar"><CmPersonIcon /></span>
           <span className="cm-nickname">{item.nickname}</span>
         </div>
         <div className="cm-top-right">
@@ -292,22 +317,21 @@ export default function Community() {
         </div>
       ) : (
         <div className="screen-scroll cm-list">
-          <div>
-            <div className="cm-sort-btns">
-              <button
-                className={`cm-sort-btn ${sort === 'popular' ? 'active' : ''}`}
-                onClick={() => setSort('popular')}
-              >
-                인기순
-              </button>
-              <button
-                className={`cm-sort-btn ${sort === 'latest' ? 'active' : ''}`}
-                onClick={() => setSort('latest')}
-              >
-                최신순
-              </button>
-            </div>
-            <div className="cm-sort-divider" />
+          <div className="cm-sort-tabs">
+            <button
+              className={`cm-sort-tab ${sort === 'latest' ? 'active' : ''}`}
+              onClick={() => setSort('latest')}
+            >
+              <ClockIcon color={sort === 'latest' ? '#9BCB11' : '#99A1AF'} />
+              최신순
+            </button>
+            <button
+              className={`cm-sort-tab ${sort === 'popular' ? 'active' : ''}`}
+              onClick={() => setSort('popular')}
+            >
+              <TrendIcon color={sort === 'popular' ? '#9BCB11' : '#99A1AF'} />
+              인기순
+            </button>
           </div>
 
           {displayPosts.length === 0 ? (
