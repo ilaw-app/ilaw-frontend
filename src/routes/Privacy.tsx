@@ -293,7 +293,7 @@ export default function Privacy() {
     <div className="screen privacy">
       <div className="privacy-header">
         <button className="privacy-back" onClick={() => navigate(-1)}>
-          <IoChevronBack size={22} color="#586144" />
+          <IoChevronBack size={22} color="#101828" />
         </button>
         <span className="privacy-header-title">개인정보처리방침</span>
       </div>

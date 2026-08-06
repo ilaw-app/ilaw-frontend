@@ -32,9 +32,7 @@ export default function Splash() {
         <button className="splash-start" onClick={() => navigate('/login')}>
           시작하기
         </button>
-        <button className="splash-existing" onClick={() => navigate('/login')}>
-          이미 계정이 있어요
-        </button>
+        <p className="splash-existing">App Version 1.0.0</p>
       </div>
     </div>
   );

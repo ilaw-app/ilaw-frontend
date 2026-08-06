@@ -6,7 +6,7 @@
   padding: 0 19px;
   height: 80px;
   background: #fff;
-  border-top: 2px solid var(--fig-line);
+  border-top: 2px solid #9bcb11;
 }
 
 .tab {
@@ -30,7 +30,7 @@
 
 .tab.active .tab-item {
   background: #f7fee7;
-  color: #b2d36e;
+  color: #9bcb11;
 }
 
 .tab-label {

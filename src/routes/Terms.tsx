@@ -197,7 +197,7 @@ export default function Terms() {
     <div className="screen terms">
       <div className="terms-header">
         <button className="terms-back" onClick={() => navigate(-1)}>
-          <IoChevronBack size={22} color="#586144" />
+          <IoChevronBack size={22} color="#101828" />
         </button>
         <span className="terms-header-title">이용약관</span>
       </div>

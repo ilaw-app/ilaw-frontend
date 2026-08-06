@@ -17,7 +17,6 @@
   flex-shrink: 0;
 }
 .ep-header-title {
-  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   flex: 1;
   text-align: center;
   color: #101828;
