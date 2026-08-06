@@ -383,6 +383,11 @@
 }
 
 /* 댓글 미니 드롭다운 */
+.cd-mini-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
 .cd-menu-anchor {
   position: relative;
 }
