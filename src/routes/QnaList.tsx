@@ -67,11 +67,6 @@ function QnaCard({
         </div>
         {thumb && <img className="qna-card-thumb" src={thumb} alt="" />}
       </div>
-
-      <div className="qna-meta">
-        <IoChatbubbleOutline size={13} />
-        <span>{item.author?.nickname ?? '익명'}</span>
-      </div>
     </button>
   );
 }

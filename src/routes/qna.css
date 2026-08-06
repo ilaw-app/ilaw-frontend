@@ -19,9 +19,8 @@
   min-width: 0;
 }
 .qna-header h1 {
-  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 700;
   color: #9bcb11;
   line-height: 32px;
   letter-spacing: 0.07px;
@@ -105,22 +104,22 @@
   left: 0;
   right: 0;
   bottom: -1px;
-  height: 2px;
-  background: var(--fig-brand);
+  height: 1.997px;
+  background: #b2d36e;
   border-radius: 2px;
 }
 
 .qna-list {
-  padding: 0 20px 100px;
+  padding: 0 0 100px;
   display: flex;
   flex-direction: column;
 }
 
 .qna-card {
   position: relative;
-  background: transparent;
-  padding: 18px 0 16px;
-  border-bottom: 1px solid var(--fig-line);
+  background: #fff;
+  padding: 16px;
+  border-bottom: 0.722px solid #f3f4f6;
   text-align: left;
   width: 100%;
   display: flex;
@@ -198,11 +197,11 @@
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  color: var(--fig-danger);
+  color: #fe9a2f;
   flex-shrink: 0;
 }
 .qna-mine .qna-dot {
-  background: var(--fig-danger);
+  background: #fe9a2f;
 }
 .qna-date {
   margin-left: auto;

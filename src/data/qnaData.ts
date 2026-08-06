@@ -25,8 +25,8 @@ export type QnAItem = {
   };
 };
 
-const LAWYER_ORG = '테크포임팩트 아이온팀';
-const LAWYER_NAME = '자문 변호사';
+const LAWYER_ORG = '공익법단체 두루';
+const LAWYER_NAME = '강정은 변호사';
 
 export const QNA_ITEMS: QnAItem[] = [
   {

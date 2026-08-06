@@ -278,7 +278,10 @@
   width: 40px;
   height: 40px;
   border-radius: 9999px;
-  object-fit: contain;
+  background: #ecfcca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 .qd-answer-divider {
