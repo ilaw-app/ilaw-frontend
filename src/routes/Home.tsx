@@ -33,7 +33,7 @@ const FILTERS: { key: 'all' | ResultType; label: string }[] = [
 ];
 
 // 타입별 색상 아이콘 (추천 콘텐츠 · 검색 결과 공용)
-const TYPE_COLOR: Record<ResultType, string> = { manual: '#9AE600', qna: '#51A2FF', community: '#AD46FF' };
+const TYPE_COLOR: Record<ResultType, string> = { manual: '#BEE966', qna: '#BEE966', community: '#BEE966' };
 function TypeIcon({ type, size = 14 }: { type: ResultType; size?: number }) {
   const c = TYPE_COLOR[type];
   if (type === 'manual') return <IoBookOutline size={size} color={c} />;
@@ -65,8 +65,8 @@ function SearchIcon() {
 function QuickScrapIcon() {
   return (
     <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <path d="M10 5.83301V17.4994" stroke="#5EA500" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M2.5003 14.9997C2.2793 14.9997 2.06734 14.9119 1.91106 14.7556C1.75479 14.5993 1.66699 14.3874 1.66699 14.1664V3.33331C1.66699 3.1123 1.75479 2.90035 1.91106 2.74407C2.06734 2.5878 2.2793 2.5 2.5003 2.5H6.66687C7.5509 2.5 8.39873 2.85118 9.02383 3.47629C9.64894 4.10139 10.0001 4.94922 10.0001 5.83325C10.0001 4.94922 10.3513 4.10139 10.9764 3.47629C11.6015 2.85118 12.4493 2.5 13.3334 2.5H17.4999C17.7209 2.5 17.9329 2.5878 18.0892 2.74407C18.2454 2.90035 18.3332 3.1123 18.3332 3.33331V14.1664C18.3332 14.3874 18.2454 14.5993 18.0892 14.7556C17.9329 14.9119 17.7209 14.9997 17.4999 14.9997H12.5001C11.837 14.9997 11.2012 15.2631 10.7323 15.7319C10.2635 16.2007 10.0001 16.8366 10.0001 17.4996C10.0001 16.8366 9.73673 16.2007 9.2679 15.7319C8.79907 15.2631 8.1632 14.9997 7.50018 14.9997H2.5003Z" stroke="#5EA500" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 5.83301V17.4994" stroke="#FE9A2F" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5003 14.9997C2.2793 14.9997 2.06734 14.9119 1.91106 14.7556C1.75479 14.5993 1.66699 14.3874 1.66699 14.1664V3.33331C1.66699 3.1123 1.75479 2.90035 1.91106 2.74407C2.06734 2.5878 2.2793 2.5 2.5003 2.5H6.66687C7.5509 2.5 8.39873 2.85118 9.02383 3.47629C9.64894 4.10139 10.0001 4.94922 10.0001 5.83325C10.0001 4.94922 10.3513 4.10139 10.9764 3.47629C11.6015 2.85118 12.4493 2.5 13.3334 2.5H17.4999C17.7209 2.5 17.9329 2.5878 18.0892 2.74407C18.2454 2.90035 18.3332 3.1123 18.3332 3.33331V14.1664C18.3332 14.3874 18.2454 14.5993 18.0892 14.7556C17.9329 14.9119 17.7209 14.9997 17.4999 14.9997H12.5001C11.837 14.9997 11.2012 15.2631 10.7323 15.7319C10.2635 16.2007 10.0001 16.8366 10.0001 17.4996C10.0001 16.8366 9.73673 16.2007 9.2679 15.7319C8.79907 15.2631 8.1632 14.9997 7.50018 14.9997H2.5003Z" stroke="#FE9A2F" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -75,7 +75,7 @@ function QuickQnaIcon() {
   return (
     <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
       <g clipPath="url(#clip_myq)">
-        <path d="M6.58354 16.666C8.17398 17.4819 10.0035 17.7029 11.7425 17.2892C13.4814 16.8754 15.0155 15.8542 16.0681 14.4096C17.1207 12.9649 17.6228 11.1918 17.4837 9.40967C17.3447 7.6276 16.5738 5.95377 15.3098 4.68982C14.0459 3.42587 12.372 2.65492 10.59 2.51589C8.80789 2.37687 7.03475 2.87891 5.59008 3.93155C4.1454 4.98419 3.1242 6.5182 2.71049 8.25716C2.29677 9.99612 2.51776 11.8257 3.33362 13.4161L1.66699 18.3327L6.58354 16.666Z" stroke="#2B7FFF" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M6.58354 16.666C8.17398 17.4819 10.0035 17.7029 11.7425 17.2892C13.4814 16.8754 15.0155 15.8542 16.0681 14.4096C17.1207 12.9649 17.6228 11.1918 17.4837 9.40967C17.3447 7.6276 16.5738 5.95377 15.3098 4.68982C14.0459 3.42587 12.372 2.65492 10.59 2.51589C8.80789 2.37687 7.03475 2.87891 5.59008 3.93155C4.1454 4.98419 3.1242 6.5182 2.71049 8.25716C2.29677 9.99612 2.51776 11.8257 3.33362 13.4161L1.66699 18.3327L6.58354 16.666Z" stroke="#FE9A2F" strokeWidth="1.66663" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <defs><clipPath id="clip_myq"><rect width="19.9995" height="19.9995" fill="white" /></clipPath></defs>
     </svg>
@@ -206,8 +206,8 @@ export default function Home() {
             aria-label="뒤로"
           >
             <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-              <path d="M9.99618 15.8273L4.16504 9.99618L9.99618 4.16504" stroke="#678720" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M15.8273 9.99609H4.16504" stroke="#678720" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9.99618 15.8273L4.16504 9.99618L9.99618 4.16504" stroke="#9bcb11" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M15.8273 9.99609H4.16504" stroke="#9bcb11" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
           <h2 className="hs-head-title">'{submittedQuery}' 검색 결과</h2>
@@ -321,15 +321,15 @@ export default function Home() {
             <span className="home-quick-label">내 질문</span>
           </button>
           <button className="home-quick-item" onClick={() => navigate('/community')}>
-            <span className="home-quick-icon community"><CommunityIcon size={20} color="#AD46FF" /></span>
+            <span className="home-quick-icon community"><CommunityIcon size={20} color="#FE9A2F" /></span>
             <span className="home-quick-label">내 커뮤니티 글</span>
           </button>
         </div>
 
-        {/* 추천 콘텐츠 */}
+        {/* 인기 콘텐츠 */}
         <div className="home-reco-card">
           <div className="home-reco-head">
-            <span className="home-reco-title">추천 콘텐츠</span>
+            <span className="home-reco-title">인기 콘텐츠</span>
             <button className="home-reco-more" onClick={() => navigate('/manual')}>더보기 ›</button>
           </div>
           {loadingPopular ? (
@@ -337,14 +337,12 @@ export default function Home() {
               <div className="spinner" />
             </div>
           ) : popular.length === 0 ? (
-            <p className="home-reco-empty">아직 추천 콘텐츠가 없어요</p>
+            <p className="home-reco-empty">아직 인기 콘텐츠가 없어요</p>
           ) : (
             popular.slice(0, 5).map((p, i) => (
               <button key={`${p.type}-${p.id}`} className="home-reco-row" onClick={() => openPopular(p)}>
                 <span className="home-reco-num">{i + 1}</span>
                 <span className="home-reco-label">{p.label}</span>
-                {p.category && <span className="home-reco-cat">{p.category}</span>}
-                <TypeIcon type={p.type} size={14} />
               </button>
             ))
           )}

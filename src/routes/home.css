@@ -25,14 +25,14 @@
   flex-direction: column;
 }
 .home-tb-name {
-  color: #678720;
+  color: #9bcb11;
   font-size: 24px;
   font-weight: 400;
   line-height: 32px;
   letter-spacing: 0.07px;
 }
 .home-tb-sub {
-  color: #6a7282;
+  color: #c8db72;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -92,7 +92,7 @@
   width: 32px;
   height: 32px;
   border-radius: 14px;
-  background: #7ccf00;
+  background: #bee966;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,12 +107,15 @@
 }
 .home-quick-item {
   flex: 1;
+  height: 83px;
+  box-sizing: border-box;
   background: #fff;
   border-radius: 16px;
-  padding: 16px 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 .home-quick-icon {
@@ -122,15 +125,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fffce3;
 }
-.home-quick-icon.scrap {
-  background: #f7fee7;
-}
-.home-quick-icon.qna {
-  background: #eff6ff;
-}
+.home-quick-icon.scrap,
+.home-quick-icon.qna,
 .home-quick-icon.community {
-  background: #faf5ff;
+  background: #fffce3;
 }
 .home-quick-label {
   color: #4a5565;
@@ -187,7 +187,7 @@
 .home-reco-num {
   flex-shrink: 0;
   width: 12px;
-  color: #7ccf00;
+  color: #bee966;
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
@@ -295,7 +295,7 @@
   font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
   font-size: 20px;
   font-weight: 400;
-  color: #678720;
+  color: #9bcb11;
   line-height: 28px;
   letter-spacing: -0.312px;
 }
@@ -388,8 +388,8 @@
   overflow: hidden;
 }
 .hs-card .hl-mark {
-  background: #fff085;
-  color: #733e0a;
+  background: #fffce3;
+  color: inherit;
   border-radius: 6px;
 }
 .hs-card-scrap {
