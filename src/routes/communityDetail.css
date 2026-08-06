@@ -362,17 +362,13 @@
   margin-bottom: 6px;
   white-space: pre-wrap;
 }
-.cd-comment-text.flagged {
+.cd-comment-flagged {
   font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
   color: #99a1af;
-}
-.cd-flag-badge {
-  display: block;
-  font-style: normal;
-  font-size: 11px;
-  font-weight: 700;
-  color: #fb2c36;
-  margin-bottom: 2px;
+  line-height: 23px;
+  margin-bottom: 6px;
 }
 .cd-comment-actions {
   display: flex;

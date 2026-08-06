@@ -208,10 +208,11 @@ function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDe
             )}
           </div>
         </div>
-        <p className={`cd-comment-text${reply.flagged ? ' flagged' : ''}`}>
-          {reply.flagged && <span className="cd-flag-badge">신고 누적 · 부적절 표현 감지</span>}
-          {reply.text}
-        </p>
+        {reply.flagged ? (
+          <p className="cd-comment-flagged">신고가 누적되어 가려진 댓글입니다.</p>
+        ) : (
+          <p className="cd-comment-text">{reply.text}</p>
+        )}
         <button type="button" className="cd-comment-like" onClick={() => onLike(reply.id)}>
           <ThumbsUpIcon filled={reply.liked} size={13} />
           <span className="cd-reply-meta" style={reply.liked ? { color: '#4A5565' } : undefined}>{reply.likes}</span>
@@ -259,10 +260,11 @@ function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment
               )}
             </div>
           </div>
-          <p className={`cd-comment-text${comment.flagged ? ' flagged' : ''}`}>
-            {comment.flagged && <span className="cd-flag-badge">신고 누적 · 부적절 표현 감지</span>}
-            {comment.text}
-          </p>
+          {comment.flagged ? (
+            <p className="cd-comment-flagged">신고가 누적되어 가려진 댓글입니다.</p>
+          ) : (
+            <p className="cd-comment-text">{comment.text}</p>
+          )}
           <div className="cd-comment-actions">
             <button type="button" className="cd-comment-like" onClick={() => onLike(comment.id)}>
               <ThumbsUpIcon filled={comment.liked} size={13} />
