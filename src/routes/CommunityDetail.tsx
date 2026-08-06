@@ -65,6 +65,9 @@ function BarChartIcon() {
 }
 
 /* ── 타입 & 헬퍼 ─────────────────────────────────────────────── */
+// 임시: 신고 누적/욕설 감지 댓글 디자인 미리보기(모든 댓글에 적용). 확인 후 false로 되돌릴 것.
+const DEMO_FLAGGED = true;
+
 type PollOption = { label: string; votes: number };
 type PollT = { options: PollOption[]; total: number; votedOptionIndex: number | null };
 type Comment = {
@@ -101,7 +104,10 @@ function mapComment(c: CommunityComment): Comment {
     liked: !!c.liked,
     isAuthor: !!c.isAuthor,
     isPostAuthor: !!c.isPostAuthor,
+    // DEMO_FLAGGED: 신고댓글 디자인 미리보기용 임시(확인 후 false로 되돌릴 것).
+    // 실제로는 BE가 flagged/hidden/masked/reported 플래그를 내려줘야 동작함.
     flagged:
+      DEMO_FLAGGED ||
       !!(c as any).flagged || !!(c as any).hidden || !!(c as any).masked || !!(c as any).reported,
     parentId: c.parentId ?? null,
     replies: (c.replies ?? []).map(mapComment),
