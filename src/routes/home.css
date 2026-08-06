@@ -292,11 +292,10 @@
   flex-shrink: 0;
 }
 .hs-head-title {
-  font-family: 'AiroFont', 'Noto Sans KR', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #9bcb11;
-  line-height: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e2939;
+  line-height: 24px;
   letter-spacing: -0.312px;
 }
 .hs-tabs {
@@ -316,8 +315,8 @@
   letter-spacing: -0.15px;
 }
 .hs-tab.active {
-  color: #5ea500;
-  border-bottom-color: #7ccf00;
+  color: #9bcb11;
+  border-bottom-color: #9bcb11;
 }
 .hs-card {
   display: flex;
@@ -388,7 +387,7 @@
   overflow: hidden;
 }
 .hs-card .hl-mark {
-  background: #fffce3;
+  background: #fbf1b8;
   color: inherit;
   border-radius: 6px;
 }

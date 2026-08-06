@@ -96,7 +96,7 @@
 }
 /* 매뉴얼 검색 하이라이트 (홈검색과 동일: 연노랑 배경, 글자는 본문색) */
 .ml-q-text .hl-mark {
-  background: #fffce3;
+  background: #fbf1b8;
   color: inherit;
 }
 .ml-divider {

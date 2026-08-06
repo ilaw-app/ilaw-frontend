@@ -166,6 +166,9 @@ export default function AiChat() {
             <div className="aic-header-title">상황진단 AI 챗봇</div>
           </div>
         </div>
+        {chatEnded && (
+          <button className="aic-new-chat-btn" onClick={handleNewChat}>다른 질문하기</button>
+        )}
       </div>
 
       {/* Messages */}
@@ -275,10 +278,6 @@ export default function AiChat() {
           </div>
         )}
       </div>
-
-      {chatEnded && (
-        <button className="aic-new-chat-btn" onClick={handleNewChat}>다른 질문하기</button>
-      )}
     </div>
   );
 }
