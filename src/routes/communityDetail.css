@@ -362,6 +362,18 @@
   margin-bottom: 6px;
   white-space: pre-wrap;
 }
+.cd-comment-text.flagged {
+  font-style: italic;
+  color: #99a1af;
+}
+.cd-flag-badge {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fb2c36;
+  margin-bottom: 2px;
+}
 .cd-comment-actions {
   display: flex;
   align-items: center;
@@ -484,9 +496,10 @@
 /* Comment Input */
 .cd-input-bar {
   flex: none;
+  flex-shrink: 0;
   border-top: 0.678px solid #e5e7eb;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 16px 16px 10px;
+  background: #fff;
+  padding: 12px 16px 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -520,6 +533,7 @@
 }
 .cd-input {
   flex: 1;
+  box-sizing: border-box;
   height: 44px;
   padding: 10px 16px;
   border-radius: 9999px;

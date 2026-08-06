@@ -76,6 +76,7 @@ type Comment = {
   liked: boolean;
   isAuthor: boolean;
   isPostAuthor?: boolean;
+  flagged?: boolean; // 신고 누적/욕설 감지된 댓글 (BE가 flagged/hidden/masked 등으로 내려주면 표시)
   parentId?: number | null;
   replies?: Comment[];
 };
@@ -100,6 +101,8 @@ function mapComment(c: CommunityComment): Comment {
     liked: !!c.liked,
     isAuthor: !!c.isAuthor,
     isPostAuthor: !!c.isPostAuthor,
+    flagged:
+      !!(c as any).flagged || !!(c as any).hidden || !!(c as any).masked || !!(c as any).reported,
     parentId: c.parentId ?? null,
     replies: (c.replies ?? []).map(mapComment),
   };
@@ -199,7 +202,10 @@ function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDe
             )}
           </div>
         </div>
-        <p className="cd-comment-text">{reply.text}</p>
+        <p className={`cd-comment-text${reply.flagged ? ' flagged' : ''}`}>
+          {reply.flagged && <span className="cd-flag-badge">신고 누적 · 부적절 표현 감지</span>}
+          {reply.text}
+        </p>
         <button type="button" className="cd-comment-like" onClick={() => onLike(reply.id)}>
           <ThumbsUpIcon filled={reply.liked} size={13} />
           <span className="cd-reply-meta" style={reply.liked ? { color: '#4A5565' } : undefined}>{reply.likes}</span>
@@ -247,7 +253,10 @@ function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment
               )}
             </div>
           </div>
-          <p className="cd-comment-text">{comment.text}</p>
+          <p className={`cd-comment-text${comment.flagged ? ' flagged' : ''}`}>
+            {comment.flagged && <span className="cd-flag-badge">신고 누적 · 부적절 표현 감지</span>}
+            {comment.text}
+          </p>
           <div className="cd-comment-actions">
             <button type="button" className="cd-comment-like" onClick={() => onLike(comment.id)}>
               <ThumbsUpIcon filled={comment.liked} size={13} />
