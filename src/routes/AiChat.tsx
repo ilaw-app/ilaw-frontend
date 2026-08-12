@@ -77,6 +77,15 @@ export default function AiChat() {
   const [loading, setLoading] = useState(false);
   const [chatEnded, setChatEnded] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // 입력 내용이 길어지면(줄바꿈) textarea 높이를 최대치까지 늘림
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 132)}px`;
+  }, [input]);
 
   const scrollToEnd = (smooth = true) =>
     setTimeout(() => {
@@ -256,6 +265,7 @@ export default function AiChat() {
         ) : (
           <div className="aic-input-row">
             <textarea
+              ref={inputRef}
               className="aic-text-input"
               placeholder="상황을 입력하세요"
               maxLength={2000}

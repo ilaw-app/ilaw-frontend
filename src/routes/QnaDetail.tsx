@@ -17,6 +17,7 @@ import type { QnADetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
 import { TrashSheetIcon } from '../components/PostMenuIcons';
+import { PersonIcon } from '../components/icons';
 import { Markdown } from '../components/Markdown';
 import TabBar from '../components/TabBar';
 import './qnaDetail.css';
@@ -434,10 +435,7 @@ function AnswerCard({
     <div className="qd-answer">
       <div className="qd-answer-head">
         <span className="qd-avatar-img">
-          <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-            <path d="M15.8273 17.4942V15.8282C15.8273 14.9445 15.4763 14.0969 14.8514 13.472C14.2265 12.8472 13.379 12.4961 12.4952 12.4961H7.49712C6.6134 12.4961 5.76587 12.8472 5.14098 13.472C4.5161 14.0969 4.16504 14.9445 4.16504 15.8282V17.4942" stroke="#BEE966" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M9.99615 9.16417C11.8364 9.16417 13.3282 7.67234 13.3282 5.83208C13.3282 3.99182 11.8364 2.5 9.99615 2.5C8.15589 2.5 6.66406 3.99182 6.66406 5.83208C6.66406 7.67234 8.15589 9.16417 9.99615 9.16417Z" stroke="#BEE966" strokeWidth="1.66604" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <PersonIcon size={20} color="#BEE966" />
         </span>
         <div className="qd-answer-who">
           <div className="qd-answer-name">{answer.lawyer?.nickname ?? '변호사'}</div>

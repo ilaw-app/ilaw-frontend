@@ -6,6 +6,7 @@ import { authApi } from '../api/auth';
 import { ApiError } from '../api/client';
 import { Overlay } from '../components/Overlay';
 import TabBar from '../components/TabBar';
+import { PersonIcon } from '../components/icons';
 import type { Gender } from '../api/types';
 import './editProfile.css';
 
@@ -23,14 +24,6 @@ const GENDERS: { value: Gender; label: string }[] = [
 ];
 const NICKNAME_REGEX = /^[a-zA-Z0-9_]*$/;
 
-function PersonIcon() {
-  return (
-    <svg width={40} height={40} viewBox="0 0 40 40" fill="none">
-      <path d="M31.6658 34.9998V31.6665C31.6658 29.8984 30.9635 28.2028 29.7132 26.9526C28.463 25.7024 26.7674 25 24.9993 25H14.9995C13.2315 25 11.5358 25.7024 10.2856 26.9526C9.03537 28.2028 8.33301 29.8984 8.33301 31.6665V34.9998" stroke="#99A1AF" strokeWidth="2.49994" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M19.9995 18.333C23.6813 18.333 26.666 15.3483 26.666 11.6665C26.666 7.9847 23.6813 5 19.9995 5C16.3177 5 13.333 7.9847 13.333 11.6665C13.333 15.3483 16.3177 18.333 19.9995 18.333Z" stroke="#99A1AF" strokeWidth="2.49994" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 function LogoutIcon() {
   return (
     <svg width={16} height={16} viewBox="0 0 16 16" fill="none">

@@ -245,7 +245,7 @@
 }
 .aic-input-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
 }
 .aic-chat-ended-bar {
@@ -266,9 +266,9 @@
   flex: 1;
   height: 44px;
   min-height: 44px;
-  max-height: 44px;
-  padding: 10px 16px;
-  border-radius: 9999px;
+  max-height: 132px;
+  padding: 11px 16px;
+  border-radius: 22px;
   border: none;
   outline: none;
   background: #f3f4f6;

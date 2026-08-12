@@ -15,6 +15,7 @@ import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
 import { TrashSheetIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
+import { PersonIcon } from '../components/icons';
 import './communityDetail.css';
 
 /* ── 커스텀 SVG 아이콘 (원본 verbatim) ────────────────────────── */
@@ -144,10 +145,7 @@ function Avatar({ size = 32 }: { size?: number }) {
         flexShrink: 0,
       }}
     >
-      <svg width={icon} height={icon} viewBox="0 0 16 16" fill="none">
-        <path d="M12.6652 13.9985V12.6654C12.6652 11.9582 12.3843 11.28 11.8843 10.78C11.3842 10.2799 10.706 9.99902 9.99888 9.99902H5.99936C5.2922 9.99902 4.614 10.2799 4.11396 10.78C3.61393 11.28 3.33301 11.9582 3.33301 12.6654V13.9985" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M7.99936 7.3327C9.47194 7.3327 10.6657 6.13893 10.6657 4.66635C10.6657 3.19377 9.47194 2 7.99936 2C6.52677 2 5.33301 3.19377 5.33301 4.66635C5.33301 6.13893 6.52677 7.3327 7.99936 7.3327Z" stroke="#99A1AF" strokeWidth="0.999881" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <PersonIcon size={icon} />
     </span>
   );
 }
