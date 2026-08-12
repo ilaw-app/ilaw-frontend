@@ -20,8 +20,7 @@ const GENDERS: { value: Gender; label: string }[] = [
 const NICKNAME_REGEX = /^[a-zA-Z0-9_]*$/;
 
 // 튜토리얼: 회원가입을 '처음' 완료한 사용자에게만 보여줌 (이 온보딩 화면은 재로그인 땐 안 거침).
-// 지금은 튜토리얼 사진/콘텐츠 준비 전이라 꺼둠. 준비되면 true로 바꾸고 '/tutorial' 페이지를 추가하면 됨.
-const TUTORIAL_ENABLED = false;
+const TUTORIAL_ENABLED = true;
 
 export default function Onboarding() {
   const navigate = useNavigate();

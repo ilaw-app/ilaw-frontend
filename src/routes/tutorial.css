@@ -1,0 +1,87 @@
+.tut {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+.tut-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 좌/우 탭 영역 */
+.tut-zone {
+  position: absolute;
+  top: 0;
+  bottom: 88px;
+  background: transparent;
+  z-index: 2;
+}
+.tut-zone-left {
+  left: 0;
+  width: 30%;
+}
+.tut-zone-right {
+  right: 0;
+  width: 70%;
+}
+
+/* 건너뛰기 */
+.tut-skip {
+  position: absolute;
+  top: 44px;
+  right: 16px;
+  z-index: 4;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.15px;
+}
+
+/* 하단 컨트롤 */
+.tut-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.tut-dots {
+  display: flex;
+  gap: 7px;
+}
+.tut-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: width 0.2s ease, background 0.2s ease;
+}
+.tut-dot.active {
+  width: 20px;
+  background: #9bcb11;
+}
+.tut-next {
+  width: 100%;
+  height: 52px;
+  border-radius: 16px;
+  background: #9bcb11;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.312px;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+}

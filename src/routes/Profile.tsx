@@ -68,7 +68,7 @@ type MenuItem = { Icon: () => React.ReactElement; label: string; route?: string;
 const TUTORIAL_ITEM: MenuItem = {
   Icon: IcTutorial,
   label: '튜토리얼 다시보기',
-  onPress: () => window.alert('튜토리얼 다시보기는 준비 중이에요.'),
+  route: '/tutorial',
 };
 
 const USER_MENU_ITEMS: MenuItem[] = [
