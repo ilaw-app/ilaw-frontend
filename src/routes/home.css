@@ -205,17 +205,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.home-reco-cat {
-  flex-shrink: 0;
-  background: #f3f4f6;
-  color: #99a1af;
-  border-radius: 9999px;
-  padding: 2px 8px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  white-space: nowrap;
-}
 .home-reco-row > svg {
   flex-shrink: 0;
 }

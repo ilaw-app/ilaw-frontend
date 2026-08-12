@@ -6,6 +6,7 @@ import { qnaApi } from '../api/qna';
 import { manualApi } from '../api/manual';
 import { communityApi } from '../api/community';
 import TabBar from '../components/TabBar';
+import { stripMd } from '../utils/text';
 import './myScraps.css';
 
 type Tab = 'manual' | 'qna' | 'community';
@@ -73,7 +74,7 @@ export default function MyScraps() {
   const loading = activeTab === 'manual' ? loadingManual : activeTab === 'qna' ? loadingQna : loadingCommunity;
   const items = activeTab === 'manual' ? manualItems : activeTab === 'qna' ? qnaItems : communityItems;
 
-  const clean = (s?: string) => (s ?? '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/<[^>]+>/g, ' ');
+  const clean = stripMd;
 
   const cardFor = (item: any) => {
     if (activeTab === 'manual') {

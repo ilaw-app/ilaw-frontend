@@ -590,11 +590,6 @@
   font-weight: 700;
   color: var(--fig-title);
 }
-.qd-modal-desc {
-  font-size: 14px;
-  color: var(--fig-muted);
-  margin-top: 8px;
-}
 .qd-modal-btns {
   display: flex;
   flex-direction: column;

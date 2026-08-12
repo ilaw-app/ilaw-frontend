@@ -16,6 +16,7 @@ import { QNA_ITEMS } from '../data/qnaData';
 import type { QnADetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { Overlay } from '../components/Overlay';
+import { TrashSheetIcon } from '../components/PostMenuIcons';
 import { Markdown } from '../components/Markdown';
 import TabBar from '../components/TabBar';
 import './qnaDetail.css';
@@ -32,18 +33,6 @@ function staticLawyerAnswer(title: string) {
     return t.includes(qt) || qt.includes(t) || LAWYER_KEY.some((k) => t.includes(k) && qt.includes(k));
   });
   return item?.answer ?? null;
-}
-
-function TrashSheetIcon({ size = 28 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
-      <path d="M3.5 7H24.4996" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M22.166 7V23.333C22.166 24.4996 20.9994 25.6663 19.8327 25.6663H8.16629C6.99965 25.6663 5.83301 24.4996 5.83301 23.333V7" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9.33301 7.00055V4.66727C9.33301 3.50063 10.4996 2.33398 11.6663 2.33398H16.3329C17.4995 2.33398 18.6661 3.50063 18.6661 4.66727V7.00055" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M11.666 12.834V19.8338" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16.333 12.834V19.8338" stroke="#6A7282" strokeWidth="2.33328" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
 }
 
 function ClockIcon({ size = 32, color = '#8c937d' }: { size?: number; color?: string }) {

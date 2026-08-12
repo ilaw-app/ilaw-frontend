@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import { HighlightText } from '../components/HighlightText';
 import TabBar from '../components/TabBar';
 import type { PopularItem } from '../api/types';
+import { stripMd } from '../utils/text';
 import './home.css';
 
 type ResultType = 'manual' | 'qna' | 'community';
@@ -90,9 +91,6 @@ function ScrapSmallIcon() {
   );
 }
 
-function stripMd(s: string) {
-  return (s ?? '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/<[^>]+>/g, ' ');
-}
 
 export default function Home() {
   const navigate = useNavigate();

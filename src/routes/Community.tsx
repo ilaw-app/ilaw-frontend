@@ -266,7 +266,6 @@ export default function Community() {
   };
 
   const keyword = submitted.trim();
-  const frame = document.getElementById('app-frame');
 
   return (
     <div className="screen cm-screen">
@@ -384,7 +383,7 @@ export default function Community() {
               </button>
             </div>
           </div>,
-          frame ?? document.body
+          document.getElementById('app-frame') ?? document.body
         )}
 
       <TabBar />

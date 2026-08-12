@@ -101,33 +101,6 @@
   line-height: 20px;
   letter-spacing: -0.15px;
 }
-.mh-ec-police {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 12px 16px;
-  border-top: 0.723px solid #f3f4f6;
-}
-.mh-ec-police-label {
-  color: #4a5565;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: -0.15px;
-}
-.mh-ec-police-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.mh-ec-police-num {
-  color: #fb2c36;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
-  letter-spacing: -0.15px;
-}
 
 /* ─── 지역 필터 ─── */
 .mh-region-filter {
@@ -268,152 +241,6 @@
   font-weight: 700;
 }
 
-/* ─── 전화 모달 1단계 ─── */
-.mh-modal-card {
-  width: 345px;
-  max-width: 100%;
-  background: #FFF;
-  border-radius: 24px;
-  border: 1.356px solid #FFF;
-  padding: 24px;
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
-}
-.mh-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-.mh-modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #586144;
-  line-height: 28px;
-  letter-spacing: -0.449px;
-}
-.mh-icon-btn {
-  display: flex;
-  align-items: center;
-}
-.mh-modal-center-name {
-  font-size: 16px;
-  font-weight: 400;
-  color: #586144;
-  line-height: 24px;
-  letter-spacing: -0.312px;
-  margin-bottom: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.mh-modal-phone {
-  font-size: 26px;
-  font-weight: 700;
-  color: #586144;
-  margin-bottom: 16px;
-}
-.mh-modal-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.mh-tips-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-radius: 9999px;
-  background: #5A7B10;
-  padding: 13px 0;
-  align-self: stretch;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-.mh-tips-btn-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: #FFF;
-  line-height: 24px;
-  letter-spacing: -0.312px;
-}
-
-.mh-call-btn {
-  background: #B2D36E;
-  padding: 14px 0;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: stretch;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-.mh-call-btn-text {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* ─── 전화 모달 2단계 ─── */
-.mh-tips-card {
-  width: 358px;
-  max-width: 100%;
-  height: 90vh;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #FFF;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
-}
-.mh-tips-card-top {
-  flex-shrink: 0;
-  padding: 24px 20px 4px;
-}
-.mh-tips-scroll {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 8px 16px 16px;
-}
-.mh-tips-card-bottom {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-}
-
-.mh-big-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  border-radius: 16px;
-  border: 1.532px solid #F3F4F6;
-  background: #F3F4F6;
-  padding: 16px;
-}
-.mh-tips-hint {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.mh-tips-hint-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #586144;
-  line-height: 22px;
-  letter-spacing: -0.3px;
-}
-.mh-tips-hint-sub {
-  font-size: 15px;
-  font-weight: 400;
-  color: #586144;
-  line-height: 25px;
-}
-
 .mh-tips-field {
   flex-shrink: 0;
   display: flex;
@@ -426,26 +253,10 @@
   color: #6a7282;
   line-height: 16px;
 }
-.mh-tips-field-input {
-  box-sizing: border-box;
-  width: 100%;
-  height: 46px;
-  background: #FFF;
-  border-radius: 14px;
-  border: 1.532px solid #F3F4F6;
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #0a0a0a;
-  letter-spacing: -0.15px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.06);
-}
 .mh-tips-field-input.large {
   height: 92px;
   resize: none;
   vertical-align: top;
-}
-.mh-tips-field-input::placeholder {
-  color: rgba(10, 10, 10, 0.30);
 }
 
 /* ─── 전화 걸기 바텀시트 (재구성) ─── */
