@@ -65,8 +65,13 @@ function BarChartIcon() {
 }
 
 /* ── 타입 & 헬퍼 ─────────────────────────────────────────────── */
-// 신고 누적/욕설 감지 댓글 표시. 실제로는 BE가 flagged/hidden/masked/reported 플래그를 내려줘야 동작.
-const DEMO_FLAGGED = false;
+// 가려진 댓글: BE는 별도 플래그 없이 content를 아래 원인별 안내문으로 바꿔서 내려준다.
+// (욕설 자동감지=hidden / 신고 누적=removed / 작성자 삭제=deleted)
+const MASK_TEXTS = new Set([
+  '욕설이 감지되어 비공개된 댓글입니다.',
+  '신고가 누적되어 삭제된 댓글입니다.',
+  '삭제된 댓글입니다.',
+]);
 
 type PollOption = { label: string; votes: number };
 type PollT = { options: PollOption[]; total: number; votedOptionIndex: number | null };
@@ -104,10 +109,9 @@ function mapComment(c: CommunityComment): Comment {
     liked: !!c.liked,
     isAuthor: !!c.isAuthor,
     isPostAuthor: !!c.isPostAuthor,
-    // DEMO_FLAGGED: 신고댓글 디자인 미리보기용 임시(확인 후 false로 되돌릴 것).
-    // 실제로는 BE가 flagged/hidden/masked/reported 플래그를 내려줘야 동작함.
+    // BE가 안내문으로 content를 바꿔 내려주면 가림 처리 (혹시 별도 플래그가 오면 그것도 인정)
     flagged:
-      (DEMO_FLAGGED && c.id % 2 === 0) ||
+      MASK_TEXTS.has((c.content ?? '').trim()) ||
       !!(c as any).flagged || !!(c as any).hidden || !!(c as any).masked || !!(c as any).reported,
     parentId: c.parentId ?? null,
     replies: (c.replies ?? []).map(mapComment),
@@ -209,7 +213,7 @@ function ReplyItem({ reply, onDelete, onLike, onReport }: { reply: Comment; onDe
           </div>
         </div>
         {reply.flagged ? (
-          <p className="cd-comment-flagged">신고가 누적되어 가려진 댓글입니다.</p>
+          <p className="cd-comment-flagged">{reply.text}</p>
         ) : (
           <p className="cd-comment-text">{reply.text}</p>
         )}
@@ -261,7 +265,7 @@ function CommentItem({ comment, onReply, onDelete, onLike, onReport }: { comment
             </div>
           </div>
           {comment.flagged ? (
-            <p className="cd-comment-flagged">신고가 누적되어 가려진 댓글입니다.</p>
+            <p className="cd-comment-flagged">{comment.text}</p>
           ) : (
             <p className="cd-comment-text">{comment.text}</p>
           )}
