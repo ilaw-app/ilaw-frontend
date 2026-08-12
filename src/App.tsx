@@ -1,35 +1,37 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useEffect, useState, lazy, Suspense, type ReactElement } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+// 진입/인증 화면은 즉시 로드(초기 깜빡임 방지), 나머지는 화면별 코드 스플리팅
 import Splash from './routes/Splash';
 import Login from './routes/Login';
-import AuthCallback from './routes/AuthCallback';
-import Onboarding from './routes/Onboarding';
-import Home from './routes/Home';
-import Manual from './routes/Manual';
-import ManualList from './routes/ManualList';
-import ManualDetail from './routes/ManualDetail';
-import ManualHelp from './routes/ManualHelp';
-import QnaList from './routes/QnaList';
-import QnaDetail from './routes/QnaDetail';
-import QnaAsk from './routes/QnaAsk';
-import QnaAnswer from './routes/QnaAnswer';
-import Community from './routes/Community';
-import CommunityDetail from './routes/CommunityDetail';
-import CommunityWrite from './routes/CommunityWrite';
-import Profile from './routes/Profile';
-import EditProfile from './routes/EditProfile';
-import MyQuestions from './routes/MyQuestions';
-import MyCommunityPosts from './routes/MyCommunityPosts';
-import Tutorial from './routes/Tutorial';
-import MyAnswers from './routes/MyAnswers';
-import MyScraps from './routes/MyScraps';
-import MyQnaScraps from './routes/MyQnaScraps';
-import Notifications from './routes/Notifications';
-import NotificationSettings from './routes/NotificationSettings';
-import AiChat from './routes/AiChat';
-import Terms from './routes/Terms';
-import Privacy from './routes/Privacy';
+
+const AuthCallback = lazy(() => import('./routes/AuthCallback'));
+const Onboarding = lazy(() => import('./routes/Onboarding'));
+const Home = lazy(() => import('./routes/Home'));
+const Manual = lazy(() => import('./routes/Manual'));
+const ManualList = lazy(() => import('./routes/ManualList'));
+const ManualDetail = lazy(() => import('./routes/ManualDetail'));
+const ManualHelp = lazy(() => import('./routes/ManualHelp'));
+const QnaList = lazy(() => import('./routes/QnaList'));
+const QnaDetail = lazy(() => import('./routes/QnaDetail'));
+const QnaAsk = lazy(() => import('./routes/QnaAsk'));
+const QnaAnswer = lazy(() => import('./routes/QnaAnswer'));
+const Community = lazy(() => import('./routes/Community'));
+const CommunityDetail = lazy(() => import('./routes/CommunityDetail'));
+const CommunityWrite = lazy(() => import('./routes/CommunityWrite'));
+const Profile = lazy(() => import('./routes/Profile'));
+const EditProfile = lazy(() => import('./routes/EditProfile'));
+const MyQuestions = lazy(() => import('./routes/MyQuestions'));
+const MyCommunityPosts = lazy(() => import('./routes/MyCommunityPosts'));
+const Tutorial = lazy(() => import('./routes/Tutorial'));
+const MyAnswers = lazy(() => import('./routes/MyAnswers'));
+const MyScraps = lazy(() => import('./routes/MyScraps'));
+const MyQnaScraps = lazy(() => import('./routes/MyQnaScraps'));
+const Notifications = lazy(() => import('./routes/Notifications'));
+const NotificationSettings = lazy(() => import('./routes/NotificationSettings'));
+const AiChat = lazy(() => import('./routes/AiChat'));
+const Terms = lazy(() => import('./routes/Terms'));
+const Privacy = lazy(() => import('./routes/Privacy'));
 
 // 390x844 캔버스를 창 크기에 맞춰 균일하게 축소 (Expo 웹과 동일한 방식)
 function useCanvasScale() {
@@ -66,6 +68,7 @@ export default function App() {
   return (
     <div className="app-viewport">
       <div className="app-frame" id="app-frame" style={{ transform: `scale(${scale})` }}>
+        <Suspense fallback={<div className="spinner-center"><div className="spinner" /></div>}>
         <Routes>
           {/* 진입 / 인증 (공개) */}
           <Route path="/" element={<Splash />} />
@@ -110,6 +113,7 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </div>
     </div>
   );
