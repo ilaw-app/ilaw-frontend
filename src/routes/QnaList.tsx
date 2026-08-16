@@ -115,24 +115,8 @@ export default function QnaList() {
         list = [...list].sort(
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
+        // 목록 응답에 imageUrls가 포함됨(BE 반영) → 별도 상세 조회 불필요
         setPosts(list);
-        // 썸네일 보강(임시): 리스트 API가 imageUrls를 안 주므로 상세를 병렬 조회해 대표 이미지를 채운다.
-        // TODO(BE): GET /qa 응답에 imageUrls(또는 대표 이미지)를 추가하면 이 보강은 제거 가능.
-        Promise.all(
-          list.map((p) =>
-            qnaApi
-              .get(p.id)
-              .then((d) => ({ id: p.id, imageUrls: d.imageUrls }))
-              .catch(() => null)
-          )
-        ).then((details) => {
-          if (cancelled) return;
-          const map = new Map(
-            details.filter((d): d is { id: number; imageUrls: string[] } => !!d && Array.isArray(d.imageUrls)).map((d) => [d.id, d.imageUrls])
-          );
-          if (map.size === 0) return;
-          setPosts((prev) => prev.map((p) => (map.has(p.id) ? { ...p, imageUrls: map.get(p.id) } : p)));
-        });
       })
       .catch(() => {
         if (!cancelled) setPosts([]);

@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { manualApi } from '../api/manual';
+import type { ManualCategory } from '../api/types';
 import TabBar from '../components/TabBar';
 import './manual.css';
 
@@ -60,19 +63,55 @@ const IconSchool = () => (
   </svg>
 );
 
-const categories = [
-  { id: 'child-abuse', label: '아동학대/가정폭력', desc: '가정 내 폭력, 보호방법', Icon: IconShield },
-  { id: 'labor', label: '노동', desc: '아르바이트, 임금, 근로계약', Icon: IconBriefcase },
-  { id: 'finance', label: '금융', desc: '빚, 사기, 금융 문제 해결', Icon: IconMoney },
-  { id: 'sexual-violence', label: '성폭력', desc: '성착취, 성폭력, 신고방법', Icon: IconTriangle },
-  { id: 'online-violence', label: '온라인폭력', desc: '사이버 괴롭힘, 악플, 신고', Icon: IconWifi },
-  { id: 'birth-and-parenting', label: '출생·양육', desc: '출생신고, 입양, 양육비', Icon: IconBaby },
-  { id: 'parental-rights', label: '법정대리인', desc: '친권, 후견, 보호제도', Icon: IconScale },
-  { id: 'school-violence', label: '학교폭력', desc: '학교폭력, 신고절차, 보호', Icon: IconSchool },
+const IconLife = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M3 9.5L12 3l9 6.5" {...S} />
+    <path d="M5 9V20C5 20.5523 5.44772 21 6 21H18C18.5523 21 19 20.5523 19 20V9" {...S} />
+    <path d="M9.5 21V14.5H14.5V21" {...S} />
+  </svg>
+);
+
+// slug → 아이콘 (BE가 새 카테고리를 추가하면 기본 아이콘으로 표시됨)
+const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
+  'child-abuse': IconShield,
+  labor: IconBriefcase,
+  finance: IconMoney,
+  'sexual-violence': IconTriangle,
+  'online-violence': IconWifi,
+  'birth-and-parenting': IconBaby,
+  'parental-rights': IconScale,
+  'school-violence': IconSchool,
+  'out-of-school-youth': IconLife,
+};
+const DEFAULT_ICON = IconShield;
+
+// API 실패 시 최소 화면 유지용 폴백
+const FALLBACK_CATEGORIES: ManualCategory[] = [
+  { id: 3, name: '금융', slug: 'finance', order: 1 },
+  { id: 2, name: '노동', slug: 'labor', order: 2 },
+  { id: 4, name: '성폭력', slug: 'sexual-violence', order: 3 },
+  { id: 1, name: '아동학대', slug: 'child-abuse', order: 4 },
+  { id: 5, name: '온라인폭력', slug: 'online-violence', order: 5 },
+  { id: 6, name: '출생·양육', slug: 'birth-and-parenting', order: 6 },
+  { id: 7, name: '법정대리인', slug: 'parental-rights', order: 7 },
+  { id: 8, name: '학교폭력', slug: 'school-violence', order: 8 },
 ];
 
 export default function Manual() {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState<ManualCategory[]>(FALLBACK_CATEGORIES);
+
+  useEffect(() => {
+    let cancelled = false;
+    manualApi
+      .categories()
+      .then((cats) => {
+        if (!cancelled && Array.isArray(cats) && cats.length) setCategories(cats);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="screen">
       <div className="screen-scroll manual-scroll">
@@ -82,18 +121,18 @@ export default function Manual() {
         </div>
         <div className="manual-list">
           {categories.map((cat) => {
-            const Icon = cat.Icon;
+            const Icon = ICON_BY_SLUG[cat.slug] ?? DEFAULT_ICON;
             return (
               <button
-                key={cat.id}
+                key={cat.slug}
                 className="manual-card"
-                onClick={() => navigate(`/manual-list?categoryId=${cat.id}`)}
+                onClick={() => navigate(`/manual-list?categoryId=${cat.slug}`)}
               >
                 <span className="manual-icon">
                   <Icon />
                 </span>
                 <span className="manual-card-text">
-                  <span className="manual-card-label">{cat.label}</span>
+                  <span className="manual-card-label">{cat.name}</span>
                 </span>
               </button>
             );

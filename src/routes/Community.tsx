@@ -171,8 +171,9 @@ function PostCard({
 
 export default function Community() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { isAuthed } = useAuth();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [myPostIds, setMyPostIds] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState<'latest' | 'popular'>('latest');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -180,6 +181,17 @@ export default function Community() {
   const [submitted, setSubmitted] = useState('');
   const [menuPostId, setMenuPostId] = useState<number | null>(null);
   const [menuTop, setMenuTop] = useState(0);
+
+  // 커뮤니티 글은 닉네임이 익명화돼 닉네임으로 내 글을 못 가림 → 내 글 id 집합으로 판별
+  useEffect(() => {
+    if (!isAuthed) { setMyPostIds(new Set()); return; }
+    let cancelled = false;
+    communityApi
+      .myPosts()
+      .then((list) => { if (!cancelled) setMyPostIds(new Set((Array.isArray(list) ? list : []).map((p) => p.id))); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [isAuthed]);
 
   useEffect(() => {
     let cancelled = false;
@@ -343,7 +355,7 @@ export default function Community() {
                 key={item.id}
                 item={item}
                 keyword={keyword}
-                isOwner={user?.nickname === item.nickname}
+                isOwner={myPostIds.has(item.id)}
                 onPress={() => navigate(`/community/${item.id}`)}
                 onMenuPress={handleMenuPress}
               />

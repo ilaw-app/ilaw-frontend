@@ -16,29 +16,12 @@ export default function MyCommunityPosts() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    // 커뮤니티 글은 닉네임이 '익명N'으로 익명화돼 목록만으론 내 글을 못 가림.
-    // 각 글 상세의 isAuthor로 내가 쓴 글을 판별한다.
+    // BE가 내 글만 반환하는 전용 엔드포인트 제공 (요청 1번).
     communityApi
-      .list(100)
-      .then(async (data) => {
-        const list: any[] = Array.isArray(data)
-          ? data
-          : Array.isArray((data as any).posts)
-          ? (data as any).posts
-          : [];
-        const sorted = [...list].sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        const checked = await Promise.all(
-          sorted.slice(0, 60).map((p) =>
-            communityApi
-              .get(p.id)
-              .then((d) => (d && (d as any).isAuthor ? { ...p, isAuthor: true } : null))
-              .catch(() => null)
-          )
-        );
+      .myPosts()
+      .then((data) => {
         if (cancelled) return;
-        setPosts(checked.filter(Boolean) as any[]);
+        setPosts(Array.isArray(data) ? data : []);
       })
       .catch(() => { if (!cancelled) setPosts([]); })
       .finally(() => { if (!cancelled) setLoading(false); });
