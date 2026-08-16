@@ -318,7 +318,7 @@ export default function Home() {
             <span className="home-quick-icon qna"><QuickQnaIcon /></span>
             <span className="home-quick-label">내 질문</span>
           </button>
-          <button className="home-quick-item" onClick={() => navigate('/community')}>
+          <button className="home-quick-item" onClick={() => navigate('/my-community-posts')}>
             <span className="home-quick-icon community"><CommunityIcon size={20} color="#FE9A2F" /></span>
             <span className="home-quick-label">내 커뮤니티 글</span>
           </button>
