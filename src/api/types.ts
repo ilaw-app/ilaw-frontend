@@ -45,7 +45,7 @@ export type QnAListItem = {
   author: QnAAuthorPublic;
   scrapCount: number;
   scrapped?: boolean;
-  imageUrls?: string[]; // 리스트 API엔 없어 상세로 보강 (백엔드가 추가하면 바로 사용)
+  imageUrls?: string[]; // 목록 응답에 포함됨 (BE 반영)
 };
 
 export type QnAAnswer = {
