@@ -85,28 +85,45 @@ const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
 };
 const DEFAULT_ICON = IconShield;
 
-// API 실패 시 최소 화면 유지용 폴백
+// API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
 const FALLBACK_CATEGORIES: ManualCategory[] = [
-  { id: 3, name: '금융', slug: 'finance', order: 1 },
+  { id: 4, name: '아동학대/가정폭력', slug: 'child-abuse', order: 1 },
   { id: 2, name: '노동', slug: 'labor', order: 2 },
-  { id: 4, name: '성폭력', slug: 'sexual-violence', order: 3 },
-  { id: 1, name: '아동학대', slug: 'child-abuse', order: 4 },
+  { id: 1, name: '금융', slug: 'finance', order: 3 },
+  { id: 3, name: '성폭력', slug: 'sexual-violence', order: 4 },
   { id: 5, name: '온라인폭력', slug: 'online-violence', order: 5 },
-  { id: 6, name: '출생·양육', slug: 'birth-and-parenting', order: 6 },
+  { id: 6, name: '출생/양육', slug: 'birth-and-parenting', order: 6 },
   { id: 7, name: '법정대리인', slug: 'parental-rights', order: 7 },
-  { id: 8, name: '학교폭력', slug: 'school-violence', order: 8 },
+  { id: 69, name: '학교폭력', slug: 'school-violence', order: 8 },
+  { id: 95, name: '학교 밖 청소년', slug: 'out-of-school-youth', order: 9 },
 ];
+
+// 직전 성공 응답을 캐시 → 재방문 시 즉시 최신 목록으로 렌더(BE가 카테고리를 바꿔도 깜빡임 없음)
+const CACHE_KEY = 'ilaw.manualCategories';
+function readCache(): ManualCategory[] | null {
+  try {
+    const s = localStorage.getItem(CACHE_KEY);
+    if (s) {
+      const arr = JSON.parse(s);
+      if (Array.isArray(arr) && arr.length) return arr;
+    }
+  } catch { /* noop */ }
+  return null;
+}
 
 export default function Manual() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<ManualCategory[]>(FALLBACK_CATEGORIES);
+  const [categories, setCategories] = useState<ManualCategory[]>(() => readCache() ?? FALLBACK_CATEGORIES);
 
   useEffect(() => {
     let cancelled = false;
     manualApi
       .categories()
       .then((cats) => {
-        if (!cancelled && Array.isArray(cats) && cats.length) setCategories(cats);
+        if (!cancelled && Array.isArray(cats) && cats.length) {
+          setCategories(cats);
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify(cats)); } catch { /* noop */ }
+        }
       })
       .catch(() => {});
     return () => { cancelled = true; };

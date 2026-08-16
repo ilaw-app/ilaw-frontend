@@ -4,6 +4,7 @@ import { IoArrowBack, IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { manualApi } from '../api/manual';
 import type { ManualArticleDetail } from '../api/types';
 import { useAuth } from '../context/AuthContext';
+import { cleanManualQuestion, stripDuplicateSummary } from '../utils/text';
 import TabBar from '../components/TabBar';
 import './manualDetail.css';
 
@@ -83,7 +84,7 @@ export default function ManualDetail() {
         <div className="screen-scroll md-content">
           <div className="md-q">
             <span className="md-q-label">Q.</span>
-            <span className="md-q-text">{article.question}</span>
+            <span className="md-q-text">{cleanManualQuestion(article.question)}</span>
           </div>
 
           {article.summary && (
@@ -92,7 +93,10 @@ export default function ManualDetail() {
             </div>
           )}
 
-          <div className="manual-html" dangerouslySetInnerHTML={{ __html: article.content ?? '' }} />
+          <div
+            className="manual-html"
+            dangerouslySetInnerHTML={{ __html: stripDuplicateSummary(article.content, article.summary) }}
+          />
 
           <div className="md-scrap-area">
             <button className={`md-scrap ${scrapped ? 'on' : ''}`} onClick={handleScrap}>

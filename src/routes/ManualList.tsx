@@ -4,6 +4,7 @@ import { IoArrowBack, IoChevronForward, IoSearch, IoClose, IoSearchOutline } fro
 import { manualApi } from '../api/manual';
 import type { ManualArticleSummary } from '../api/types';
 import { HighlightText } from '../components/HighlightText';
+import { cleanManualQuestion } from '../utils/text';
 import TabBar from '../components/TabBar';
 import './manualList.css';
 
@@ -32,6 +33,7 @@ const SLUG_TO_NAME: Record<string, string> = {
   'birth-and-parenting': '출생/양육',
   'parental-rights': '법정대리인',
   'school-violence': '학교폭력',
+  'out-of-school-youth': '학교 밖 청소년',
 };
 
 const qLabel = (n: number) => `Q${n}`;
@@ -168,7 +170,7 @@ export default function ManualList() {
                   <button className="ml-q" onClick={() => navigate(`/manual-detail?articleId=${item.id}`)}>
                     <span className="ml-q-num">{qLabel(qNum(item.id, idx + 1))}</span>
                     <span className="ml-q-text">
-                      <HighlightText text={item.question} keyword={query} />
+                      <HighlightText text={cleanManualQuestion(item.question)} keyword={query} />
                     </span>
                     <IoChevronForward size={18} color="#bbb" />
                   </button>
@@ -187,7 +189,7 @@ export default function ManualList() {
               <div key={article.id}>
                 <button className="ml-q" onClick={() => navigate(`/manual-detail?articleId=${article.id}`)}>
                   <span className="ml-q-num">{qLabel(index + 1)}</span>
-                  <span className="ml-q-text">{article.question}</span>
+                  <span className="ml-q-text">{cleanManualQuestion(article.question)}</span>
                   <IoChevronForward size={18} color="#bbb" />
                 </button>
                 {index < articles.length - 1 && <div className="ml-divider" />}
