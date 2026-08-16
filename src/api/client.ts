@@ -2,7 +2,8 @@
 // - JWT Bearer 인증, 401 시 refresh 후 자동 재시도
 // - 토큰은 localStorage에 저장 (RN의 expo-secure-store 대체)
 
-export const API_BASE = 'https://ilaw-backend.up.railway.app';
+// 기본값은 운영 주소. 로컬 개발 시 .env.local의 VITE_API_BASE로 덮어쓴다.
+export const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://ilaw-backend.up.railway.app';
 
 const ACCESS_KEY = 'ilaw.accessToken';
 const REFRESH_KEY = 'ilaw.refreshToken';
