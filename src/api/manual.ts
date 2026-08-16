@@ -1,4 +1,5 @@
 import { api } from './client';
+import { buildPaginatedPath, fetchAllPages } from './pagination';
 import type {
   ManualCategory,
   ManualArticleSummary,
@@ -9,12 +10,23 @@ import type {
 
 export type ManualSearchItem = ManualArticleDetail;
 
+const fetchAll = <T>(path: string, signal?: AbortSignal) =>
+  fetchAllPages(
+    (page, limit, pageSignal) =>
+      api.get<T[]>(buildPaginatedPath(path, page, limit), { signal: pageSignal }),
+    { signal },
+  );
+
 export const manualApi = {
   categories: () => api.get<ManualCategory[]>('/manual/categories'),
-  articles: (slug: string) => api.get<ManualArticleSummary[]>(`/manual/categories/${slug}/articles`),
+  articles: (slug: string, signal?: AbortSignal) =>
+    fetchAll<ManualArticleSummary>(`/manual/categories/${slug}/articles`, signal),
   article: (id: number | string) => api.get<ManualArticleDetail>(`/manual/articles/${id}`),
-  agencies: (slug: string, region?: string) =>
-    api.get<Agency[]>(`/manual/categories/${slug}/agencies${region ? `?region=${encodeURIComponent(region)}` : ''}`),
+  agencies: (slug: string, region?: string, signal?: AbortSignal) =>
+    fetchAll<Agency>(
+      `/manual/categories/${slug}/agencies${region ? `?region=${encodeURIComponent(region)}` : ''}`,
+      signal,
+    ),
   search: (q: string) =>
     api.get<SearchResponse<ManualSearchItem>>(`/manual/search?q=${encodeURIComponent(q)}`),
 

@@ -100,18 +100,21 @@ export default function Notifications() {
 
   useEffect(() => {
     let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
     notificationsApi
-      .list()
-      .then((data) => !cancelled && setNotifications(Array.isArray(data) ? data : []))
+      .list(controller.signal)
+      .then((data) => {
+        if (!cancelled) setNotifications(Array.isArray(data) ? data : []);
+        // 전체 페이지 수신 뒤에 읽음 처리한다.
+        return notificationsApi.readAll().catch(() => {});
+      })
       .catch(() => !cancelled && setNotifications([]))
       .finally(() => !cancelled && setLoading(false));
 
-    // fire-and-forget
-    notificationsApi.readAll().catch(() => {});
-
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, []);
 
