@@ -4,6 +4,8 @@ import { IoArrowBack, IoCheckmark } from 'react-icons/io5';
 import { qnaApi } from '../api/qna';
 import { uploadImage } from '../api/upload';
 import { Overlay } from '../components/Overlay';
+import ProfanityField from '../components/ProfanityField';
+import { useProfanityCheck } from '../hooks/useProfanityCheck';
 import './qnaAsk.css';
 
 const QNA_CATEGORIES = ['노동', '금융', '온라인폭력', '아동학대', '성폭력', '출생', '법정대리인', '기타'];
@@ -59,8 +61,10 @@ export default function QnaAsk() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // 금칙어는 서버가 등록 시점에 막지만, 입력 중에도 같은 로직으로 미리 검사해 어떤 표현인지 표시한다.
+  const profanity = useProfanityCheck({ title, content });
   const canSubmit =
-    title.trim().length > 0 && content.trim().length > 0 && selectedCategories.length > 0;
+    title.trim().length > 0 && content.trim().length > 0 && selectedCategories.length > 0 && !profanity.blocked;
 
   const handleSubmit = async () => {
     if (submittingRef.current) return; // 중복 제출(더블탭) 방지
@@ -79,8 +83,11 @@ export default function QnaAsk() {
         imageUrls,
       });
       setShowSuccess(true);
-    } catch {
-      // silent — user stays on form to retry
+    } catch (err) {
+      if (profanity.applyError(err)) {
+        window.alert('부적절한 표현이 포함되어 있어 등록할 수 없어요. 빨간색으로 표시된 부분을 수정해주세요.');
+      }
+      // 그 외 실패는 폼에 머물러 다시 시도
     } finally {
       setSubmitting(false);
       submittingRef.current = false;
@@ -104,18 +111,21 @@ export default function QnaAsk() {
       </div>
 
       <div className="qa-scroll">
-        <input
+        <ProfanityField
+          as="input"
           className="qa-title-input"
           placeholder="제목을 입력하세요"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={setTitle}
+          matches={profanity.report.title}
         />
 
-        <textarea
+        <ProfanityField
           className="qa-content-input"
           placeholder="내용을 입력하세요"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={setContent}
+          matches={profanity.report.content}
         />
 
         {/* 안내 박스 — 내용을 입력하면 숨김 */}

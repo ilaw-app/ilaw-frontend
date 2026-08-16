@@ -194,7 +194,7 @@
   font-weight: 700;
   color: var(--fig-brand);
 }
-.qd-answer-form textarea {
+.qd-answer-textarea {
   width: 100%;
   min-height: 240px;
   border: 1px solid var(--fig-line);

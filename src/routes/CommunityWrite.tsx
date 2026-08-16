@@ -4,6 +4,8 @@ import { IoArrowBack, IoClose, IoCloseCircle } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import { uploadImage } from '../api/upload';
 import { useAuth } from '../context/AuthContext';
+import { useProfanityCheck } from '../hooks/useProfanityCheck';
+import ProfanityField from '../components/ProfanityField';
 import './communityWrite.css';
 
 type Photo = { url: string; file?: File; isRemote?: boolean };
@@ -75,7 +77,9 @@ export default function CommunityWrite() {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  const canSubmit = title.trim().length > 0 && content.trim().length > 0;
+  // 금칙어는 서버가 등록 시점에 막지만, 입력 중에도 같은 로직으로 미리 검사해 어떤 표현인지 표시한다.
+  const profanity = useProfanityCheck({ title, content });
+  const canSubmit = title.trim().length > 0 && content.trim().length > 0 && !profanity.blocked;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -141,6 +145,10 @@ export default function CommunityWrite() {
         }
         navigate(-1);
       } catch (err: any) {
+        if (profanity.applyError(err)) {
+          window.alert('부적절한 표현이 포함되어 있어 등록할 수 없어요. 빨간색으로 표시된 부분을 수정해주세요.');
+          return;
+        }
         window.alert(err?.message ?? '저장에 실패했습니다.');
       }
     } finally {
@@ -167,19 +175,22 @@ export default function CommunityWrite() {
       </div>
 
       <div className="screen-scroll cw-scroll">
-        <input
+        <ProfanityField
+          as="input"
           className="cw-title-input"
           placeholder="제목을 입력하세요"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={setTitle}
           maxLength={100}
+          matches={profanity.report.title}
         />
 
-        <textarea
+        <ProfanityField
           className="cw-content-input"
           placeholder="내용을 입력하세요"
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={setContent}
+          matches={profanity.report.content}
         />
 
         {/* 주의사항 박스 — 내용 입력 전, 투표 미사용 시 */}

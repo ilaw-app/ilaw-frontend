@@ -497,3 +497,13 @@
 .cd-send-btn.active {
   background: #678720;
 }
+.cd-profanity-hint {
+  font-size: 12px;
+  line-height: 16px;
+  color: #e7000b;
+  letter-spacing: -0.2px;
+  padding: 0 4px;
+}
+.cd-profanity-hint b {
+  font-weight: 700;
+}

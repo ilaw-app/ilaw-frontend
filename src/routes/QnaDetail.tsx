@@ -20,6 +20,9 @@ import { TrashSheetIcon } from '../components/PostMenuIcons';
 import { PersonIcon } from '../components/icons';
 import { Markdown } from '../components/Markdown';
 import TabBar from '../components/TabBar';
+import ProfanityField from '../components/ProfanityField';
+import { useProfanityCheck } from '../hooks/useProfanityCheck';
+import type { ProfanityMatch } from '../api/moderation';
 import './qnaDetail.css';
 
 const genderLabel = (g?: string | null) =>
@@ -71,6 +74,9 @@ export default function QnaDetail() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState('');
+  // 변호사 답변 작성/수정도 서버 금칙어 필터와 같은 로직으로 입력 중 미리 표시한다.
+  const answerProfanity = useProfanityCheck({ content: answerText });
+  const editProfanity = useProfanityCheck({ content: editing ? editText : '' });
 
   const isLawyer = role === 'lawyer';
 
@@ -150,12 +156,16 @@ export default function QnaDetail() {
   }
 
   async function submitAnswer() {
-    if (!post || !answerText.trim() || submitting) return;
+    if (!post || !answerText.trim() || submitting || answerProfanity.blocked) return;
     setSubmitting(true);
     try {
       await qnaApi.answer(post.id, answerText.trim());
       setSuccessOpen(true);
     } catch (e: any) {
+      if (answerProfanity.applyError(e)) {
+        alert('부적절한 표현이 포함되어 있어 등록할 수 없어요. 빨간색으로 표시된 부분을 수정해주세요.');
+        return;
+      }
       alert(e?.status === 409 ? '이미 답변이 등록된 질문입니다.' : '답변 등록에 실패했습니다.');
     } finally {
       setSubmitting(false);
@@ -163,13 +173,17 @@ export default function QnaDetail() {
   }
 
   async function saveEdit() {
-    if (!post?.answer || !editText.trim() || submitting) return;
+    if (!post?.answer || !editText.trim() || submitting || editProfanity.blocked) return;
     setSubmitting(true);
     try {
       await qnaApi.editAnswer(post.id, editText.trim());
       setPost({ ...post, answer: { ...post.answer, content: editText.trim() } });
       setEditing(false);
-    } catch {
+    } catch (e) {
+      if (editProfanity.applyError(e)) {
+        alert('부적절한 표현이 포함되어 있어 저장할 수 없어요. 빨간색으로 표시된 부분을 수정해주세요.');
+        return;
+      }
       alert('수정에 실패했습니다.');
     } finally {
       setSubmitting(false);
@@ -290,12 +304,18 @@ export default function QnaDetail() {
           post.status === 'pending' ? (
             <div className="qd-answer-form">
               <div className="qd-form-title">답변 작성</div>
-              <textarea
+              <ProfanityField
+                className="qd-answer-textarea"
                 placeholder="법률 정보를 바탕으로 신중하게 답변을 작성해 주세요."
                 value={answerText}
-                onChange={(e) => setAnswerText(e.target.value)}
+                onChange={setAnswerText}
+                matches={answerProfanity.report.content}
               />
-              <button className="qd-submit" disabled={submitting || !answerText.trim()} onClick={submitAnswer}>
+              <button
+                className="qd-submit"
+                disabled={submitting || !answerText.trim() || answerProfanity.blocked}
+                onClick={submitAnswer}
+              >
                 {submitting ? '등록 중...' : '답변 제출'}
               </button>
             </div>
@@ -306,6 +326,8 @@ export default function QnaDetail() {
                 editable={post.answer.isMyAnswer}
                 editing={editing}
                 editText={editText}
+                editMatches={editProfanity.report.content}
+                editBlocked={editProfanity.blocked}
                 submitting={submitting}
                 onStartEdit={() => {
                   setEditText(post.answer!.content);
@@ -415,6 +437,8 @@ function AnswerCard({
   editable,
   editing,
   editText,
+  editMatches,
+  editBlocked,
   submitting,
   onStartEdit,
   onCancel,
@@ -425,6 +449,8 @@ function AnswerCard({
   editable?: boolean;
   editing?: boolean;
   editText?: string;
+  editMatches?: ProfanityMatch[];
+  editBlocked?: boolean;
   submitting?: boolean;
   onStartEdit?: () => void;
   onCancel?: () => void;
@@ -454,12 +480,17 @@ function AnswerCard({
       <div className="qd-answer-divider" />
       {editing ? (
         <>
-          <textarea className="qd-edit-area" value={editText} onChange={(e) => onChange?.(e.target.value)} />
+          <ProfanityField
+            className="qd-edit-area"
+            value={editText ?? ''}
+            onChange={(v) => onChange?.(v)}
+            matches={editMatches}
+          />
           <div className="qd-edit-btns">
             <button className="ghost" onClick={onCancel}>
               취소
             </button>
-            <button className="primary" disabled={submitting} onClick={onSave}>
+            <button className="primary" disabled={submitting || editBlocked} onClick={onSave}>
               {submitting ? '저장 중...' : '저장'}
             </button>
           </div>

@@ -1,0 +1,75 @@
+/* 금칙어 하이라이트 입력창 — 하이라이트 레이어(pf-backdrop)는 컨트롤과 같은 클래스를 받아 글꼴·여백이 일치한다. */
+.pf-wrap {
+  display: block;
+  min-width: 0;
+}
+/* 컨트롤과 하이라이트 레이어만 감싼다 (안내문은 밖) — 레이어가 컨트롤 크기에 정확히 맞도록 */
+.pf-box {
+  position: relative;
+  display: block;
+}
+.pf-control {
+  position: relative;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+/* 걸린 구간이 있으면 컨트롤 글자를 투명하게 — 커서·선택은 유지되고 뒤 레이어의 글자가 보인다. */
+.pf-control.pf-active {
+  -webkit-text-fill-color: transparent;
+  background: transparent !important;
+}
+.pf-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  resize: none;
+  z-index: 0;
+}
+.pf-backdrop--textarea {
+  white-space: pre-wrap;
+}
+.pf-backdrop--input {
+  display: flex;
+  align-items: center;
+  white-space: pre;
+}
+.pf-backdrop--input > * {
+  flex-shrink: 0;
+}
+.pf-mark {
+  color: #e7000b;
+  -webkit-text-fill-color: #e7000b;
+  background: rgba(231, 0, 11, 0.12);
+  border-radius: 3px;
+  text-decoration: underline;
+  text-decoration-color: #e7000b;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+.pf-invalid > .pf-control {
+  caret-color: #e7000b;
+}
+.pf-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #e7000b;
+  letter-spacing: -0.2px;
+}
+.pf-hint b {
+  font-weight: 700;
+}

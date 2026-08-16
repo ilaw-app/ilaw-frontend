@@ -16,6 +16,8 @@ import { Overlay } from '../components/Overlay';
 import { TrashSheetIcon } from '../components/PostMenuIcons';
 import TabBar from '../components/TabBar';
 import { PersonIcon } from '../components/icons';
+import ProfanityField from '../components/ProfanityField';
+import { useProfanityCheck } from '../hooks/useProfanityCheck';
 import './communityDetail.css';
 
 /* ── 커스텀 SVG 아이콘 (원본 verbatim) ────────────────────────── */
@@ -300,6 +302,8 @@ export default function CommunityDetail() {
   const [votedIdx, setVotedIdx] = useState<number | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [commentText, setCommentText] = useState('');
+  // 댓글도 서버 금칙어 필터와 같은 로직으로 입력 중 미리 검사해 표시한다.
+  const commentProfanity = useProfanityCheck({ content: commentText });
   const [comments, setComments] = useState<Comment[]>([]);
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -407,6 +411,7 @@ export default function CommunityDetail() {
   const handleSend = async () => {
     if (!commentText.trim()) return;
     if (!isAuthed) { window.alert('로그인 후 댓글을 작성할 수 있습니다.'); return; }
+    if (commentProfanity.blocked) return; // 빨간 표시가 있는 동안은 전송하지 않음
     const text = commentText.trim();
     setCommentText('');
     try {
@@ -422,8 +427,12 @@ export default function CommunityDetail() {
         }
         return [...prev, newComment];
       });
-    } catch {
-      /* noop */
+    } catch (err) {
+      // 서버가 금칙어로 거부하면 입력을 되살리고 어떤 표현인지 표시한다.
+      setCommentText(commentText);
+      if (commentProfanity.applyError(err)) return;
+      window.alert('댓글을 등록하지 못했습니다. 잠시 후 다시 시도해주세요.');
+      return;
     }
     setReplyingTo(null);
   };
@@ -744,21 +753,31 @@ export default function CommunityDetail() {
           </div>
         )}
         <div className="cd-input-row">
-          <input
+          <ProfanityField
+            as="input"
             className="cd-input"
+            wrapStyle={{ flex: 1, minWidth: 0 }}
+            hint={false}
             placeholder="댓글을 입력하세요"
             value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
+            onChange={setCommentText}
+            matches={commentProfanity.report.content}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { e.preventDefault(); handleSend(); } }}
           />
           <button
             type="button"
-            className={`cd-send-btn${commentText.trim().length > 0 ? ' active' : ''}`}
+            className={`cd-send-btn${commentText.trim().length > 0 && !commentProfanity.blocked ? ' active' : ''}`}
             onClick={handleSend}
+            disabled={commentProfanity.blocked}
           >
             <SendIcon />
           </button>
         </div>
+        {commentProfanity.blocked && (
+          <div className="cd-profanity-hint" role="alert">
+            부적절한 표현이 포함되어 있어 등록할 수 없어요: <b>{[...new Set(commentProfanity.report.content?.map((m) => m.word.trim()))].filter(Boolean).join(', ')}</b>
+          </div>
+        )}
       </div>
 
       <TabBar />
