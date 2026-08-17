@@ -174,17 +174,14 @@ export default function Home() {
     }
   }
 
-  function openResult(r: SearchResult) {
-    if (r.type === 'manual') navigate(`/manual-detail?articleId=${r.id}`);
-    else if (r.type === 'qna') navigate(`/qna/${r.id}`);
-    else navigate(`/community/${r.id}`);
-  }
-
-  function openPopular(p: PopularItem) {
-    if (p.type === 'manual') navigate(`/manual-detail?articleId=${p.id}`);
-    else if (p.type === 'qna') navigate(`/qna/${p.id}`);
-    else navigate(`/community/${p.id}`);
-  }
+  // 타입별 상세 경로로 이동 (검색 결과·인기 콘텐츠 공용)
+  const goByType = (type: ResultType, id: number) => {
+    if (type === 'manual') navigate(`/manual-detail?articleId=${id}`);
+    else if (type === 'qna') navigate(`/qna/${id}`);
+    else navigate(`/community/${id}`);
+  };
+  const openResult = (r: SearchResult) => goByType(r.type, r.id);
+  const openPopular = (p: PopularItem) => goByType(p.type, p.id);
 
   const shown = filter === 'all' ? results : results.filter((r) => r.type === filter);
 
