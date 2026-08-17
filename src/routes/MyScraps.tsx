@@ -17,6 +17,13 @@ const TAB_EMPTY: Record<Tab, string> = {
   community: '스크랩한 커뮤니티 글이 없어요',
 };
 
+// 탭별 스크랩 목록 요청 (탭 키로 조회)
+const SCRAP_FETCHERS: Record<Tab, () => Promise<any[]>> = {
+  manual: () => manualApi.myScraps(),
+  qna: () => qnaApi.myScraps(),
+  community: () => communityApi.myBookmarks(),
+};
+
 function TypeIcon({ tab }: { tab: Tab }) {
   if (tab === 'manual') return <IoBookOutline size={14} color="#99A1AF" />;
   if (tab === 'qna') return <IoChatbubbleOutline size={14} color="#99A1AF" />;
@@ -47,32 +54,24 @@ function EmptyState({ tab }: { tab: Tab }) {
 export default function MyScraps() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>('manual');
-  const [manualItems, setManualItems] = useState<any[]>([]);
-  const [qnaItems, setQnaItems] = useState<any[]>([]);
-  const [communityItems, setCommunityItems] = useState<any[]>([]);
-  const [loadingManual, setLoadingManual] = useState(true);
-  const [loadingQna, setLoadingQna] = useState(true);
-  const [loadingCommunity, setLoadingCommunity] = useState(true);
+  const [data, setData] = useState<Record<Tab, any[]>>({ manual: [], qna: [], community: [] });
+  const [loadingByTab, setLoadingByTab] = useState<Record<Tab, boolean>>({ manual: true, qna: true, community: true });
   const [loadedTabs, setLoadedTabs] = useState<Set<Tab>>(new Set());
 
   useEffect(() => {
     if (loadedTabs.has(activeTab)) return;
-    setLoadedTabs((prev) => new Set(prev).add(activeTab));
-    if (activeTab === 'manual') {
-      setLoadingManual(true);
-      manualApi.myScraps().then((d) => setManualItems(Array.isArray(d) ? d : [])).catch(() => setManualItems([])).finally(() => setLoadingManual(false));
-    } else if (activeTab === 'qna') {
-      setLoadingQna(true);
-      qnaApi.myScraps().then((d) => setQnaItems(Array.isArray(d) ? d : [])).catch(() => setQnaItems([])).finally(() => setLoadingQna(false));
-    } else {
-      setLoadingCommunity(true);
-      communityApi.myBookmarks().then((d) => setCommunityItems(Array.isArray(d) ? d : [])).catch(() => setCommunityItems([])).finally(() => setLoadingCommunity(false));
-    }
+    const tab = activeTab;
+    setLoadedTabs((prev) => new Set(prev).add(tab));
+    setLoadingByTab((l) => ({ ...l, [tab]: true }));
+    SCRAP_FETCHERS[tab]()
+      .then((d) => setData((m) => ({ ...m, [tab]: Array.isArray(d) ? d : [] })))
+      .catch(() => setData((m) => ({ ...m, [tab]: [] })))
+      .finally(() => setLoadingByTab((l) => ({ ...l, [tab]: false })));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
-  const loading = activeTab === 'manual' ? loadingManual : activeTab === 'qna' ? loadingQna : loadingCommunity;
-  const items = activeTab === 'manual' ? manualItems : activeTab === 'qna' ? qnaItems : communityItems;
+  const loading = loadingByTab[activeTab];
+  const items = data[activeTab];
 
   const clean = stripMd;
 
