@@ -85,6 +85,26 @@ const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
 };
 const DEFAULT_ICON = IconShield;
 
+// slug → 카드 배경 사진 (있는 것만; 나머지는 색 그라데이션만 표시).
+// 새 사진은 public/assets/manual/<slug>.jpg 로 넣고 여기 한 줄 추가.
+const IMAGE_BY_SLUG: Record<string, string> = {
+  'child-abuse': '/assets/manual/child-abuse.jpg',
+};
+
+// slug → 카드 색 (사진 위 오버레이 겸, 사진 없을 땐 단독 배경)
+const GRADIENT_BY_SLUG: Record<string, { from: string; to: string }> = {
+  'child-abuse': { from: '#F473A0', to: '#E24338' },
+  labor: { from: '#F0A93B', to: '#DE7B26' },
+  finance: { from: '#D9AE3A', to: '#B5852A' },
+  'sexual-violence': { from: '#A971E6', to: '#7A46C9' },
+  'online-violence': { from: '#5B8DEF', to: '#2F5FD0' },
+  'birth-and-parenting': { from: '#EC5C9D', to: '#C33B7A' },
+  'parental-rights': { from: '#8A94A6', to: '#5B6472' },
+  'school-violence': { from: '#2FB8A6', to: '#1E8E82' },
+  'out-of-school-youth': { from: '#8FB93C', to: '#5F7F2A' },
+};
+const DEFAULT_GRADIENT = { from: '#9BCB11', to: '#6E9A0C' };
+
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
 const FALLBACK_CATEGORIES: ManualCategory[] = [
   { id: 4, name: '아동학대/가정폭력', slug: 'child-abuse', order: 1 },
@@ -139,18 +159,23 @@ export default function Manual() {
         <div className="manual-list">
           {categories.map((cat) => {
             const Icon = ICON_BY_SLUG[cat.slug] ?? DEFAULT_ICON;
+            const image = IMAGE_BY_SLUG[cat.slug];
+            const g = GRADIENT_BY_SLUG[cat.slug] ?? DEFAULT_GRADIENT;
             return (
               <button
                 key={cat.slug}
-                className="manual-card"
+                className={`manual-card${image ? ' has-image' : ''}`}
+                style={{
+                  '--from': g.from,
+                  '--to': g.to,
+                  ...(image ? { backgroundImage: `url(${image})` } : {}),
+                } as React.CSSProperties}
                 onClick={() => navigate(`/manual-list?categoryId=${cat.slug}`)}
               >
                 <span className="manual-icon">
                   <Icon />
                 </span>
-                <span className="manual-card-text">
-                  <span className="manual-card-label">{cat.name}</span>
-                </span>
+                <span className="manual-card-label">{cat.name}</span>
               </button>
             );
           })}
