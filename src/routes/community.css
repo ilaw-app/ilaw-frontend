@@ -71,18 +71,18 @@
 
 .cm-header-title {
   font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 400;
   color: #9bcb11;
-  line-height: 32px;
+  line-height: 36px;
   letter-spacing: 0.07px;
 }
 .cm-header-sub {
   font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: #99a1af;
-  line-height: 20px; /* 142.857% */
+  line-height: 22px; /* 142.857% */
   letter-spacing: -0.15px;
 }
 

@@ -19,18 +19,18 @@
   min-width: 0;
 }
 .qna-header h1 {
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 700;
   color: #9bcb11;
-  line-height: 32px;
+  line-height: 36px;
   letter-spacing: 0.07px;
 }
 .qna-header p {
   font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: #99a1af;
-  line-height: 20px;
+  line-height: 22px;
   letter-spacing: -0.15px;
   margin-top: 3px;
 }
