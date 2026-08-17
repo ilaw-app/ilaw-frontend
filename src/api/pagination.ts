@@ -74,9 +74,9 @@ export async function fetchAllPages<T>(
     }
     results.push(...uniqueItems);
 
-    // 구버전 서버가 limit을 무시하고 전체 배열을 한 번에 반환하는 경우.
-    if (pageItems.length > limit) return results;
-    if (pageItems.length < limit) return results;
+    // 개수가 limit과 다르면 종료: 더 적으면 마지막 페이지, 더 많으면 구버전 서버가
+    // limit을 무시하고 전체를 한 번에 반환한 것. 정확히 limit개일 때만 다음 페이지를 시도.
+    if (pageItems.length !== limit) return results;
 
     if (page === maxPages) {
       throw new PaginationGuardError(`Pagination exceeded the ${maxPages} page guard.`);
