@@ -276,6 +276,10 @@
 }
 
 /* ===== 변호사 목록 ===== */
+.qna-header-lawyer {
+  border-bottom: 0.723px solid #e5e7eb;
+  background: #fff;
+}
 .qna-header-lawyer h1 {
   font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
   color: #9bcb11;
