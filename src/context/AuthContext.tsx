@@ -63,7 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthed(false);
   }
 
-  const role: Role = user?.role ?? 'user';
+  // 임시(작업용): 변호사 계정도 일반 사용자로 취급 → 변호사 기능 다시 켤 땐 false.
+  const FORCE_USER_ROLE = true;
+  const role: Role = FORCE_USER_ROLE ? 'user' : (user?.role ?? 'user');
 
   const value: AuthState = {
     ready,

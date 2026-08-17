@@ -73,8 +73,6 @@ function QnaCard({
 // 임시: 변호사님 답변이 있는 질문만 화면에 노출 (DB 삭제가 아니라 화면 필터).
 // 나중에 전체를 다시 보이려면 SHOW_ONLY_LAWYER_QNA=false 로 바꾸면 됨.
 const SHOW_ONLY_LAWYER_QNA = true;
-// 임시: 변호사 계정이어도 일반 사용자 QnA 화면으로 보기(작업용). 변호사 화면 쓸 땐 false로.
-const FORCE_USER_UI = true;
 const LAWYER_Q_KEYWORDS = ['통금', '주휴수당', '인스타', '무관심', '경찰조사'];
 const isLawyerQuestion = (title: string) => {
   const t = (title ?? '').replace(/\s/g, '');
@@ -162,7 +160,7 @@ export default function QnaList() {
   }
 
   // ── 변호사 화면: 답변 대기 / 답변 완료 섹션 ──
-  if (!FORCE_USER_UI && role === 'lawyer') {
+  if (role === 'lawyer') {
     const pending = posts.filter((p) => p.status === 'pending');
     const answered = posts.filter((p) => p.status !== 'pending');
     return (
