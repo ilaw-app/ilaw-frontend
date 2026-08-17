@@ -88,7 +88,15 @@ const DEFAULT_ICON = IconShield;
 // slug → 카드 배경 사진 (있는 것만). 없으면 기본(초록) 카드 그대로.
 // 새 사진은 public/assets/manual/<slug>.jpg 로 넣고 여기 한 줄 추가.
 const IMAGE_BY_SLUG: Record<string, string> = {
-  'child-abuse': '/assets/manual/child-abuse.jpg',
+  'child-abuse': '/assets/manual/child-abuse.webp',
+  labor: '/assets/manual/labor.webp',
+  finance: '/assets/manual/finance.webp',
+  'sexual-violence': '/assets/manual/sexual-violence.webp',
+  'online-violence': '/assets/manual/online-violence.webp',
+  'birth-and-parenting': '/assets/manual/birth-and-parenting.webp',
+  'parental-rights': '/assets/manual/parental-rights.webp',
+  'school-violence': '/assets/manual/school-violence.webp',
+  'out-of-school-youth': '/assets/manual/out-of-school-youth.webp',
 };
 
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)

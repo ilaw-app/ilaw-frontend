@@ -290,37 +290,27 @@ export default function Home() {
       </div>
 
       <div className="screen-scroll home-body">
-        {/* 검색창 */}
-        <form
-          className="home-search"
-          onSubmit={(e) => {
-            e.preventDefault();
-            runSearch(query);
-          }}
-        >
-          <input
-            placeholder="궁금한 내용을 검색해보세요"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button type="submit" className="home-search-btn" aria-label="검색">
-            <SearchIcon />
-          </button>
-        </form>
-
-        {/* 퀵 액션 */}
-        <div className="home-quick">
-          <button className="home-quick-item" onClick={() => navigate('/my-scraps')}>
-            <span className="home-quick-icon scrap"><QuickScrapIcon /></span>
-            <span className="home-quick-label">내 스크랩</span>
-          </button>
-          <button className="home-quick-item" onClick={() => navigate('/my-questions')}>
-            <span className="home-quick-icon qna"><QuickQnaIcon /></span>
-            <span className="home-quick-label">내 질문</span>
-          </button>
-          <button className="home-quick-item" onClick={() => navigate('/my-community-posts')}>
-            <span className="home-quick-icon community"><CommunityIcon size={20} color="#FE9A2F" /></span>
-            <span className="home-quick-label">내 커뮤니티 글</span>
+        {/* 마스코트 히어로 (탭하면 AI 챗봇으로) */}
+        <div className="home-hero">
+          <div className="home-hero-bubble">
+            <svg className="hero-bubble-svg" width="122" height="70" viewBox="0 0 122 70" fill="none" aria-hidden="true">
+              <ellipse cx="59.5907" cy="29.2696" rx="58.5907" ry="29.2696" fill="white" />
+              <path d="M108.6 63.2681L83.3929 46.8926L105.606 35.2325L108.6 63.2681Z" fill="white" />
+            </svg>
+            <span className="hero-bubble-text font-airo">
+              챗봇 '아이로'에게
+              <br />
+              물어보세요!
+            </span>
+          </div>
+          <span className="home-hero-shadow" aria-hidden="true" />
+          <button
+            className="home-hero-mascot"
+            onClick={() => navigate('/ai-chat')}
+            aria-label="AI 챗봇 아이로에게 물어보기"
+          >
+            <img className="hero-mascot-base" src="/assets/airo-home.webp" alt="아이로" style={{ opacity: winking ? 0 : 1 }} />
+            <img className="hero-mascot-wink" src="/assets/airo-home-wink.webp" alt="" style={{ opacity: winking ? 1 : 0 }} />
           </button>
         </div>
 
@@ -346,28 +336,6 @@ export default function Home() {
           )}
         </div>
       </div>
-
-      {/* AI 챗봇 버튼 */}
-      <div className="home-bubble">
-        <svg
-          width="115"
-          height="74"
-          viewBox="0 0 95 60"
-          style={{ filter: 'drop-shadow(0px 1px 1px rgba(0,0,0,0.25))' }}
-        >
-          <ellipse cx="46.5" cy="25" rx="45.5" ry="25" fill="white" />
-          <path d="M84.5596 54.0391L64.9844 40.0523L82.2344 30.093L84.5596 54.0391Z" fill="white" />
-        </svg>
-        <span className="home-bubble-text font-airo">
-          챗봇 '아이로'에게
-          <br />
-          물어보세요!
-        </span>
-      </div>
-      <button className="home-aifab" onClick={() => navigate('/ai-chat')}>
-        <img className="aifab-base" src="/assets/chatbot_logo.png" alt="AI 챗봇" style={{ opacity: winking ? 0 : 1 }} />
-        <img className="aifab-wink" src="/assets/wink.png" alt="" style={{ opacity: winking ? 1 : 0 }} />
-      </button>
 
       <TabBar />
     </div>
