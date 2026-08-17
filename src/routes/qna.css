@@ -278,22 +278,30 @@
 
 /* ===== 변호사 목록 ===== */
 .qna-header-lawyer h1 {
-  font-family: inherit;
+  font-family: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   color: #101828;
   font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0.07px;
 }
 .qna-header-lawyer p {
-  font-family: inherit;
+  font-family: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   color: #6a7282;
   font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
 }
 .qna-lawyer-list {
   padding: 0 0 40px;
   display: flex;
   flex-direction: column;
+  background: #f9fafb; /* 섹션 사이 회색 패딩이 보이도록 */
 }
 .qna-section {
   background: #fff;
+  margin-top: 12px; /* 상단바/섹션 사이 12px 회색 간격 */
 }
 .qna-section-row {
   display: flex;
@@ -319,7 +327,7 @@
 }
 .qna-section-empty {
   font-size: 14px;
-  color: var(--placeholder);
+  color: #99a1af;
   padding: 16px;
 }
 .qna-section-cards {

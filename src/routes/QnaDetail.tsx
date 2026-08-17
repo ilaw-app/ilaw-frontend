@@ -233,7 +233,7 @@ export default function QnaDetail() {
   const answered = post.status === 'answered';
 
   return (
-    <div className="qd">
+    <div className={`qd${isLawyer ? ' qd-lawyer' : ''}`}>
       <div className="qd-nav">
         <button onClick={() => navigate('/qna')} aria-label="뒤로">
           <IoArrowBack size={24} />
@@ -250,15 +250,8 @@ export default function QnaDetail() {
         {/* 질문 */}
         <div className="qd-question">
           <div className="qd-tags">
-            <span className={`qd-status ${post.status}`}>
-              <span className="qd-status-dot" />
-              {answered ? '답변완료' : '답변대기'}
-            </span>
             {post.category?.trim() && (
-              <span className="qd-cat">
-                <span className="qd-dot" />
-                {post.category}
-              </span>
+              <span className="qd-cat">{post.category}</span>
             )}
             {owned && (
               <span className="qd-mine">
@@ -463,7 +456,7 @@ function AnswerCard({
     <div className="qd-answer">
       <div className="qd-answer-head">
         <span className="qd-avatar-img">
-          <PersonIcon size={20} color="#BEE966" />
+          <PersonIcon size={20} color="#5EA500" />
         </span>
         <div className="qd-answer-who">
           <div className="qd-answer-name">{answer.lawyer?.nickname ?? '변호사'}</div>
