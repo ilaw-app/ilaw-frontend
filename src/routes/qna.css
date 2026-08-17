@@ -19,6 +19,7 @@
   min-width: 0;
 }
 .qna-header h1 {
+  font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
   font-size: 27px;
   font-weight: 700;
   color: #9bcb11;
@@ -141,28 +142,24 @@
 .qna-status {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  font-family: 'Inter', 'Apple SD Gothic Neo', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 16px;
   flex-shrink: 0;
 }
 .qna-status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;
-  flex-shrink: 0;
+  display: none;
 }
 .qna-status.answered {
-  color: #bee966;
-}
-.qna-status.answered .qna-status-dot {
-  background: #bee966;
+  background: #f7fee7;
+  color: #5ea500;
 }
 .qna-status.pending {
-  color: var(--fig-subtle);
-}
-.qna-status.pending .qna-status-dot {
-  background: var(--fig-line-strong);
+  background: #fef2f2;
+  color: #fb2c36;
 }
 
 /* 카테고리·내질문 앞 아주 작은 동그라미 */
@@ -176,9 +173,11 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--fig-muted);
+  font-family: 'Inter', 'Apple SD Gothic Neo', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #99a1af;
+  line-height: 16px;
   white-space: nowrap;
   overflow: hidden;
   min-width: 0;
@@ -278,19 +277,19 @@
 
 /* ===== 변호사 목록 ===== */
 .qna-header-lawyer h1 {
-  font-family: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  color: #101828;
+  font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
+  color: #9bcb11;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 27px;
+  line-height: 36px;
   letter-spacing: 0.07px;
 }
 .qna-header-lawyer p {
-  font-family: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  color: #6a7282;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
+  font-family: 'Binggrae', 'Noto Sans KR', sans-serif;
+  color: #99a1af;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
   letter-spacing: -0.15px;
 }
 .qna-lawyer-list {

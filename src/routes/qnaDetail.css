@@ -310,9 +310,9 @@
   flex-shrink: 0;
 }
 .qd-answer-divider {
-  height: 1px;
+  height: 0.723px;
   flex-shrink: 0;
-  background: var(--fig-line);
+  background: #f3f4f6;
 }
 .qd-answer-name {
   font-size: 15px;

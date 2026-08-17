@@ -284,7 +284,11 @@ export default function QnaDetail() {
         {isLawyer && post.author && (
           <div className="qd-student">
             <div className="qd-student-head">
-              <IoPersonOutline size={16} color="#99A1AF" /> 질문자 정보
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M12.6671 13.9999V12.6666C12.6671 11.9594 12.3861 11.2811 11.8861 10.781C11.386 10.2809 10.7077 10 10.0005 10H6.00058C5.29336 10 4.6151 10.2809 4.11501 10.781C3.61493 11.2811 3.33398 11.9594 3.33398 12.6666V13.9999" stroke="#99A1AF" strokeWidth="0.999975" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M8.00058 7.3332C9.47331 7.3332 10.6672 6.13932 10.6672 4.6666C10.6672 3.19388 9.47331 2 8.00058 2C6.52786 2 5.33398 3.19388 5.33398 4.6666C5.33398 6.13932 6.52786 7.3332 8.00058 7.3332Z" stroke="#99A1AF" strokeWidth="0.999975" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>{' '}
+              질문자 정보
             </div>
             <div className="qd-student-rows">
               <span>나이 {post.author.age != null ? `만 ${post.author.age}세` : '-'}</span>
