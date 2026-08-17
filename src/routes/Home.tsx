@@ -297,7 +297,7 @@ export default function Home() {
               <ellipse cx="59.5907" cy="29.2696" rx="58.5907" ry="29.2696" fill="white" />
               <path d="M108.6 63.2681L83.3929 46.8926L105.606 35.2325L108.6 63.2681Z" fill="white" />
             </svg>
-            <span className="hero-bubble-text font-airo">
+            <span className="hero-bubble-text">
               챗봇 '아이로'에게
               <br />
               물어보세요!
@@ -309,8 +309,9 @@ export default function Home() {
             onClick={() => navigate('/ai-chat')}
             aria-label="AI 챗봇 아이로에게 물어보기"
           >
+            {/* 윙크를 아래층에 항상 표시하고 base만 페이드 → 전환 중 흰 페이지가 비치는 현상 제거 */}
+            <img className="hero-mascot-wink" src="/assets/airo-home-wink.webp" alt="" />
             <img className="hero-mascot-base" src="/assets/airo-home.webp" alt="아이로" style={{ opacity: winking ? 0 : 1 }} />
-            <img className="hero-mascot-wink" src="/assets/airo-home-wink.webp" alt="" style={{ opacity: winking ? 1 : 0 }} />
           </button>
         </div>
 
