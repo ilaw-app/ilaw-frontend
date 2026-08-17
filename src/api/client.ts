@@ -63,12 +63,11 @@ function refreshOnce(): Promise<boolean> {
 
 type FetchOptions = Omit<RequestInit, 'body'> & {
   body?: any; // 객체면 JSON 직렬화, FormData면 그대로
-  auth?: boolean; // true면 Authorization 헤더 강제 (기본: 토큰 있으면 부착)
   _retried?: boolean;
 };
 
 export async function apiFetch<T = any>(path: string, opts: FetchOptions = {}): Promise<T> {
-  const { body, auth, _retried, headers, ...rest } = opts;
+  const { body, _retried, headers, ...rest } = opts;
 
   const finalHeaders: Record<string, string> = { ...(headers as any) };
   const isForm = typeof FormData !== 'undefined' && body instanceof FormData;
