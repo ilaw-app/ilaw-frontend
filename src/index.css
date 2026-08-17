@@ -4,6 +4,12 @@
   font-weight: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Binggrae';
+  src: url('/assets/fonts/binggrae-bold.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
 
 :root {
   /* 원본 앱 팔레트 (airo-app에서 가져옴) */
@@ -51,7 +57,7 @@
 }
 
 .font-airo {
-  font-family: 'AiroFont', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-family: 'Binggrae', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 }
 
 .hl-mark {
