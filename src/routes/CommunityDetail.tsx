@@ -121,6 +121,15 @@ function mapComment(c: CommunityComment): Comment {
   };
 }
 
+// 작성자가 삭제한 댓글("삭제된 댓글입니다.")은 답글이 없으면 목록에서 완전히 제거.
+// (답글이 있으면 스레드 구조 유지를 위해 안내문은 남긴다)
+const AUTHOR_DELETED_TEXT = '삭제된 댓글입니다.';
+function pruneAuthorDeleted(list: Comment[]): Comment[] {
+  return list
+    .map((c) => ({ ...c, replies: pruneAuthorDeleted(c.replies ?? []) }))
+    .filter((c) => !(c.text.trim() === AUTHOR_DELETED_TEXT && (c.replies?.length ?? 0) === 0));
+}
+
 function mapPoll(poll: any): PollT | undefined {
   if (!poll?.options) return undefined;
   const options = poll.options as PollOption[];
@@ -334,7 +343,7 @@ export default function CommunityDetail() {
         setScrapCount(data.bookmarks ?? 0);
         setPoll(p);
         setVotedIdx(p?.votedOptionIndex ?? null);
-        setComments((data.comments ?? []).map(mapComment).reverse());
+        setComments(pruneAuthorDeleted((data.comments ?? []).map(mapComment)).reverse());
       })
       .catch(() => { if (!cancelled) setPost(null); })
       .finally(() => { if (!cancelled) setLoading(false); });
