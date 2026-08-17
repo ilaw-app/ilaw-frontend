@@ -78,9 +78,9 @@ export default function QnaDetail() {
   const answerProfanity = useProfanityCheck({ content: answerText });
   const editProfanity = useProfanityCheck({ content: editing ? editText : '' });
 
-  // 변호사 UI 강제 노출(작업용). 평소엔 false → role이 lawyer일 때만 변호사 화면.
-  const PREVIEW_LAWYER_UI = false;
-  const isLawyer = role === 'lawyer' || PREVIEW_LAWYER_UI;
+  // 임시: 변호사 계정이어도 일반 사용자 화면으로(작업용). 변호사 화면 쓸 땐 false로.
+  const FORCE_USER_UI = true;
+  const isLawyer = !FORCE_USER_UI && role === 'lawyer';
 
   useEffect(() => {
     let cancelled = false;
