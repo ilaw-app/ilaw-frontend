@@ -1,40 +1,29 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBack } from 'react-icons/io5';
 import { qnaApi } from '../api/qna';
+import { useAsyncData } from '../hooks/useAsyncData';
 import TabBar from '../components/TabBar';
 import { ClockIcon, EmptyChatIcon } from '../components/MyListIcons';
 import './myQuestions.css';
 
 export default function MyQuestions() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    qnaApi
-      .mine()
-      .then(async (data) => {
-        if (cancelled) return;
-        const list: any[] = Array.isArray(data) ? data : [];
-        const withContent = await Promise.all(
-          list.map(async (post) => {
-            try {
-              const detail = await qnaApi.get(post.id);
-              return { ...post, content: detail.content ?? undefined };
-            } catch {
-              return post;
-            }
-          })
-        );
-        if (!cancelled) setPosts(withContent);
-      })
-      .catch(() => { if (!cancelled) setPosts([]); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
+  const { data, loading } = useAsyncData(async () => {
+    const raw = await qnaApi.mine();
+    const list: any[] = Array.isArray(raw) ? raw : [];
+    // 목록에 content가 없어 상세를 병렬 조회해 보강 (BE가 목록에 content를 주면 제거 가능)
+    return Promise.all(
+      list.map(async (post) => {
+        try {
+          const detail = await qnaApi.get(post.id);
+          return { ...post, content: detail.content ?? undefined };
+        } catch {
+          return post;
+        }
+      }),
+    );
   }, []);
+  const posts = Array.isArray(data) ? data : [];
 
   return (
     <div className="screen mq">

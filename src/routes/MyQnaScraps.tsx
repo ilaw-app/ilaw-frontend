@@ -1,31 +1,12 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { qnaApi } from '../api/qna';
+import { useAsyncData } from '../hooks/useAsyncData';
 import './myQnaScraps.css';
 
 export default function MyQnaScraps() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    qnaApi
-      .myScraps()
-      .then((data) => {
-        if (!cancelled) setPosts(Array.isArray(data) ? data : []);
-      })
-      .catch(() => {
-        if (!cancelled) setPosts([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { data, loading } = useAsyncData(() => qnaApi.myScraps(), []);
+  const posts = Array.isArray(data) ? data : [];
 
   return (
     <div className="screen">

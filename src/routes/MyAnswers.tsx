@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAsyncData } from '../hooks/useAsyncData';
 import {
   IoChevronBack,
   IoChatbubbleOutline,
@@ -11,26 +11,8 @@ import './myAnswers.css';
 
 export default function MyAnswers() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    qnaApi
-      .myAnswers()
-      .then((data) => {
-        if (!cancelled) setPosts(Array.isArray(data) ? data : []);
-      })
-      .catch(() => {
-        if (!cancelled) setPosts([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { data, loading } = useAsyncData(() => qnaApi.myAnswers(), []);
+  const posts = Array.isArray(data) ? data : [];
 
   return (
     <div className="screen">

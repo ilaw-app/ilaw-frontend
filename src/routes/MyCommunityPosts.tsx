@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAsyncData } from '../hooks/useAsyncData';
 import { IoArrowBack } from 'react-icons/io5';
 import { communityApi } from '../api/community';
 import { useAuth } from '../context/AuthContext';
@@ -10,23 +10,9 @@ import './myQuestions.css';
 export default function MyCommunityPosts() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    // BE가 내 글만 반환하는 전용 엔드포인트 제공 (요청 1번).
-    communityApi
-      .myPosts()
-      .then((data) => {
-        if (cancelled) return;
-        setPosts(Array.isArray(data) ? data : []);
-      })
-      .catch(() => { if (!cancelled) setPosts([]); })
-      .finally(() => { if (!cancelled) setLoading(false); });
-    return () => { cancelled = true; };
-  }, [user?.id]);
+  // BE가 내 글만 반환하는 전용 엔드포인트 제공 (요청 1번).
+  const { data, loading } = useAsyncData(() => communityApi.myPosts(), [user?.id]);
+  const posts = Array.isArray(data) ? data : [];
 
   return (
     <div className="screen mq">
