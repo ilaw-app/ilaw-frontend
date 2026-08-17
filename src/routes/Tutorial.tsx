@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './tutorial.css';
 
@@ -9,13 +9,21 @@ export default function Tutorial() {
   const [idx, setIdx] = useState(0);
   const last = idx === TUTORIAL_IMAGES.length - 1;
 
+  // 마운트 시 전체 이미지를 미리 받아 캐시에 올림 → 넘길 때 즉시 표시(로딩 지연 제거)
+  useEffect(() => {
+    TUTORIAL_IMAGES.forEach((src) => {
+      const im = new Image();
+      im.src = src;
+    });
+  }, []);
+
   const finish = () => navigate('/home', { replace: true });
   const next = () => (last ? finish() : setIdx((i) => i + 1));
   const prev = () => setIdx((i) => Math.max(0, i - 1));
 
   return (
     <div className="tut">
-      <img className="tut-img" src={TUTORIAL_IMAGES[idx]} alt={`튜토리얼 ${idx + 1}/${TUTORIAL_IMAGES.length}`} />
+      <img className="tut-img" src={TUTORIAL_IMAGES[idx]} alt={`튜토리얼 ${idx + 1}/${TUTORIAL_IMAGES.length}`} decoding="async" />
 
       {/* 좌/우 탭 영역 (왼쪽=이전, 오른쪽=다음) */}
       <button className="tut-zone tut-zone-left" onClick={prev} aria-label="이전" />

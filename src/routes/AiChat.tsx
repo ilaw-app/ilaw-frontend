@@ -267,6 +267,7 @@ export default function AiChat() {
             <textarea
               ref={inputRef}
               className="aic-text-input"
+              rows={1}
               placeholder="상황을 입력하세요"
               maxLength={2000}
               value={input}
