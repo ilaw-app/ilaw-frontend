@@ -120,8 +120,12 @@
 .hero-bubble-text {
   position: absolute;
   left: 0;
-  top: 16px;
+  top: 0;
   width: 122px;
+  height: 58px; /* 말풍선 몸통(타원) 높이 = 꼬리 제외 → 그 안에서 상하 중앙 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-family: 'Binggrae', 'Apple SD Gothic Neo', sans-serif;
   font-size: 11px;
