@@ -289,9 +289,15 @@ export default function QnaDetail() {
               질문자 정보
             </div>
             <div className="qd-student-rows">
-              <span>나이 {post.author.age != null ? `만 ${post.author.age}세` : '-'}</span>
-              <span>지역 {post.author.region ?? '-'}</span>
-              <span>성별 {genderLabel(post.author.gender)}</span>
+              <span>
+                <b>나이</b> {post.author.age != null ? `만 ${post.author.age}세` : '-'}
+              </span>
+              <span>
+                <b>지역</b> {post.author.region ?? '-'}
+              </span>
+              <span>
+                <b>성별</b> {genderLabel(post.author.gender)}
+              </span>
             </div>
           </div>
         )}

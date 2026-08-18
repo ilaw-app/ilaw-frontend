@@ -180,8 +180,12 @@
   flex-wrap: wrap;
   gap: 16px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--fig-body);
+}
+/* 라벨(나이/지역/성별)만 볼드, 값은 일반 */
+.qd-student-rows b {
+  font-weight: 700;
 }
 
 /* 답변 작성 (변호사) */

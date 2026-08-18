@@ -12,6 +12,10 @@
   background: #fff;
   border-bottom: 0.723px solid #f3f4f6;
 }
+/* 검색창이 열리면 구분선을 검색창 아래로만 둔다(커뮤니티/QnA와 동일) */
+.home-topbar.search-open {
+  border-bottom: none;
+}
 .home-tb-logo {
   width: 78px;
   height: 78px;

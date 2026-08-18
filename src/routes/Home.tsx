@@ -281,7 +281,7 @@ export default function Home() {
   return (
     <div className="screen home-screen">
       {/* 상단바 */}
-      <div className="home-topbar">
+      <div className={`home-topbar${searchOpen ? ' search-open' : ''}`}>
         <div className="home-tb-text">
           <span className="home-tb-name font-airo">아이로</span>
           <span className="home-tb-sub font-airo">혼자 고민하지 않아도 괜찮아요</span>
