@@ -64,7 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   // 임시(작업용): 변호사 계정도 일반 사용자로 취급 → 변호사 기능 다시 켤 땐 false.
-  const FORCE_USER_ROLE = true;
+  // 마이페이지 앱버전 5탭(PATCH /auth/role) 변호사 전환이 화면에 반영되려면 false여야 함.
+  const FORCE_USER_ROLE = false;
   const role: Role = FORCE_USER_ROLE ? 'user' : (user?.role ?? 'user');
 
   const value: AuthState = {
