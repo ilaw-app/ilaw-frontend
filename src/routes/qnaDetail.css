@@ -180,6 +180,7 @@
   flex-wrap: wrap;
   gap: 16px;
   font-size: 14px;
+  font-weight: 700;
   color: var(--fig-body);
 }
 

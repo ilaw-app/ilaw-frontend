@@ -58,6 +58,53 @@
   background: #fb2c36;
 }
 
+.home-tb-search {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 검색창 (커뮤니티/QnA와 동일) ── */
+.home-search-area {
+  flex-shrink: 0;
+  padding: 0 16px 12px;
+  background: #fff;
+}
+.home-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  border-radius: 9999px;
+  background: var(--fig-fill);
+  padding: 0 16px;
+}
+.home-search-box input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #101828;
+}
+.home-search-box input::placeholder {
+  color: #99a1af;
+}
+.home-search-clear {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
 /* ── 본문 ── */
 .home-body {
   padding: 16px 16px 140px;

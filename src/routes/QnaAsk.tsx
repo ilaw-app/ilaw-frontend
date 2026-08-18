@@ -8,7 +8,8 @@ import ProfanityField from '../components/ProfanityField';
 import { useProfanityCheck } from '../hooks/useProfanityCheck';
 import './qnaAsk.css';
 
-const QNA_CATEGORIES = ['노동', '금융', '온라인폭력', '아동학대', '성폭력', '출생', '법정대리인', '기타'];
+// 매뉴얼 카테고리 9개와 동일하게 유지
+const QNA_CATEGORIES = ['아동학대/가정폭력', '노동', '금융', '성폭력', '온라인폭력', '출생/양육', '법정대리인', '학교폭력', '학교 밖 청소년'];
 
 function PhotoIcon() {
   return (

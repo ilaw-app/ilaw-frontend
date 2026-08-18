@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoBookOutline, IoChatbubbleOutline } from 'react-icons/io5';
+import { IoBookOutline, IoChatbubbleOutline, IoSearch, IoClose } from 'react-icons/io5';
 import CommunityIcon from '../components/CommunityIcon';
 import { homeApi } from '../api/home';
 import { manualApi } from '../api/manual';
@@ -101,7 +101,14 @@ export default function Home() {
   const [winking, setWinking] = useState(false);
 
   const [query, setQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
   const [searching, setSearching] = useState(false);
+
+  const toggleSearch = () =>
+    setSearchOpen((open) => {
+      if (open) setQuery('');
+      return !open;
+    });
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [filter, setFilter] = useState<'all' | ResultType>('all');
@@ -279,11 +286,39 @@ export default function Home() {
           <span className="home-tb-name font-airo">아이로</span>
           <span className="home-tb-sub font-airo">혼자 고민하지 않아도 괜찮아요</span>
         </div>
+        <button className="home-tb-search" onClick={toggleSearch} aria-label="검색">
+          {searchOpen ? <IoClose size={24} color="#6a7282" /> : <IoSearch size={22} color="#6a7282" />}
+        </button>
         <button className="home-tb-bell" onClick={() => navigate('/notifications')} aria-label="알림">
           <BellIcon />
           {hasNoti && <span className="home-tb-bell-dot" />}
         </button>
       </div>
+
+      {searchOpen && (
+        <div className="home-search-area">
+          <form
+            className="home-search-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+              runSearch(query);
+            }}
+          >
+            <IoSearch size={18} color="#99a1af" />
+            <input
+              autoFocus
+              placeholder="궁금한 내용을 검색해보세요"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button type="button" className="home-search-clear" onClick={() => setQuery('')}>
+                <IoClose size={16} color="#99a1af" />
+              </button>
+            )}
+          </form>
+        </div>
+      )}
 
       <div className="screen-scroll home-body">
         {/* 마스코트 히어로 (탭하면 AI 챗봇으로) */}
