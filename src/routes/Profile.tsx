@@ -1,5 +1,8 @@
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { authApi } from '../api/auth';
+import { ApiError } from '../api/client';
 import TabBar from '../components/TabBar';
 import CommunityIcon from '../components/CommunityIcon';
 import { PersonIcon } from '../components/icons';
@@ -85,7 +88,34 @@ const APP_VERSION = 'v1.2.0';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, role } = useAuth();
+  const { user, role, refreshMe } = useAuth();
+  const tapCountRef = useRef(0);
+  const tapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [switching, setSwitching] = useState(false);
+
+  // 개발용: 앱버전 5회 빠르게 탭 → 서버 role을 변호사/사용자로 전환 (PATCH /auth/role) 후 /auth/me 재조회
+  const handleVersionTap = async () => {
+    tapCountRef.current += 1;
+    if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
+    tapTimerRef.current = setTimeout(() => { tapCountRef.current = 0; }, 1500);
+    if (tapCountRef.current < 5 || switching) return;
+    tapCountRef.current = 0;
+    if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
+
+    const next = role === 'lawyer' ? 'user' : 'lawyer';
+    setSwitching(true);
+    try {
+      await authApi.setRole(next);
+      await refreshMe();
+      alert(next === 'lawyer' ? '변호사 모드로 전환되었습니다.' : '일반 사용자 모드로 전환되었습니다.');
+    } catch (e) {
+      alert(e instanceof ApiError && e.status === 404
+        ? '이 서버에서는 역할 전환이 꺼져 있습니다.'
+        : '역할 전환에 실패했습니다.');
+    } finally {
+      setSwitching(false);
+    }
+  };
 
   const menuList = role === 'lawyer' ? LAWYER_MENU_ITEMS : USER_MENU_ITEMS;
 
@@ -115,13 +145,13 @@ export default function Profile() {
               <ChevronRight />
             </button>
           ))}
-          <div className="pf-row">
+          <button className="pf-row" onClick={handleVersionTap}>
             <span className="pf-row-left">
               <IcInfo />
               <span className="pf-row-label">앱버전</span>
             </span>
             <span className="pf-version">{APP_VERSION}</span>
-          </div>
+          </button>
         </div>
       </div>
 
