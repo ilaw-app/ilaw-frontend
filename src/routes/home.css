@@ -12,10 +12,6 @@
   background: #fff;
   border-bottom: 0.723px solid #f3f4f6;
 }
-/* 검색창이 열리면 구분선을 검색창 아래로만 둔다(커뮤니티/QnA와 동일) */
-.home-topbar.search-open {
-  border-bottom: none;
-}
 .home-tb-logo {
   width: 78px;
   height: 78px;
@@ -62,53 +58,6 @@
   background: #fb2c36;
 }
 
-.home-tb-search {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ── 검색창 (커뮤니티/QnA와 동일) ── */
-.home-search-area {
-  flex-shrink: 0;
-  padding: 0 16px 12px;
-  background: #fff;
-}
-.home-search-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 44px;
-  border-radius: 9999px;
-  background: var(--fig-fill);
-  padding: 0 16px;
-}
-.home-search-box input {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 14px;
-  color: #101828;
-}
-.home-search-box input::placeholder {
-  color: #99a1af;
-}
-.home-search-clear {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-}
-
 /* ── 본문 ── */
 .home-body {
   padding: 16px 16px 140px;
@@ -117,8 +66,8 @@
 /* 마스코트 히어로 */
 .home-hero {
   position: relative;
-  height: 250px;
-  margin: 4px 0 26px;
+  height: 248px; /* 그림자 하단(≈248px)에 딱 맞춤 */
+  margin: 4px 0 24px; /* 마스코트 그림자 ↔ 검색창 간격 24 */
 }
 .home-hero-mascot {
   position: absolute;
@@ -156,9 +105,9 @@
 .home-hero-bubble {
   position: absolute;
   left: 26px;
-  top: 58px;
-  width: 122px;
-  height: 70px;
+  top: 54px;
+  width: 126.327px;
+  height: 76px;
   z-index: 3;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
 }
@@ -172,54 +121,60 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 122px;
-  height: 58px; /* 말풍선 몸통(타원) 높이 = 꼬리 제외 → 그 안에서 상하 중앙 */
+  width: 126.327px;
+  height: 63px; /* 말풍선 몸통(타원) 높이 = 꼬리 제외 → 그 안에서 상하 중앙 */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-family: 'Binggrae', 'Apple SD Gothic Neo', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
-  color: #8c937d;
+  color: #575f46;
   line-height: 12px;
   letter-spacing: 0.07px;
 }
 
-/* 검색창 */
+/* 검색창 (마스코트 밑) */
 .home-search {
-  display: flex;
-  align-items: center;
-  height: 49.445px;
-  border-radius: 16px;
-  border: 0.723px solid #e5e7eb;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  border-radius: 9999px;
+  border: 1.544px solid #9bcb11;
   background: #fff;
-  padding: 0 8px 0 20px;
-  margin-bottom: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  margin: 0 0 15.28px; /* 검색창 ↔ 인기 콘텐츠 간격 15.28 */
 }
 .home-search input {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   border: none;
   outline: none;
   background: transparent;
-  font-size: 14px;
-  color: #1a1a1a;
-  letter-spacing: -0.15px;
-  height: 100%;
+  padding: 16px 48px 16px 20px;
+  font-family: 'Inter', 'Apple SD Gothic Neo', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.312px;
+  color: #0a0a0a;
 }
 .home-search input::placeholder {
   color: rgba(10, 10, 10, 0.5);
 }
 .home-search-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 14px;
-  background: #bee966;
+  position: absolute;
+  right: 17px;
+  bottom: 6px;
+  width: 40px;
+  height: 40px;
+  padding: 0 10.003px;
+  border-radius: 9999px;
+  background: #9bcb11;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 /* 퀵 액션 */

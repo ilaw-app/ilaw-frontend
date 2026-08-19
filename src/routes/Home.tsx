@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoBookOutline, IoChatbubbleOutline, IoSearch, IoClose } from 'react-icons/io5';
+import { IoBookOutline, IoChatbubbleOutline } from 'react-icons/io5';
 import CommunityIcon from '../components/CommunityIcon';
 import { homeApi } from '../api/home';
 import { manualApi } from '../api/manual';
@@ -54,15 +54,6 @@ function BellIcon() {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-      <path d="M7.3332 12.6664C10.2786 12.6664 12.6664 10.2786 12.6664 7.3332C12.6664 4.38775 10.2786 2 7.3332 2C4.38775 2 2 4.38775 2 7.3332C2 10.2786 4.38775 12.6664 7.3332 12.6664Z" stroke="white" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M13.9994 13.9994L11.1328 11.1328" stroke="white" strokeWidth="1.3333" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function QuickScrapIcon() {
   return (
     <svg width={20} height={20} viewBox="0 0 20 20" fill="none">
@@ -101,14 +92,7 @@ export default function Home() {
   const [winking, setWinking] = useState(false);
 
   const [query, setQuery] = useState('');
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searching, setSearching] = useState(false);
-
-  const toggleSearch = () =>
-    setSearchOpen((open) => {
-      if (open) setQuery('');
-      return !open;
-    });
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [filter, setFilter] = useState<'all' | ResultType>('all');
@@ -281,44 +265,16 @@ export default function Home() {
   return (
     <div className="screen home-screen">
       {/* 상단바 */}
-      <div className={`home-topbar${searchOpen ? ' search-open' : ''}`}>
+      <div className="home-topbar">
         <div className="home-tb-text">
           <span className="home-tb-name font-airo">아이로</span>
           <span className="home-tb-sub font-airo">혼자 고민하지 않아도 괜찮아요</span>
         </div>
-        <button className="home-tb-search" onClick={toggleSearch} aria-label="검색">
-          {searchOpen ? <IoClose size={24} color="#6a7282" /> : <IoSearch size={22} color="#6a7282" />}
-        </button>
         <button className="home-tb-bell" onClick={() => navigate('/notifications')} aria-label="알림">
           <BellIcon />
           {hasNoti && <span className="home-tb-bell-dot" />}
         </button>
       </div>
-
-      {searchOpen && (
-        <div className="home-search-area">
-          <form
-            className="home-search-box"
-            onSubmit={(e) => {
-              e.preventDefault();
-              runSearch(query);
-            }}
-          >
-            <IoSearch size={18} color="#99a1af" />
-            <input
-              autoFocus
-              placeholder="궁금한 내용을 검색해보세요"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            {query && (
-              <button type="button" className="home-search-clear" onClick={() => setQuery('')}>
-                <IoClose size={16} color="#99a1af" />
-              </button>
-            )}
-          </form>
-        </div>
-      )}
 
       <div className="screen-scroll home-body">
         {/* 마스코트 히어로 (탭하면 AI 챗봇으로) */}
@@ -329,9 +285,9 @@ export default function Home() {
               <path d="M108.6 63.2681L83.3929 46.8926L105.606 35.2325L108.6 63.2681Z" fill="white" />
             </svg>
             <span className="hero-bubble-text">
-              챗봇 '아이로'에게
+              도움이 필요하면
               <br />
-              물어보세요!
+              나를 눌러봐!
             </span>
           </div>
           <span className="home-hero-shadow" aria-hidden="true" />
@@ -345,6 +301,27 @@ export default function Home() {
             <img className="hero-mascot-base" src="/assets/airo-home.webp" alt="아이로" style={{ opacity: winking ? 0 : 1 }} />
           </button>
         </div>
+
+        {/* 검색창 (마스코트 밑) */}
+        <form
+          className="home-search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            runSearch(query);
+          }}
+        >
+          <input
+            placeholder="키워드로 검색해보세요"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button type="submit" className="home-search-btn" aria-label="검색">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M9.16339 15.8278C12.844 15.8278 15.8278 12.844 15.8278 9.16339C15.8278 5.48276 12.844 2.49902 9.16339 2.49902C5.48276 2.49902 2.49902 5.48276 2.49902 9.16339C2.49902 12.844 5.48276 15.8278 9.16339 15.8278Z" stroke="white" strokeWidth="1.66609" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M17.4942 17.4942L13.9121 13.9121" stroke="white" strokeWidth="1.66609" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </form>
 
         {/* 인기 콘텐츠 */}
         <div className="home-reco-card">
