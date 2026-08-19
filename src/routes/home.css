@@ -109,8 +109,8 @@
   width: 126.327px;
   height: 76px;
   z-index: 3;
-  /* 같은 그림자를 겹쳐 더 진하게 */
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  /* 버튼처럼 하단에 그림자가 깔리게 (아래 오프셋) */
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.28));
 }
 .hero-bubble-svg {
   position: absolute;
