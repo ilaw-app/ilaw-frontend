@@ -285,9 +285,8 @@ export default function Home() {
               <path d="M108.6 63.2681L83.3929 46.8926L105.606 35.2325L108.6 63.2681Z" fill="white" />
             </svg>
             <span className="hero-bubble-text">
-              도움이 필요하면
-              <br />
-              나를 눌러봐!
+              <span className="hero-bubble-l1">도움이 필요하면</span>
+              <span className="hero-bubble-l2">나를 눌러봐!</span>
             </span>
           </div>
           <span className="home-hero-shadow" aria-hidden="true" />

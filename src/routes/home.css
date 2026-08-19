@@ -124,15 +124,23 @@
   width: 126.327px;
   height: 63px; /* 말풍선 몸통(타원) 높이 = 꼬리 제외 → 그 안에서 상하 중앙 */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-family: 'Binggrae', 'Apple SD Gothic Neo', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: #575f46;
   line-height: 12px;
   letter-spacing: 0.07px;
+}
+.hero-bubble-l1 {
+  color: #8c937d;
+  font-size: 11px;
+  font-weight: 400;
+}
+.hero-bubble-l2 {
+  color: #575f46;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 /* 검색창 (마스코트 밑) */
@@ -144,7 +152,7 @@
   border: 1.544px solid #9bcb11;
   background: #fff;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  margin: 0 0 15.28px; /* 검색창 ↔ 인기 콘텐츠 간격 15.28 */
+  margin: 0 0 17px; /* 검색창 ↔ 인기 콘텐츠 간격 17 */
 }
 .home-search input {
   width: 100%;

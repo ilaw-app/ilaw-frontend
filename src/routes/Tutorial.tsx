@@ -32,14 +32,22 @@ export default function Tutorial() {
       {/* 건너뛰기 */}
       <button className="tut-skip" onClick={finish}>건너뛰기</button>
 
-      {/* 하단: 진행 점 + 다음/시작하기 */}
+      {/* 하단: 이전 · 진행 점 · 다음/시작하기 */}
       <div className="tut-bottom">
+        <button
+          className="tut-nav tut-prev"
+          onClick={prev}
+          style={{ visibility: idx === 0 ? 'hidden' : 'visible' }}
+          aria-label="이전"
+        >
+          이전
+        </button>
         <div className="tut-dots">
           {TUTORIAL_IMAGES.map((_, i) => (
             <span key={i} className={`tut-dot${i === idx ? ' active' : ''}`} />
           ))}
         </div>
-        <button className="tut-next" onClick={next}>
+        <button className="tut-nav tut-next" onClick={next}>
           {last ? '시작하기' : '다음'}
         </button>
       </div>
