@@ -71,6 +71,19 @@ const IconLife = () => (
   </svg>
 );
 
+// 생활지원: 구명튜브. 기존 아이콘에 원형이 하나도 없어서 목록에서 바로 구분되고,
+// 옆자리 '학교 밖 청소년'(집 모양)과 실루엣이 겹치지 않는다.
+const IconLifeRing = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="9.25" {...S} />
+    <circle cx="12" cy="12" r="3.6" {...S} />
+    <path d="M5.45 5.45L9.45 9.45" {...S} />
+    <path d="M14.55 14.55L18.55 18.55" {...S} />
+    <path d="M18.55 5.45L14.55 9.45" {...S} />
+    <path d="M9.45 14.55L5.45 18.55" {...S} />
+  </svg>
+);
+
 // slug → 아이콘 (BE가 새 카테고리를 추가하면 기본 아이콘으로 표시됨)
 const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
   'child-abuse': IconShield,
@@ -82,6 +95,7 @@ const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
   'parental-rights': IconScale,
   'school-violence': IconSchool,
   'out-of-school-youth': IconLife,
+  'living-support': IconLifeRing,
 };
 const DEFAULT_ICON = IconShield;
 
@@ -97,6 +111,8 @@ const IMAGE_BY_SLUG: Record<string, string> = {
   'parental-rights': '/assets/manual/parental-rights.webp',
   'school-violence': '/assets/manual/school-violence.webp',
   'out-of-school-youth': '/assets/manual/out-of-school-youth.webp',
+  // living-support: 사진 준비되면 public/assets/manual/living-support.webp 넣고 한 줄 추가.
+  //                 그전까지는 기본(초록) 카드로 표시된다.
 };
 
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
@@ -110,6 +126,10 @@ const FALLBACK_CATEGORIES: ManualCategory[] = [
   { id: 7, name: '법정대리인', slug: 'parental-rights', order: 7 },
   { id: 69, name: '학교폭력', slug: 'school-violence', order: 8 },
   { id: 95, name: '학교 밖 청소년', slug: 'out-of-school-youth', order: 9 },
+  // id는 BE가 카테고리를 만든 뒤의 실제 값으로 채워 넣을 자리. 카드 렌더와 이동은
+  // slug로만 하므로(key={cat.slug}, navigate(?categoryId={cat.slug})) 동작에는 영향이 없고,
+  // API 실패 시 폴백 화면의 개수/순서를 실제와 맞추기 위한 항목이다.
+  { id: -1, name: '생활지원', slug: 'living-support', order: 10 },
 ];
 
 // 직전 성공 응답을 캐시 → 재방문 시 즉시 최신 목록으로 렌더(BE가 카테고리를 바꿔도 깜빡임 없음)
