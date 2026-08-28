@@ -126,11 +126,23 @@ const FALLBACK_CATEGORIES: ManualCategory[] = [
   { id: 7, name: '법정대리인', slug: 'parental-rights', order: 7 },
   { id: 69, name: '학교폭력', slug: 'school-violence', order: 8 },
   { id: 95, name: '학교 밖 청소년', slug: 'out-of-school-youth', order: 9 },
-  // id는 BE가 카테고리를 만든 뒤의 실제 값으로 채워 넣을 자리. 카드 렌더와 이동은
-  // slug로만 하므로(key={cat.slug}, navigate(?categoryId={cat.slug})) 동작에는 영향이 없고,
-  // API 실패 시 폴백 화면의 개수/순서를 실제와 맞추기 위한 항목이다.
+];
+
+// BE의 ManualCategory 테이블에 아직 행이 없어서 /manual/categories 응답에 안 오는 카테고리.
+// 탭을 먼저 노출하기 위해 프론트에서만 얹는다.
+//
+// 같은 slug가 API 응답에 나타나면 그쪽이 이기고 여기 항목은 버려지므로,
+// BE에 카테고리가 생긴 뒤에는 이 배열만 비우면 된다(그전에 지워도 중복은 안 생긴다).
+// id는 서버에 없는 행이라 임의값 — 카드 key와 이동 모두 slug로만 하므로 쓰이지 않는다.
+const LOCAL_ONLY_CATEGORIES: ManualCategory[] = [
   { id: -1, name: '생활지원', slug: 'living-support', order: 10 },
 ];
+
+function withLocalOnly(categories: ManualCategory[]): ManualCategory[] {
+  const known = new Set(categories.map((c) => c.slug));
+  return [...categories, ...LOCAL_ONLY_CATEGORIES.filter((c) => !known.has(c.slug))]
+    .sort((a, b) => a.order - b.order);
+}
 
 // 직전 성공 응답을 캐시 → 재방문 시 즉시 최신 목록으로 렌더(BE가 카테고리를 바꿔도 깜빡임 없음)
 const CACHE_KEY = 'ilaw.manualCategories';
@@ -147,7 +159,7 @@ function readCache(): ManualCategory[] | null {
 
 export default function Manual() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<ManualCategory[]>(() => readCache() ?? FALLBACK_CATEGORIES);
+  const [categories, setCategories] = useState<ManualCategory[]>(() => withLocalOnly(readCache() ?? FALLBACK_CATEGORIES));
 
   useEffect(() => {
     let cancelled = false;
@@ -155,7 +167,8 @@ export default function Manual() {
       .categories()
       .then((cats) => {
         if (!cancelled && Array.isArray(cats) && cats.length) {
-          setCategories(cats);
+          setCategories(withLocalOnly(cats));
+          // 캐시에는 서버 응답 원본만 넣는다(프론트 전용 항목은 읽을 때 다시 얹는다).
           try { localStorage.setItem(CACHE_KEY, JSON.stringify(cats)); } catch { /* noop */ }
         }
       })
