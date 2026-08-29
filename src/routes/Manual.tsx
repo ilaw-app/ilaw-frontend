@@ -111,15 +111,16 @@ const IMAGE_BY_SLUG: Record<string, string> = {
   'parental-rights': '/assets/manual/parental-rights.webp',
   'school-violence': '/assets/manual/school-violence.webp',
   'out-of-school-youth': '/assets/manual/out-of-school-youth.webp',
-  // living-support: 사진 준비되면 public/assets/manual/living-support.webp 넣고 한 줄 추가.
-  //                 그전까지는 기본(초록) 카드로 표시된다.
+  // 파일명(life-assist)이 slug(living-support)와 다르다. slug는 BE 카테고리 설정과
+  // 맞춰야 하는 값이라 그대로 두고, 여기서 파일명만 이어 붙인다.
+  'living-support': '/assets/manual/life-assist.webp',
 };
 
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
 const FALLBACK_CATEGORIES: ManualCategory[] = [
-  { id: 4, name: '아동학대/가정폭력', slug: 'child-abuse', order: 1 },
   { id: 2, name: '노동', slug: 'labor', order: 2 },
   { id: 1, name: '금융', slug: 'finance', order: 3 },
+  { id: 4, name: '아동학대', slug: 'child-abuse', order: 4 },
   { id: 3, name: '성폭력', slug: 'sexual-violence', order: 4 },
   { id: 5, name: '온라인폭력', slug: 'online-violence', order: 5 },
   { id: 6, name: '출생/양육', slug: 'birth-and-parenting', order: 6 },
