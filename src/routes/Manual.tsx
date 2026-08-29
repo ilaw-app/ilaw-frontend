@@ -111,9 +111,7 @@ const IMAGE_BY_SLUG: Record<string, string> = {
   'parental-rights': '/assets/manual/parental-rights.webp',
   'school-violence': '/assets/manual/school-violence.webp',
   'out-of-school-youth': '/assets/manual/out-of-school-youth.webp',
-  // 파일명(life-assist)이 slug(living-support)와 다르다. slug는 BE 카테고리 설정과
-  // 맞춰야 하는 값이라 그대로 두고, 여기서 파일명만 이어 붙인다.
-  'living-support': '/assets/manual/life-assist.webp',
+  'living-support': '/assets/manual/living-support.webp',
 };
 
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
