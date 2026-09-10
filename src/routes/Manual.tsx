@@ -71,7 +71,7 @@ const IconLife = () => (
   </svg>
 );
 
-// 생활지원: 구명튜브. 기존 아이콘에 원형이 하나도 없어서 목록에서 바로 구분되고,
+// 생활 지원: 구명튜브. 기존 아이콘에 원형이 하나도 없어서 목록에서 바로 구분되고,
 // 옆자리 '학교 밖 청소년'(집 모양)과 실루엣이 겹치지 않는다.
 const IconLifeRing = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -95,6 +95,9 @@ const ICON_BY_SLUG: Record<string, () => React.ReactElement> = {
   'parental-rights': IconScale,
   'school-violence': IconSchool,
   'out-of-school-youth': IconLife,
+  // BE가 배포한 slug는 life-support인데 prisma/notion-migrate.ts의 계획은
+  // living-support다. 어느 쪽이 확정돼도 아이콘/사진이 빠지지 않게 둘 다 걸어둔다.
+  'life-support': IconLifeRing,
   'living-support': IconLifeRing,
 };
 const DEFAULT_ICON = IconShield;
@@ -111,36 +114,44 @@ const IMAGE_BY_SLUG: Record<string, string> = {
   'parental-rights': '/assets/manual/parental-rights.webp',
   'school-violence': '/assets/manual/school-violence.webp',
   'out-of-school-youth': '/assets/manual/out-of-school-youth.webp',
-  'living-support': '/assets/manual/living-support.webp',
+  'life-support': '/assets/manual/life-support.webp',
+  'living-support': '/assets/manual/life-support.webp',
 };
 
 // API 실패 시 최소 화면 유지용 폴백 (실제 API 응답과 동일한 순서/이름/개수로 맞춰 첫 렌더 깜빡임 방지)
 const FALLBACK_CATEGORIES: ManualCategory[] = [
+  { id: 4, name: '아동학대/가정폭력', slug: 'child-abuse', order: 1 },
   { id: 2, name: '노동', slug: 'labor', order: 2 },
   { id: 1, name: '금융', slug: 'finance', order: 3 },
-  { id: 4, name: '아동학대', slug: 'child-abuse', order: 4 },
   { id: 3, name: '성폭력', slug: 'sexual-violence', order: 4 },
   { id: 5, name: '온라인폭력', slug: 'online-violence', order: 5 },
   { id: 6, name: '출생/양육', slug: 'birth-and-parenting', order: 6 },
   { id: 7, name: '법정대리인', slug: 'parental-rights', order: 7 },
   { id: 69, name: '학교폭력', slug: 'school-violence', order: 8 },
   { id: 95, name: '학교 밖 청소년', slug: 'out-of-school-youth', order: 9 },
+  { id: 117, name: '생활 지원', slug: 'life-support', order: 10 },
 ];
 
 // BE의 ManualCategory 테이블에 아직 행이 없어서 /manual/categories 응답에 안 오는 카테고리.
-// 탭을 먼저 노출하기 위해 프론트에서만 얹는다.
+// 탭을 먼저 노출하기 위해 프론트에서만 얹는다. BE에 행이 생기면 여기서 지운다.
 //
-// 같은 slug가 API 응답에 나타나면 그쪽이 이기고 여기 항목은 버려지므로,
-// BE에 카테고리가 생긴 뒤에는 이 배열만 비우면 된다(그전에 지워도 중복은 안 생긴다).
-// id는 서버에 없는 행이라 임의값 — 카드 key와 이동 모두 slug로만 하므로 쓰이지 않는다.
-const LOCAL_ONLY_CATEGORIES: ManualCategory[] = [
-  { id: -1, name: '생활지원', slug: 'living-support', order: 10 },
-];
+// 비어 있는 게 정상 상태다. '생활지원'(slug living-support)을 여기 두고 있었는데
+// BE가 같은 카테고리를 slug life-support / 이름 '생활 지원'으로 배포해서 slug 비교를
+// 통과했고, 카드가 두 장 그려졌다(프론트가 얹은 쪽은 서버에 없는 slug라 눌러도
+// "카테고리를 찾을 수 없습니다"). 그래서 아래 중복 제거는 slug뿐 아니라 공백을
+// 무시한 이름으로도 본다.
+const LOCAL_ONLY_CATEGORIES: ManualCategory[] = [];
+
+const nameKey = (s: string) => s.replace(/\s+/g, '');
 
 function withLocalOnly(categories: ManualCategory[]): ManualCategory[] {
-  const known = new Set(categories.map((c) => c.slug));
-  return [...categories, ...LOCAL_ONLY_CATEGORIES.filter((c) => !known.has(c.slug))]
-    .sort((a, b) => a.order - b.order);
+  if (!LOCAL_ONLY_CATEGORIES.length) return categories;
+  const knownSlugs = new Set(categories.map((c) => c.slug));
+  const knownNames = new Set(categories.map((c) => nameKey(c.name)));
+  const extra = LOCAL_ONLY_CATEGORIES.filter(
+    (c) => !knownSlugs.has(c.slug) && !knownNames.has(nameKey(c.name)),
+  );
+  return [...categories, ...extra].sort((a, b) => a.order - b.order);
 }
 
 // 직전 성공 응답을 캐시 → 재방문 시 즉시 최신 목록으로 렌더(BE가 카테고리를 바꿔도 깜빡임 없음)

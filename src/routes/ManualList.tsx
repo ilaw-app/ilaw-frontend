@@ -34,7 +34,8 @@ const SLUG_TO_NAME: Record<string, string> = {
   'parental-rights': '법정대리인',
   'school-violence': '학교폭력',
   'out-of-school-youth': '학교 밖 청소년',
-  'living-support': '생활지원',
+  'life-support': '생활 지원',
+  'living-support': '생활 지원',
 };
 
 const qLabel = (n: number) => `Q${n}`;
