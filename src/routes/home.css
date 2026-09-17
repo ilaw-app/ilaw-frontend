@@ -192,16 +192,34 @@
   40%  { transform: scale(1);    opacity: 1; }
   100% { transform: scale(1);    opacity: 1; }
 }
+/* ⚠️ 임시: 셋 중 뭘 쓸지 고르려고 세 가지를 순서대로 한 번씩 보여준다.
+   ① 0.6s~5.4s   말풍선만 3번
+   ② 5.8s~10.6s  캐릭터만 3번
+   ③ 11s~15.8s   둘 다 3번
+   고른 뒤에는 각 줄에서 안 쓰는 쪽 애니메이션만 지우면 된다.
+   (예: ③으로 확정 → --p1/--p2 줄을 지우고 --p3만 남긴다) */
+.home-hero {
+  --cycle: 1.6s;
+  --p1: 0.6s;  /* ① 말풍선만 */
+  --p2: 5.8s;  /* ② 캐릭터만 */
+  --p3: 11s;   /* ③ 둘 다 */
+}
 .home-hero-bubble {
   transform-origin: 86% 88%; /* 꼬리(마스코트 쪽) 기준으로 부푼다 */
-  animation: hero-bubble-pop 1.6s ease-in-out 0.5s 3 both;
+  animation:
+    hero-bubble-pop var(--cycle) ease-in-out var(--p1) 3,
+    hero-bubble-pop var(--cycle) ease-in-out var(--p3) 3;
 }
 .home-hero-mascot {
   transform-origin: bottom center; /* 발바닥 기준이라야 스쿼시가 자연스럽다 */
-  animation: hero-mascot-jump 1.6s ease-in-out 0.5s 3 both;
+  animation:
+    hero-mascot-jump var(--cycle) ease-in-out var(--p2) 3,
+    hero-mascot-jump var(--cycle) ease-in-out var(--p3) 3;
 }
 .home-hero-shadow {
-  animation: hero-shadow-squash 1.6s ease-in-out 0.5s 3 both;
+  animation:
+    hero-shadow-squash var(--cycle) ease-in-out var(--p2) 3,
+    hero-shadow-squash var(--cycle) ease-in-out var(--p3) 3;
 }
 @media (prefers-reduced-motion: reduce) {
   .home-hero-bubble,
