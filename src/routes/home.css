@@ -108,10 +108,10 @@
 .home-hero-bubble {
   /* 1 = 피그마 원본(126.327 × 76). 배수라 단위를 붙이면 안 된다 —
      길이를 숫자로 나누면 결과가 길이가 돼서 아래 곱셈이 전부 무효가 된다. */
-  --bubble-scale: 1.44;
+  --bubble-scale: 1.22;
   position: absolute;
-  left: 8px;
-  top: 34px;
+  left: 12px;
+  top: 40px;
   width: calc(126.327px * var(--bubble-scale));
   height: calc(76px * var(--bubble-scale));
   z-index: 3;
@@ -137,22 +137,23 @@
   justify-content: center;
   text-align: center;
   font-family: 'Binggrae', 'Apple SD Gothic Neo', sans-serif;
-  line-height: 16px;
+  line-height: 15px;
   letter-spacing: 0.07px;
 }
-/* 글자 크기는 풍선 배수와 무관하게 고정.
-   "안녕 나는 AI 챗봇 아이로야."가 12px에서 약 147px인데, 타원의 이 높이에서
-   쓸 수 있는 폭이 약 165px이라 한 줄로 들어간다. 문구를 늘릴 거면 폰트를
-   줄이지 말고 --bubble-scale을 올릴 것. */
+/* 글자 크기는 풍선 배수와 무관하게 고정(피그마 원본값).
+   "나는 AI 챗봇 아이로야."가 11px에서 약 114px인데, 배수 1.22에서 타원의
+   이 높이에 쓸 수 있는 폭이 약 149px이라 한 줄로 들어간다.
+   문구를 늘릴 거면 폰트를 줄이지 말고 --bubble-scale을 올릴 것.
+   반대로 풍선을 더 줄이려면 1.1 밑으로는 한 줄이 깨진다. */
 .hero-bubble-l1 {
   color: #8c937d;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   white-space: nowrap;
 }
 .hero-bubble-l2 {
   color: #575f46;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
   margin-top: 3px;
