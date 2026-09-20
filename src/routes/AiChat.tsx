@@ -76,6 +76,7 @@ export default function AiChat() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [chatEnded, setChatEnded] = useState(false);
+  const conversationIdRef = useRef<string | undefined>(undefined);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -120,6 +121,7 @@ export default function AiChat() {
   const handleNewChat = () => {
     setMessages(prev => [...prev, { ...GREETING, id: Date.now(), time: nowStr() }]);
     setInput('');
+    conversationIdRef.current = undefined;
     setChatEnded(false);
     scrollToEnd();
   };
@@ -138,9 +140,11 @@ export default function AiChat() {
     scrollToEnd();
 
     try {
-      const data = await aiApi.chat(text);
+      const data = await aiApi.chat(text, conversationIdRef.current);
+      if (data.conversationId) conversationIdRef.current = data.conversationId;
       const now = nowStr();
-      const advice = (data.legalAdvice ?? '').trim();
+      // 되묻기(needs_clarification) 턴은 legalAdvice 가 비고 followUpQuestion 에 질문이 온다.
+      const advice = (data.legalAdvice || data.followUpQuestion || '').trim();
       const newMsgs: Message[] = [];
       if (advice) newMsgs.push({ id: Date.now() + 2, from: 'ai', time: now, text: advice, answer: true, suggestions: data.suggestions });
       if (newMsgs.length === 0) newMsgs.push({ id: Date.now() + 1, from: 'ai', time: now, text: '죄송합니다, 답변을 불러오는 중 오류가 발생했습니다.' });

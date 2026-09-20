@@ -171,9 +171,9 @@ export type AiChatResult = {
   situationSummary: string;
   legalAdvice: string;
   suggestions: AiSuggestion[];
-  followUpQuestion?: string; // 지금은 안 옴(멀티턴 off)
+  followUpQuestion?: string; // 서버 멀티턴(AI_MULTITURN_ENABLED)일 때 되묻기 턴에만 옴
   chatEnded: boolean;
-  conversationId?: string; // 지금은 안 옴(멀티턴 off)
+  conversationId?: string; // 서버 멀티턴일 때만 옴
 };
 export type AiChatHistoryItem = {
   id: number;
