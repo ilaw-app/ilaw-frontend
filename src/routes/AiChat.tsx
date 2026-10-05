@@ -66,7 +66,8 @@ function SuggestionCard({ sg, onPress }: { sg: AiSuggestion; onPress: () => void
 
 const GREETING: Message = {
   id: 0, from: 'ai', time: nowStr(),
-  text: '안녕하세요! \n\n저는 여러분의 이야기를 듣고 상황에 맞는 정보를 찾아드리는 아이로 AI 챗봇입니다.\n\n지금 겪고 있는 일이나 궁금한 점을 편하게 물어보세요.\n자세히 알려주시면 상황에 맞는 정보를 더 빠르게 찾아드릴 수 있어요.\n\n<예시>\n"학교에서 친구에게 협박을 받고 있어요. 어떻게 해야 하나요?"\n"집에서 힘든 일이 있는데 도움받을 수 있는 곳이 궁금해요."\n\n⚠️ 심각하거나 긴급한 상황이라면 먼저 112에 신고해주세요.\n💡 또한 정확한 답변이 필요하다면 Q&A 게시판에서 변호사님께 질문할 수 있어요.\n🔒 상담 내용은 안전하게 보호되며, 답변을 제공하기 위한 목적으로만 사용돼요.',
+  // 말투: 인형(ilaw-chat)과 같은 '친구' 반말로 통일(2026-10-06). 백엔드 고정 문구·프롬프트도 함께 바뀌었다.
+  text: '안녕! \n\n나는 네 이야기를 듣고 상황에 맞는 정보를 찾아 주는 아이로야.\n\n지금 겪고 있는 일이나 궁금한 점을 편하게 물어봐.\n자세히 알려 주면 상황에 맞는 정보를 더 빠르게 찾아 줄 수 있어.\n\n<예시>\n"학교에서 친구에게 협박을 받고 있어. 어떻게 해야 해?"\n"집에서 힘든 일이 있는데 도움받을 수 있는 곳이 궁금해."\n\n⚠️ 심각하거나 급한 상황이면 먼저 112에 신고해 줘.\n💡 정확한 답이 필요하면 Q&A 게시판에서 변호사님께 질문할 수 있어.\n🔒 여기서 나눈 이야기는 안전하게 보호되고 다른 사람에게 공개되지 않아. 이름·학교·연락처 같은 개인정보는 말하지 않아도 돼.',
 };
 
 export default function AiChat() {
@@ -147,19 +148,19 @@ export default function AiChat() {
       const advice = (data.legalAdvice || data.followUpQuestion || '').trim();
       const newMsgs: Message[] = [];
       if (advice) newMsgs.push({ id: Date.now() + 2, from: 'ai', time: now, text: advice, answer: true, suggestions: data.suggestions });
-      if (newMsgs.length === 0) newMsgs.push({ id: Date.now() + 1, from: 'ai', time: now, text: '죄송합니다, 답변을 불러오는 중 오류가 발생했습니다.' });
+      if (newMsgs.length === 0) newMsgs.push({ id: Date.now() + 1, from: 'ai', time: now, text: '미안, 답변을 불러오다가 오류가 났어. 잠시 후 다시 시도해 줘.' });
       setMessages(prev => [...prev, ...newMsgs]);
 
       if (data.chatEnded) setChatEnded(true);
     } catch (e: any) {
       const text =
         e?.status === 429
-          ? '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.'
+          ? '요청 한도를 넘었어. 잠시 후 다시 시도해 줘.'
           : e?.status === 401
-          ? '로그인 후 이용할 수 있어요.'
+          ? '로그인하면 이용할 수 있어.'
           : e?.status === 400
-          ? '메시지는 2,000자까지 입력할 수 있어요.'
-          : '죄송합니다, 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+          ? '메시지는 2,000자까지 입력할 수 있어.'
+          : '미안, 잠깐 오류가 생겼어. 잠시 후 다시 시도해 줘.';
       setMessages(prev => [...prev, { id: Date.now() + 1, from: 'ai', time: nowStr(), text }]);
     } finally {
       setLoading(false);
