@@ -132,28 +132,6 @@ const FALLBACK_CATEGORIES: ManualCategory[] = [
   { id: 117, name: '생활 지원', slug: 'life-support', order: 10 },
 ];
 
-// BE의 ManualCategory 테이블에 아직 행이 없어서 /manual/categories 응답에 안 오는 카테고리.
-// 탭을 먼저 노출하기 위해 프론트에서만 얹는다. BE에 행이 생기면 여기서 지운다.
-//
-// 비어 있는 게 정상 상태다. '생활지원'(slug living-support)을 여기 두고 있었는데
-// BE가 같은 카테고리를 slug life-support / 이름 '생활 지원'으로 배포해서 slug 비교를
-// 통과했고, 카드가 두 장 그려졌다(프론트가 얹은 쪽은 서버에 없는 slug라 눌러도
-// "카테고리를 찾을 수 없습니다"). 그래서 아래 중복 제거는 slug뿐 아니라 공백을
-// 무시한 이름으로도 본다.
-const LOCAL_ONLY_CATEGORIES: ManualCategory[] = [];
-
-const nameKey = (s: string) => s.replace(/\s+/g, '');
-
-function withLocalOnly(categories: ManualCategory[]): ManualCategory[] {
-  if (!LOCAL_ONLY_CATEGORIES.length) return categories;
-  const knownSlugs = new Set(categories.map((c) => c.slug));
-  const knownNames = new Set(categories.map((c) => nameKey(c.name)));
-  const extra = LOCAL_ONLY_CATEGORIES.filter(
-    (c) => !knownSlugs.has(c.slug) && !knownNames.has(nameKey(c.name)),
-  );
-  return [...categories, ...extra].sort((a, b) => a.order - b.order);
-}
-
 // 직전 성공 응답을 캐시 → 재방문 시 즉시 최신 목록으로 렌더(BE가 카테고리를 바꿔도 깜빡임 없음)
 const CACHE_KEY = 'ilaw.manualCategories';
 function readCache(): ManualCategory[] | null {
@@ -169,7 +147,7 @@ function readCache(): ManualCategory[] | null {
 
 export default function Manual() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<ManualCategory[]>(() => withLocalOnly(readCache() ?? FALLBACK_CATEGORIES));
+  const [categories, setCategories] = useState<ManualCategory[]>(() => readCache() ?? FALLBACK_CATEGORIES);
 
   useEffect(() => {
     let cancelled = false;
@@ -177,8 +155,7 @@ export default function Manual() {
       .categories()
       .then((cats) => {
         if (!cancelled && Array.isArray(cats) && cats.length) {
-          setCategories(withLocalOnly(cats));
-          // 캐시에는 서버 응답 원본만 넣는다(프론트 전용 항목은 읽을 때 다시 얹는다).
+          setCategories(cats);
           try { localStorage.setItem(CACHE_KEY, JSON.stringify(cats)); } catch { /* noop */ }
         }
       })
